@@ -1,0 +1,67 @@
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.sublime*
+.jsbeautifyrc
+*.ai
+*.log
+node_modules/
+npm-debug.*
+
+# Config and Htaccess Files
+/.htaccess
+/config.php
+/admin/config.php
+
+# Image File
+!/image/no_image.jpg
+
+# my add
+/image/
+
+# Image Cache Files
+# /image/cache/*
+# !/image/cache/index.html
+
+# Image cachewebp
+# /image/cachewebp/*
+
+# Image catalog
+# /image/catalog/*
+
+# Templates Files
+# /image/templates/*
+# /image/templates/default.jpg
+
+# Backup Files
+/system/storage/backup/*
+!/system/storage/backup/index.html
+
+# System Cache Files
+/system/storage/cache/*
+!/system/storage/cache/index.html
+
+# Download Files
+/system/storage/download/*
+!/system/storage/download/index.html
+
+# Log Files
+/system/storage/logs/*
+!/system/storage/logs/index.html
+
+# Marketing Files
+/system/storage/marketing/*
+!/system/storage/marketing/index.html
+
+# Modification Files
+/system/storage/modification/*
+!/system/storage/modification/index.html
+
+# Session Files
+/system/storage/session/*
+!/system/storage/session/index.html
+
+# Upload Files
+/system/storage/*
+!/system/storage/index.html
