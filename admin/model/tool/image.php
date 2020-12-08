@@ -6,17 +6,25 @@ class ModelToolImage extends Model {
 		}
 
 		$extension = pathinfo($filename, PATHINFO_EXTENSION);
-
+    // ! adding (svg-support)
+    if('svg' == $extension) {
+      if ($this->request->server['HTTPS']) {
+          return HTTPS_CATALOG . 'image/' . $filename;
+      } else {
+          return HTTP_CATALOG . 'image/' . $filename;
+      }
+    }
+    // ! end of adding (svg-support)
 		$image_old = $filename;
 		$image_new = 'cache/' . utf8_substr($filename, 0, utf8_strrpos($filename, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
 
 		if (!is_file(DIR_IMAGE . $image_new) || (filemtime(DIR_IMAGE . $image_old) > filemtime(DIR_IMAGE . $image_new))) {
 			list($width_orig, $height_orig, $image_type) = getimagesize(DIR_IMAGE . $image_old);
-				 
-			if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF))) { 
+
+			if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF))) {
 				return DIR_IMAGE . $image_old;
 			}
- 
+
 			$path = '';
 
 			$directories = explode('/', dirname($image_new));

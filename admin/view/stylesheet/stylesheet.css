@@ -84,7 +84,7 @@ a:hover, a:focus {
 
 #header .navbar-nav > li {
 	display: inline-block;
-}	
+}
 #header .navbar-right > li {
 	border-left: 1px solid #eee;
 }
@@ -106,7 +106,7 @@ a:hover, a:focus {
 	color: #6D6D6D;
 	border-left: 0px solid #E1E1E1;
 }
-	
+
 #header .nav > li.dropdown > a {
 	padding-left: 10px;
 	padding-right: 10px;
@@ -120,11 +120,11 @@ a:hover, a:focus {
 	#header .navbar-header {
 		display: inline-block;
 	}
-	
+
 	#header #user-profile {
 		max-width: none;
-	}	
-	
+	}
+
 	#header .nav > li > a {
 		line-height: 60px;
 	}
@@ -132,14 +132,14 @@ a:hover, a:focus {
 
 #button-menu {
 	line-height: 30px;
-	font-size: 24px;	
+	font-size: 24px;
 	float: left;
 	padding: 10px 16px;
 	line-height: 25px;
 	display: inline-block;
 	cursor: pointer;
 	color: #6D6D6D;
-	border-right: 1px solid #eee;	
+	border-right: 1px solid #eee;
 }
 /* Desktop */
 @media (min-width: 768px){
@@ -670,8 +670,6 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 #extension-list span {
 	font-weight: 600;
 }
-
-}
 #marketplace-extension-info #banner img {
 	margin-left: auto;
 	margin-right: auto;
@@ -987,4 +985,11 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 
 .form-group + .form-group {
     border-top: 1px solid #ededed;
+}
+
+
+/* My addings  */
+#thumb-logo img {
+  width: 100px;
+  background-color: #eaeaea;
 }
