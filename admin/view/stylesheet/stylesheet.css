@@ -272,7 +272,7 @@ a:hover, a:focus {
 	transition: margin ease 0.5s;
 }
 #menu li li a:hover:before {
-	margin-right: 20px;
+	/* margin-right: 20px; */
 }
 #menu li li a:hover {
 	color: #FFFFFF;
