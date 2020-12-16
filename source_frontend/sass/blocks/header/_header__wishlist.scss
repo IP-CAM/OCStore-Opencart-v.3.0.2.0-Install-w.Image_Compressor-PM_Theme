@@ -1,0 +1,10 @@
+.header__wishlist {
+  @include media-tablet-portrait-down {
+    max-width: 48px;
+    flex-grow: 1;
+  }
+
+  @include media-tablet-portrait-up {
+    margin-right: $space;
+  }
+}

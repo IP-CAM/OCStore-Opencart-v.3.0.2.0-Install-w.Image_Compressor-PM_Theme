@@ -1,0 +1,30 @@
+<section class="modal__content modal__content--closed modal-signin" id="modalSignIn" aria-hidden="true">
+  <h2 class="modal__header modal-signin__header">Вход</h2>
+
+  <form action="#" method="post" autocomplete="on">
+
+    <div class="textfield modal__element">
+      <label class="textfield__input-container">
+        <input class="textfield__input" type="email" required>
+        <span class="textfield__label">Email</span>
+      </label>
+    </div>
+
+    <div class="textfield modal__element">
+      <label class="textfield__input-container">
+        <input class="textfield__input" type="password" required>
+        <span class="textfield__label">Пароль</span>
+      </label>
+    </div>
+
+    <button class="button button--options-primary modal-signin__signin-button" type="submit">Войти</button>
+    <button class="link modal-signin__forgot-button" type="button" data-modal="#modalRemindPassword" data-modal-size="small">Напомнить пароль</button>
+
+    @@include("./socials-login/_socials-login.html", {"class": "modal-signin__socials-login"})
+
+    <span>Нет аккаунта?</span>
+    <button class="link" data-modal="#modalRegister" data-modal-size="small">Зарегистрироваться</button>
+
+  </form>
+
+</section>

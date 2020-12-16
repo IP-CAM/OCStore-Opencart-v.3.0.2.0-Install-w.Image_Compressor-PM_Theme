@@ -1,0 +1,59 @@
+.preview__inner {
+  position: sticky;
+  top: $space*2;
+}
+
+.preview__footer {
+  padding-top: $space;
+  border-top: 1px solid $color__additional-2;
+}
+
+.preview__footer-promocode {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: $space;
+}
+
+.preview__promocode-field {
+  width: $space*11;
+  margin-right: $space;
+}
+
+.preview__promocode-button {
+  width: $space*11;
+}
+
+.preview__table-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.preview__table-footer .preview__table-row {
+  &:not(:last-child) {
+    margin-bottom: $space*0.5;
+  }
+}
+
+
+.preview__table-footer {
+  margin-top: $space*0.5;
+  padding: $space*0.5 0 $space;
+  font-weight: 700;
+  border-top: 1px solid $color__additional-2;
+  border-bottom: 1px solid $color__additional-2;
+}
+
+.page-cart__price {
+  font-weight: 600;
+
+  &--discount {
+    color: $color-font__sale;
+  }
+}
+
+.page-cart__total-price {
+  font-size: $space*2;
+  line-height: 1;
+}

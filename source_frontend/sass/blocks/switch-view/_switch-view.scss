@@ -1,0 +1,28 @@
+.switch-view {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.switch-view__label {
+  color: $color-font__secondary;
+}
+
+.switch-view__box {
+  margin-left: $space*0.5;
+  cursor: pointer;
+}
+
+.switch-view__icon {
+  display: block;
+  stroke: $color__additional-4;
+}
+
+.switch-view__input:checked + .switch-view__icon {
+  box-shadow: inset 0 0 0 2px $color__primary;
+}
+
+.switch-view__input:hover + .switch-view__icon,
+.switch-view__input:focus + .switch-view__icon {
+  background-color: $color__additional-1;
+}

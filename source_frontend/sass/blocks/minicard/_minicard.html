@@ -1,0 +1,67 @@
+<div class="minicard @@class1">
+
+  <a class="minicard__link" href="#">
+    <h3 class="minicard__title">@@title</h3>
+    <p class="image-container minicard__image-container @@class2">
+      <picture>
+        <source sizes="(min-width: 1456px) 244px,
+                        (min-width: 1344px) calc((100vw - 480px) / 4),
+                        (min-width: 1280px) calc((100vw - 456px) / 3),
+                        (min-width: 1248px) calc(20vw - 48px),
+                        (min-width: 1007px) calc(25vw - 48px),
+                        (min-width: 768px) calc(33vw - 48px),
+                        (min-width: 608px) calc(50vw - 48px),
+                        calc(50vw - 32px)"
+                data-srcset="img/raster/minicard-@@index_244w.webp 244w,
+                        img/raster/minicard-@@index_366w.webp 366w,
+                        img/raster/minicard-@@index_488w.webp 488w" type="image/webp">
+        <source data-srcset="img/raster/minicard-@@index_244w.jpg 244w,
+                        img/raster/minicard-@@index_366w.jpg 366w,
+                        img/raster/minicard-@@index_488w.jpg 488w">
+        <img class="image-container__image" data-src="img/raster/minicard-@@index_244w.jpg"
+             loading="lazy" alt="Открыть страницу покупки @@title" width="244">
+      </picture>
+    </p>
+  </a>
+
+  <div class="product-stickers">
+    <strong class="product-stickers__sticker @@stickerModClass">@@stickerCaption</strong>
+  </div>
+
+  <p class="minicard__brand">
+    <span>Бренд:</span>
+    <span>@@brand</span>
+  </p>
+
+  <dl class="minicard__options">
+    <dt class="minicard__options-dt">Материал</dt>
+    <dd class="minicard__options-dd">Нержавеющая сталь</dd>
+    <dt class="minicard__options-dt">Количество предметов</dt>
+    <dd class="minicard__options-dd">12</dd>
+    <dt class="minicard__options-dt">Ручки</dt>
+    <dd class="minicard__options-dd">Съемные</dd>
+    <dt class="minicard__options-dt">Тип комфорок</dt>
+    <dd class="minicard__options-dd">Любые</dd>
+  </dl>
+
+
+  <p class="price minicard__price">
+    <span class="price__current" aria-label="Текущая цена: ">
+      156<sup>80</sup> р.
+    </span>
+    <del class="price__old" aria-label="Цена без скидки: ">196.30 р.</del>
+  </p>
+
+  @@include("./stars/_stars.html", {"class": "stars--short minicard__stars"})
+
+  <p class="minicard__delivery-info">
+    Доставка: сегодня после 18-00, бесплатно
+  </p>
+
+  <button class="button minicard__love-button" type="button">
+    <span class="visually-hidden">Добавить в избранные товары</span>
+    <svg class="minicard__love-icon icon icon--stroked" width="24" height="24">
+      <use href="img/svg/_sprite.svg#icon-love"></use>
+    </svg>
+  </button>
+</div>

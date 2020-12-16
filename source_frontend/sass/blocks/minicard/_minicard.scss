@@ -1,0 +1,184 @@
+.minicard {
+  position: relative;
+  display: grid;
+}
+
+// grid и list - модификаторы сетки товаров
+.minicard--grid {
+  grid-template-columns: minmax(0%, 1fr);
+  padding: $space*0.5 $space*0.5 $space;
+}
+
+
+.minicard--list {
+  @include media-mobile-only {
+    --column-gap: #{$space*0.5};
+    --padding: #{$space*0.5};
+  }
+
+  @include media-tablet-portrait-up {
+    --column-gap: #{$space};
+    --padding: #{$space};
+  }
+
+  grid-template-columns: minmax($space*5, $space*18) auto;
+  grid-template-rows: repeat(8, auto);
+  column-gap: var(--column-gap);
+  padding: var(--padding);
+}
+
+
+.minicard__link {
+  display: contents;
+  text-decoration: none;
+}
+
+.minicard__image-container {
+  order: -1;
+}
+
+.minicard--grid .minicard__image-container {
+  margin: 0 0 $space*0.5;
+}
+
+.minicard--list .minicard__image-container {
+  grid-row: 1/-1;
+  margin: 0;
+}
+
+.minicard__image-container--full-width {
+  margin-top: $space*-0.5;
+  margin-left: $space*-0.5;
+  margin-right: $space*-0.5;
+}
+
+.minicard__title {
+  font-size: 100%;
+  font-weight: 500;
+  color: $color-font__subtitle2;
+}
+
+.minicard--grid .minicard__title {
+  margin: 0;
+}
+
+.minicard--list .minicard__title {
+  margin: 0 0 $space*0.5;
+}
+
+
+.minicard--carousel .minicard__title {
+  /* ограничение высоты 2 строки */
+  display: -webkit-box; /* stylelint-disable-line */
+  height: $space*3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; /* stylelint-disable-line */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+.minicard__link:hover .minicard__title,
+.minicard__link:focus .minicard__title {
+  color: $color__primary;
+  text-decoration: underline;
+  text-underline-position: under;
+  text-decoration-skip-ink: none;
+}
+
+
+.minicard__brand {
+  margin: 0;
+  color: $color-font__secondary;
+}
+
+
+.minicard-carousel {
+  display: none;
+}
+
+.minicard--grid .minicard__options {
+  display: none;
+}
+
+.minicard__options {
+  margin: 0 0 $space*0.5;
+  color: $color-font__secondary;
+}
+
+.minicard__options-dt {
+  float: left;
+  margin-right: 0.5rem;
+
+  &::after {
+    content: ":";
+  }
+}
+
+.minicard__options-dd {
+  margin: 0;
+}
+
+
+.minicard__price {
+  margin: 0 0 $space*0.5;
+  padding-top: $space*0.5;
+}
+
+
+.minicard__stars {
+  margin-bottom: $space*0.5;
+}
+
+.minicard__delivery-info {
+  margin: 0;
+  color: $color-font__secondary;
+}
+
+.minicard--carousel .minicard__delivery-info {
+  display: none;
+}
+
+
+//
+// * второстепенное
+
+.minicard__love-button {
+  position: absolute;
+  padding: $space*0.5;
+  color: $color__secondary-bright;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 3px 6px 0 $color__shadows;
+
+  &:hover,
+  &:focus {
+    box-shadow:
+      inset 0 0 0 2px $color__secondary,
+      0 3px 6px 0 $color__shadows;
+  }
+}
+
+.minicard--grid .minicard__love-button {
+  top: $space*0.25;
+  right: $space*0.25;
+}
+
+.minicard--list .minicard__love-button {
+  top: $space*0.5;
+  right: $space*0.5;
+}
+
+.minicard__love-button:hover .minicard__love-icon,
+.minicard__love-button:focus .minicard__love-icon {
+  transform: scale(1.1);
+}
+
+.minicard__love-icon {
+  display: block;
+  transition: all 0.2s;
+}
+
+.minicard__love-button--active .minicard__love-icon {
+  fill: $color__secondary-bright;
+}

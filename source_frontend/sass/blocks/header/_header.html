@@ -1,0 +1,548 @@
+<header class="header">
+
+  <div class="header__top-panel">
+    <p class="header__top-banner">До 20 июля скидка 30% на посуду BergHOFF по промокоду BERG</p>
+
+    <nav class="header__top-menu" id="headerTopMenu" aria-label="Дополнительная навигация">
+
+      <div class="city-choose header__city-choose">
+        <span class="city-choose__caption">Доставка в город: </span>
+        <button class="link city-choose__button header__city-button" data-modal="#modalCity">
+          <svg class="icon icon--2x icon--stroked city-choose__pin-icon" width="24" height="24">
+            <use href="img/svg/_sprite.svg#icon-place"></use>
+          </svg>
+          <span class="visually-hidden">Текущий выбор: </span>
+          <span class="city-choose__current-city">г.&nbspМинск</span>
+          <svg class="icon icon--stroked" width="24" height="24">
+            <use href="img/svg/_sprite.svg#icon-arrow"></use>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="dropdown-menu header__top-menu-list">
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Доставка и оплата</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Самовывоз</a>
+        </li>
+      </ul>
+
+      <ul class="dropdown-menu header__top-menu-list header__top-menu-list--secondary">
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Гарантии</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Акции</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">О магазине</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Контакты</a>
+        </li>
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Гарантии</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Акции</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">О магазине</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Контакты</a>
+        </li>
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Гарантии</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Акции</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">О магазине</a>
+        </li>
+
+        <li class="header__top-menu-item">
+          <a class="header__top-menu-link dropdown-menu__link" href="#">Контакты</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="header__main-panel">
+    <!-- Бургер -->
+    <button class="button header__burger" type="button" data-modal="#headerTopMenu" data-modal-position="left">
+      <span class="visually-hidden">Дополнительное меню</span>
+      <svg class="icon icon--2x header__burger-icon" width="24" height="24">
+        <use href="img/svg/_sprite.svg#icon-burger"></use>
+      </svg>
+    </button>
+
+    <!-- Логотип -->
+    <a class="header__logo" href="/">
+      <img class="header__logo-image" src="img/svg/logo.svg" alt="Перейти на главную страницу магазина" width="102" height="32">
+      <span class="header__logo-caption">интернет-гипермаркет</span>
+    </a>
+
+    <form class="search-form header__search-form" action="#" method="post" role="search">
+
+      <label class="search-form__label" for="search-input">
+        <span class="visually-hidden">Поиск товаров по каталогу:</span>
+      </label>
+
+      <input class="search-form__input" id="search-input" type="text" autocomplete="off" name="search" placeholder="Я ищу ...">
+
+      <button class="search-form__button" type="submit">
+        <svg class="search-form__button-icon" width="24" height="24" aria-hidden="true">
+          <use href="img/svg/_sprite.svg#icon-search"></use>
+        </svg>
+        <span class="visually-hidden">Искать</span>
+      </button>
+    </form>
+
+
+    <!-- Контакты -->
+    <div class="header__contacts">
+      <button class="button header__contacts-button" type="button">
+        <svg class="icon icon--stroked header__icon header__icon--tel" width="24" height="24">
+          <use href="img/svg/_sprite.svg#icon-tel"></use>
+        </svg>
+        <span class="header__contacts-phone">+375-29-681-05-07</span>
+        <span class="visually-hidden">Показать дополнительные контакты</span>
+        <svg class="icon icon--stroked" width="24" height="24">
+          <use href="img/svg/_sprite.svg#icon-arrow"></use>
+        </svg>
+      </button>
+      <div class="modal modal--bounded modal--closed header__contacts-modal" aria-label="Дополнительные контакты">
+        <ul class="header__contacts-list header__contacts-list--tel">
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="tel:+375336810507">
+              <svg class="icon header__contacts-icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-a1--colored"></use>
+              </svg>
+              <span class="header__contacts-phoneprefix">+375-33-</span>
+              <span class="header__contacts-phone-inner">681-05-07</span>
+            </a>
+          </li>
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="tel:+375256810507">
+              <svg class="icon header__contacts-icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-mts--colored"></use>
+              </svg>
+              <span class="header__contacts-phoneprefix">+375-25-</span>
+              <span class="header__contacts-phone-inner">681-05-07</span>
+            </a>
+          </li>
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="tel:+375296810507">
+              <svg class="icon header__contacts-icon icon-life" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-life--colored"></use>
+              </svg>
+              <span class="header__contacts-phoneprefix">+375-29-</span>
+              <span class="header__contacts-phone-inner">681-05-07</span>
+            </a>
+          </li>
+          <li class="header__contacts-item header__contacts-item--call-button">
+            <a class="button button--action-secondary header__call-button" href="tel:+375336810507">
+              <span>Позвонить</span>
+            </a>
+          </li>
+        </ul>
+
+        <p class="header__contacts-worktime">Время работы: <br>с 9-00 до 20-00 Пн-Пт</p>
+
+        <ul class="header__contacts-list">
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="#">
+              <svg class="icon header__contacts-icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-viber--colored"></use>
+              </svg>
+              Viber
+            </a>
+          </li>
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="#">
+              <svg class="icon header__contacts-icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-telegram--colored"></use>
+              </svg>
+              Telegram
+            </a>
+          </li>
+          <li class="header__contacts-item">
+            <a class="header__contacts-link" href="mailto:posudamn@gmail.com">
+              posudamn@gmail.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="header__contacts-caption">консультация эксперта</div>
+    </div>
+
+    <!-- Список желаний -->
+    <div class="header__wishlist">
+      <a class="header__link" href="#">
+        <svg class="icon icon--stroked header__icon" width="24" height="24">
+          <use href="img/svg/_sprite.svg#icon-love"></use>
+        </svg>
+        <span class="visually-hidden">Закладки</span>
+      </a>
+    </div>
+
+    <!-- User -->
+    <div class="header__user">
+      <a class="header__link" href="#">
+        <svg class="icon icon--stroked header__icon" width="24" height="24">
+          <use href="img/svg/_sprite.svg#icon-user"></use>
+        </svg>
+        <span class="header__link-caption header__user-caption">Мой аккаунт</span>
+      </a>
+      <div class="modal modal--bounded modal--closed header__user-modal" aria-label="Меню пользователя">
+        <h2 class="visually-hidden">Меню пользователя</h2>
+        <p class="header__user-entry-text">Добро пожаловать</p>
+        <button class="button button--options-primary header__user-login-button" data-modal="#modalSignIn" data-modal-size="small" type="button">Войти</button>
+
+        @@include("./socials-login/_socials-login.html", {"class": "header__user-socials-login"})
+
+        <div class="header__user-call2reg">
+          <span>Новый покупатель?</span>
+          <a class="link" href="#" data-modal="#modalRegister" data-modal-size="small">Зарегистрироваться</a>
+        </div>
+
+        <ul class="dropdown-menu header__user-dropdown-menu">
+          <li><a class="dropdown-menu__link" href="#">Личные данные</a></li>
+          <li><a class="dropdown-menu__link" href="#">История заказов</a></li>
+          <li><a class="dropdown-menu__link" href="#">История просмотров</a></li>
+          <li><a class="dropdown-menu__link" href="#">Избранные товары</a></li>
+          <li><a class="dropdown-menu__link" href="#">Лист ожиданий</a></li>
+        </ul>
+        <a class="link link--nounderline header__user-logout" href="#">Выйти</a>
+      </div>
+    </div>
+
+    <!-- Корзина -->
+    <div class="header__cart">
+      <a class="header__link header__cart-link" href="#">
+        <div class="header__cart-quantity-positioner">
+          <svg class="icon icon--stroked header__icon" width="24" height="24">
+            <use href="img/svg/_sprite.svg#icon-cart"></use>
+          </svg>
+          <span class="visually-hidden">Товаров: </span>
+          <span class="header__cart-quantity">0</span>
+        </div>
+        <span class="header__link-caption">Корзина</span>
+      </a>
+
+      <div class="modal modal--bounded modal--closed header__cart-modal">
+        <h2 class="modal__header">Корзина товаров</h2>
+
+        @@include("./cart-list/_cart-list.html")
+
+        <div class="header__cart-footer">
+          <p class="header__cart-summary">
+            <span>Всего (2 товара):</span>
+            <span class="header__cart-summary-number">312,56 руб.</span>
+          </p>
+
+          <div class="header__cart-buttons">
+            <button class="link" type="button">Купить в 1 клик</button>
+            <button class="button button--action-primary header__cart-buy-button" type="button">Оформить заказ</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="main-nav" aria-label="Навигация по каталогу">
+    <div class="main-nav__inner">
+      <ul class="main-nav__list main-nav__list--lvl1">
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="page-category-lvl1.html">Кухонная посуда</a>
+          <div class="main-nav__dropdown">
+            <ul class="main-nav__list main-nav__list--lvl2">
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для приготовления</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Наборы посуды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Кастрюли</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Ковши</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сотейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Блинницы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Формы и блюда для запекания</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Противни</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Жаровни и горшочки</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для чая и кофе</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Чайники наплитные</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Гейзерные кофеварки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Турки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Заварочные чайники и кофейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Френч-прессы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термокружки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термосы</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Барбекю</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Решетки-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Барбукю уличный</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Мангалы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Казаны и печи для казанов</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Шампуры</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">По бренду</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">BergHOFF</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Peterhoff</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bohmann</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Fissman</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Maestro</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Zillinger</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Rondell</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Miristar</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">KS-Kotchsysteme</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                </ul>
+              </li>
+            </ul>
+            <a class="banner main-nav__banner" href="#">
+              <p class="banner__image-container main-nav__banner-image-container">
+                <picture>
+                  <source srcset="img/raster/menu-banner-1.webp" type="image/webp">
+                  <img class="banner__image" src="img/raster/menu-banner-1.jpg" loading="lazy" width="400" height="400" alt="Перейти к спецпредложению">
+                </picture>
+              </p>
+              <div class="banner__offer main-nav__banner-offer">
+                <p class="title title--2 banner__title">Подари радость любимой</p>
+                <p class="banner__text">Только к празнику всех влюбленных кастрюльки для вашей половинки по сниженной цене</p>
+                <p class="banner__text">
+                  <strong>Спешите, количество ограничено</strong>
+                </p>
+                <span class="button button--action-secondary">Подробнее</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="page-category-lvl2.html">Столовая посуда</a>
+          <div class="main-nav__dropdown">
+            <ul class="main-nav__list main-nav__list--lvl2">
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">По бренду</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">BergHOFF</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Peterhoff</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bohmann</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Fissman</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Maestro</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Zillinger</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Rondell</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Miristar</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">KS-Kotchsysteme</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для приготовления</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Наборы посуды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Кастрюли</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Ковши</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сотейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Блинницы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Формы и блюда для запекания</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Противни</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Жаровни и горшочки</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для чая и кофе</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Чайники наплитные</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Гейзерные кофеварки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Турки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Заварочные чайники и кофейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Френч-прессы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термокружки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термосы</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Барбекю</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Решетки-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Барбукю уличный</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Мангалы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Казаны и печи для казанов</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Шампуры</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <a class="banner main-nav__banner" href="#">
+              <p class="banner__image-container main-nav__banner-image-container">
+                <picture>
+                  <source srcset="img/raster/menu-banner-2.webp" type="image/webp">
+                  <img class="banner__image" src="img/raster/menu-banner-2.jpg" loading="lazy" width="400" height="400" alt="Перейти к спецпредложению">
+                </picture>
+              </p>
+              <div class="banner__offer main-nav__banner-offer">
+                <p class="title title--2 banner__title">Распродажа посуды</p>
+                <p class="banner__text">Только к празнику всех влюбленных кастрюльки для вашей половинки по сниженной цене</p>
+                <p class="banner__text">
+                  <strong>Скидки до 40%</strong>
+                </p>
+                <span class="link">Посмотреть предложение</span>
+              </div>
+            </a>
+
+          </div>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="page-product.html">Кухонные принадлежности</a>
+          <div class="main-nav__dropdown">
+            <ul class="main-nav__list main-nav__list--lvl2">
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для приготовления</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Наборы посуды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Кастрюли</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Ковши</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сотейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Блинницы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Формы и блюда для запекания</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Противни</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Жаровни и горшочки</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для чая и кофе</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Чайники наплитные</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Гейзерные кофеварки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Турки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Заварочные чайники и кофейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Френч-прессы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термокружки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термосы</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Барбекю</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Решетки-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Барбукю уличный</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Мангалы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Казаны и печи для казанов</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Шампуры</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">По бренду</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">BergHOFF</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Peterhoff</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bohmann</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Fissman</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Maestro</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Zillinger</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Rondell</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Miristar</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">KS-Kotchsysteme</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Bekker</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для чая и кофе</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Чайники наплитные</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Гейзерные кофеварки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Турки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Заварочные чайники и кофейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Френч-прессы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термокружки</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Термосы</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Барбекю</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Решетки-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Барбукю уличный</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Мангалы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Казаны и печи для казанов</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Шампуры</a></li>
+                </ul>
+              </li>
+              <li class="main-nav__item-lvl2">
+                <a class="main-nav__link main-nav__link--lvl2" href="#">Посуда для приготовления</a>
+                <ul class="main-nav__list">
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Наборы посуды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Кастрюли</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Ковши</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сотейники</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Сковороды-гриль</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Блинницы</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Формы и блюда для запекания</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Противни</a></li>
+                  <li><a class="main-nav__link main-nav__link--lvl3" href="#">Жаровни и горшочки</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="page-cart.html">Посуда для хранения</a>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="#">Посуда для бара</a>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1" href="#">Гриль и барбекю</a>
+        </li>
+        <li class="main-nav__item-lvl1">
+          <a class="main-nav__link main-nav__link--lvl1 main-nav__link--sale" href="#">Акции</a>
+        </li>
+      </ul>
+      <div class="main-nav__close-container">
+        <button class="button button--modal-close main-nav__close-button" type="button">
+          <span class="link link--nounderline">Закрыть</span>
+          <svg class="button__close-icon" width="40" height="40">
+            <use href="img/svg/_sprite.svg#icon-close"></use>
+          </svg>
+        </button>
+      </div>
+      <div class="overlay main-nav__overlay"></div>
+    </div>
+  </nav>
+
+</header>

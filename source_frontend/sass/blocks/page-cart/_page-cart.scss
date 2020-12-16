@@ -1,0 +1,41 @@
+@import "preview";
+@import "customer-info";
+@import "delivery";
+@import "payment";
+@import "total";
+
+
+.page-cart__title {
+  margin: $space 0 $space*2;
+}
+
+.page-cart__form {
+  @include media-tablet-landscape-up {
+    display: grid;
+    grid-template-columns: minmax(0%, 2fr) minmax(0%, 3fr);
+    column-gap: $space*6;
+  }
+}
+
+.page-cart__preview {
+  grid-row: span 5;
+
+  @include media-tablet-portrait-down {
+    margin-bottom: $space*3;
+  }
+}
+
+
+.page-cart__section-title {
+  margin: 0 0 $space;
+}
+
+.page-cart__section {
+  margin-bottom: $space*3;
+}
+
+.page-cart__total {
+  @include media-mobile-only {
+    @include full-width;
+  }
+}

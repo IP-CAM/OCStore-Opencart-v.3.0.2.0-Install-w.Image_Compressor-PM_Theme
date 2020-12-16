@@ -1,0 +1,48 @@
+<section class="modal__content modal__content--closed modal-city" id="modalCity" aria-hidden="true">
+  <h2 class="modal__header">Выберите город</h2>
+  <p class="modal__p">Стоимость и срок доставки заказов зависят от вашего местоположения.</p>
+  <p class="modal__p">Укажите город (населенный пункт):</p>
+
+  <form class="modal-city__form" action="#" method="post">
+    <div class="textfield custom-select">
+      <div class="visually-hidden" id="custom-select-status" aria-live="polite"></div>
+      <label class="textfield__input-container">
+        <span class="textfield__trailing-icon textfield__trailing-icon--dropdown"></span>
+        <input class="textfield__input" type="text" aria-describedby="custom-select-info" autocomplete="off">
+        <span class="textfield__label">Ваш город</span>
+      </label>
+
+      <ul class="custom-select__list custom-select__list--closed">
+        <li class="custom-select__item">
+          <strong class="custom-select__item-title">Минск</strong>
+          <br>
+          Столица Республики Беларусь
+        </li>
+        <li class="custom-select__item">
+          <strong class="custom-select__item-title">Гродно</strong>
+          <br>
+          город в Белоруссии, административный центр Гродненской области, а также Гродненского района
+        </li>
+        <li class="custom-select__item">
+          <strong class="custom-select__item-title">Могилев</strong>
+          <br>
+          город на востоке Белоруссии, административный центр
+        </li>
+        <li class="custom-select__item">
+          <strong class="custom-select__item-title">Гомель</strong>
+          <br>
+          административный центр Гомельской области и Гомельского района
+        </li>
+        <li class="custom-select__item">
+          <strong class="custom-select__item-title">Осиповичи</strong>
+          <br>
+          город в Могилёвской области Белоруссии
+        </li>
+      </ul>
+
+      <div class="textfield__help" id="custom-select-info">Быстрый поиск населенного пункта</div>
+    </div>
+    <button class="button button--options-primary modal-city__apply-button" type="submit">Применить</button>
+  </form>
+
+</section>

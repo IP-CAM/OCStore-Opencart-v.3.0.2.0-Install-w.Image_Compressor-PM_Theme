@@ -1,0 +1,106 @@
+@keyframes radio {
+  from {
+    transform: scale(0.6);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes check {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.radiocheck {
+  display: flex;
+}
+
+
+.radiocheck__box {
+  position: relative;
+  margin-right: $space*0.5;
+  flex-shrink: 0;
+  background-color: transparent;
+  border: 2px solid $color__additional-3;
+
+  @include media-tablet-landscape-down {
+    width: $space*1.5;
+    height: $space*1.5;
+  }
+
+  @include media-desktop-up {
+    width: $space*1.25;
+    height: $space*1.25;
+    transform: translateY(1px);
+  }
+
+  &--radio {
+    border-radius: 50%;
+  }
+
+  &--check {
+    border-radius: $controls__border-radius;
+  }
+}
+
+
+.radiocheck__input:hover:not(:disabled) + .radiocheck__box,
+.radiocheck__input:focus:not(:disabled) + .radiocheck__box {
+  border-color: $color__primary;
+}
+
+.radiocheck__input:checked:not(:disabled) + .radiocheck__box {
+  border-color: $color__primary;
+}
+
+.radiocheck__input:active:not(:disabled) + .radiocheck__box {
+  opacity: 0.7;
+}
+
+
+.radiocheck__input:checked + .radiocheck__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "";
+    flex-shrink: 0;
+  }
+}
+
+
+.radiocheck__input:checked + .radiocheck__box--radio::after {
+  width: $space*0.75;
+  height: $space*0.75;
+  border-radius: 50%;
+  background-color: $color__primary;
+  animation: radio 0.1s cubic-bezier(0.4, 0, 0.2, 1) both;
+
+  @include media-desktop-up {
+    width: $space*0.625;
+    height: $space*0.625;
+  }
+}
+
+.radiocheck__input:checked + .radiocheck__box--check::after {
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpolyline points='2,8 6,13 14,3' fill='none' stroke='%2301768b' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: check 0.15s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+.radiocheck__input:disabled + .radiocheck__box,
+.radiocheck__input:disabled ~ .radiocheck__caption {
+  opacity: 0.4;
+}

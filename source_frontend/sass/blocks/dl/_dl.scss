@@ -1,0 +1,28 @@
+.dl {
+  margin: 0;
+
+  &--dotted {
+    padding-left: $space*3;
+  }
+}
+
+.dl__dt {
+  float: left;
+  margin-right: $space*0.5;
+
+  &::after {
+    content: ":";
+  }
+}
+
+.dl--dotted .dl__dt {
+  position: relative;
+
+  &::before {
+    @include link-dot;
+  }
+}
+
+.dl__dd {
+  margin: 0;
+}

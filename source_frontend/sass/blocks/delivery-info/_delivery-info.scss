@@ -1,0 +1,20 @@
+.delivery-info__city-choose {
+  margin-bottom: $space*0.5;
+}
+
+.delivery-info__type {
+  font-weight: 600;
+}
+
+.delivery-info__price--free {
+  color: $color__stock;
+}
+
+
+.delivery-info__showmore-button {
+  margin-left: $space*2;
+
+  &[aria-expanded="true"] {
+    margin-top: $space*0.5;
+  }
+}

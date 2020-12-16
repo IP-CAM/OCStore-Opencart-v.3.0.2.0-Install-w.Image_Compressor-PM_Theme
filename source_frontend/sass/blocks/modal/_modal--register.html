@@ -1,0 +1,26 @@
+<section class="modal__content modal__content--closed modal-register" id="modalRegister" aria-hidden="true">
+  <h2 class="modal__header modal-register__header">Регистрация</h2>
+
+  <form action="#" method="post" autocomplete="on">
+
+    <div class="textfield modal__element">
+      <label class="textfield__input-container">
+        <input class="textfield__input" type="email" required>
+        <span class="textfield__label">Email</span>
+      </label>
+    </div>
+
+    <div class="textfield modal__element">
+      <label class="textfield__input-container">
+        <input class="textfield__input" type="password" required>
+        <span class="textfield__label">Пароль</span>
+      </label>
+    </div>
+
+    <button class="button button--options-primary modal-register__register-button" type="submit">Зарегистрироваться</button>
+
+    <span>Уже есть аккаунт?</span>
+    <button class="link" data-modal="#modalSignIn" data-modal-size="small">Войти</button>
+  </form>
+
+</section>

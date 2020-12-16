@@ -1,0 +1,59 @@
+// admin-content - для контента, наполняемого из админки
+
+.admin-content h1,
+.admin-content h2,
+.admin-content h3,
+.admin-content h4,
+.admin-content h5 {
+  font-weight: 600;
+  color: $color-font__title;
+}
+
+.admin-content h1 {
+  font-size: 3.375rem;
+  line-height: 4rem;
+  margin: 0 0 $space*2;
+  letter-spacing: -0.05em;
+}
+
+.admin-content h2 {
+  font-size: 2.25rem;
+  line-height: 3rem;
+  margin: 0 0 $space*2;
+  letter-spacing: -0.04em;
+}
+
+.admin-content h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin: $space*1.5 0 $space;
+  letter-spacing: -0.02em;
+}
+
+.admin-content h4 {
+  font-size: 1rem;
+  line-height: 2rem;
+  margin: 0 0 $space*0.5;
+}
+
+.admin-content h5 {
+  font-size: 1rem;
+  line-height: 1rem;
+  margin: 0 0 $space*0.5;
+}
+
+.admin-content p,
+.admin-content ul,
+.admin-content ol,
+.admin-content pre,
+.admin-content table,
+.admin-content blockquote {
+  margin: 0 0 $space*0.5;
+}
+
+.admin-content ul ul,
+.admin-content ol ol,
+.admin-content ul ol,
+.admin-content ol ul {
+  margin: 0;
+}

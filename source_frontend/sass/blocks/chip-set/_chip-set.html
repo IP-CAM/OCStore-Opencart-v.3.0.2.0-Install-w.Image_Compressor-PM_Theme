@@ -1,0 +1,105 @@
+@@if (type === "goodsQuantity") {
+
+<span class="chip-set__element chip-set__label">Выводить по</span>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-quantity" value="24" checked>
+  <div class="chip-set__box chip-set__box--base">24</div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-quantity" value="48">
+  <div class="chip-set__box chip-set__box--base">48</div>
+</label>
+
+<span class="chip-set__element chip-set__label">товаров</span>
+
+}
+
+
+@@if (type === "goodsSort") {
+
+<span class="chip-set__element chip-set__label">Сортировать по</span>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-sort" value="1" checked>
+  <div class="chip-set__box chip-set__box--base">популярности</div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-sort" value="2">
+  <div class="chip-set__box chip-set__box--base">цене</div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-sort" value="3">
+  <div class="chip-set__box chip-set__box--base">рейтингу</div>
+</label>
+
+}
+
+
+
+@@if (type === "filterChips") {
+
+<button class="chip-set__element link" type="button">Очистить фильтр</button>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="1" checked>
+  <div class="chip-set__box chip-set__box--filter">
+    <span class="chip-set__box-caption">от 100 до 200 р.</span>
+    <svg class="chip-set__icon" width="24" height="24">
+      <use href="img/svg/_sprite.svg#icon-close"></use>
+    </svg>
+  </div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="2" checked>
+  <div class="chip-set__box chip-set__box--filter">
+    <span class="chip-set__box-caption">BergHOFF</span>
+    <svg class="chip-set__icon" width="24" height="24">
+      <use href="img/svg/_sprite.svg#icon-close"></use>
+    </svg>
+  </div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="3" checked>
+  <div class="chip-set__box chip-set__box--filter">
+    <span class="chip-set__box-caption">Нержавеющая сталь</span>
+    <svg class="chip-set__icon" width="24" height="24">
+      <use href="img/svg/_sprite.svg#icon-close"></use>
+    </svg>
+  </div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="4" checked>
+  <div class="chip-set__box chip-set__box--filter">
+    <span class="chip-set__box-caption">от 3 до 4 предметов</span>
+    <svg class="chip-set__icon" width="24" height="24">
+      <use href="img/svg/_sprite.svg#icon-close"></use>
+    </svg>
+  </div>
+</label>
+
+}
+
+
+
+@@if (type === "productOptions") {
+
+<span class="chip-set__element chip-set__label">Цвет:</span>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-color" value="white" checked>
+  <div class="chip-set__box chip-set__box--base chip-set__box--big">Белый</div>
+</label>
+
+<label class="chip-set__element chip-set__chip">
+  <input class="chip-set__input visually-hidden" type="radio" name="chip-color" value="blue">
+  <div class="chip-set__box chip-set__box--base chip-set__box--big">Синий</div>
+</label>
+
+}

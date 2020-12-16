@@ -1,0 +1,79 @@
+// блок page содержит общие свойства по умолчанию
+// в случае, если свойство отличается используется другой микс
+// пример
+// .page__breadcrumbs { margin-bottom: 1.5rem }
+// на странице товара, если надо другой отступ, вместо .page__breadcrumbs использовать
+// .product__breadcrumbs { margin-bottom: 2rem }
+
+.page__wrapper {
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding: $space var(--page-paddings) $space*8;
+}
+
+.page__section {
+  &:not(:last-child) {
+    margin-bottom: $space*4;
+  }
+}
+
+
+.page__slider {
+  padding-left: var(--page-paddings);
+  padding-right: var(--page-paddings);
+
+  @include media-tablet-landscape-up {
+    --header-width: 14rem;
+    --gap: 2rem;
+
+    padding-top: $space*3;
+    padding-bottom: $space*3;
+    display: grid;
+    grid-template-columns: var(--header-width) calc(100% - var(--header-width) - var(--gap));
+    column-gap: var(--gap);
+  }
+
+  @include media-desktop-up {
+    max-width: calc((#{$max-width} + 100%) / 2);
+    margin-left: auto;
+  }
+}
+
+.page__slider-header {
+  @include media-tablet-landscape-up {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: $space*-1 0;
+    padding: $space;
+    background: linear-gradient(to right bottom, rgba($color__primary, 0.82), $color__primary-dark);
+    border-radius: $controls__border-radius;
+  }
+}
+
+.page__slider-title {
+  @include media-tablet-landscape-up {
+    font-size: 2rem;
+    color: #ffffff;
+    word-break: break-word;
+  }
+}
+
+
+.page__section-title {
+  margin: 0 0 $space*2;
+}
+
+
+.page__title {
+  margin: 0 0 $space*2;
+}
+
+
+.page__breadcrumbs {
+  margin-left: calc(var(--page-paddings) * -1);
+  margin-right: calc(var(--page-paddings) * -1);
+  margin-bottom: $space*1.5;
+}

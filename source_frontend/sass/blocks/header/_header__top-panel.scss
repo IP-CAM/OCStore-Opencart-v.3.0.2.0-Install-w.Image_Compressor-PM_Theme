@@ -1,0 +1,13 @@
+.header__top-panel {
+  width: 100%;
+
+  @include media-tablet-landscape-up {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 var(--page-paddings);
+  }
+
+  @media (min-width: $max-width) {
+    padding: 0 $space*4;
+  }
+}

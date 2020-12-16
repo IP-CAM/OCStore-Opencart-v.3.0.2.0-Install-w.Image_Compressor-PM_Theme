@@ -1,0 +1,147 @@
+@import "details";
+@import "buy-card";
+
+
+.page-product {
+  @include media-tablet-landscape-up {
+    display: grid;
+    // в этом варианте (grid-template) есть возможность
+    // установить высоту row именованной области
+    // этот код:
+    // grid-template-rows: repeat(6, auto) 1fr; такой возможности не дает
+    grid-template:
+      "breadcrumbs breadcrumbs"
+      "header offer"
+      "gallery offer"
+      "details offer"
+      "details buy-card" 1fr
+      "similar similar"
+      "viewed viewed"
+      / 2fr 1fr;
+
+    column-gap: $space*3;
+    align-items: start;
+
+
+    // ! только свойства, относящиеся к grid
+    // для новых появляющихся блоков, что бы блок не
+    // позиционировался в пустоты
+    // & > * {
+    //   grid-column: 1/-1;
+    // }
+
+    &__breadcrumbs {
+      grid-area: breadcrumbs;
+    }
+
+    &__header {
+      grid-area: header;
+    }
+
+    &__gallery {
+      grid-area: gallery;
+    }
+
+    &__offer {
+      grid-area: offer;
+    }
+
+    &__details {
+      grid-area: details;
+    }
+
+    &__buy-card {
+      grid-area: buy-card;
+    }
+
+    &__similar {
+      grid-area: similar;
+    }
+
+    &__viewed {
+      grid-area: viewed;
+    }
+  }
+}
+
+.page-product__breadcrumbs {
+  margin-bottom: $space;
+}
+
+
+.page-product__header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: $space*0.5;
+
+  @include media-tablet-portrait-down {
+    margin-bottom: $space*0.5;
+  }
+
+  @include media-tablet-landscape-up {
+    margin-bottom: $space;
+  }
+}
+
+
+.page-product__title {
+  margin: 0 0 $space;
+  width: 100%;
+}
+
+
+.page-product__code-caption {
+  color: $color-font__secondary;
+
+  &--short {
+    @include media-tablet-portrait-up {
+      display: none;
+    }
+  }
+
+  &--full {
+    @include media-mobile-only {
+      display: none;
+    }
+  }
+}
+
+
+.page-product__code {
+  font-weight: 600;
+}
+
+
+.page-product__gallery {
+  @include media-tablet-portrait-down {
+    padding-bottom: $space;
+  }
+
+  @include media-tablet-landscape-up {
+    padding-bottom: $space*4;
+  }
+}
+
+
+.page-product__offer {
+  @include media-mobile-only {
+    margin-bottom: $space;
+  }
+
+  @include media-tablet-portrait-up {
+    margin-bottom: $space*3;
+  }
+}
+
+.page-product__details {
+  margin-bottom: $space*4;
+  padding-top: $space*2;
+  border-top: 1px solid $color__additional-2;
+}
+
+.page-product__buy-card {
+  @include media-tablet-portrait-down {
+    display: none;
+  }
+}

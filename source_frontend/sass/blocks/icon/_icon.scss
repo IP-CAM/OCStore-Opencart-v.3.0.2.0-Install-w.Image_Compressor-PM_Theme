@@ -1,0 +1,28 @@
+.icon {
+  width: $space * 1.5;
+  height: $space * 1.5;
+}
+
+.icon--2x {
+  width: $space * 2;
+  height: $space * 2;
+}
+
+.icon--stroked {
+  fill: none;
+  stroke: currentColor;
+
+  @media (max-resolution: $retina-dpi),
+    (max-resolution: $retina-dppx) {
+    stroke-width: 2px;
+  }
+
+  @media (min-resolution: $retina-dpi),
+    (min-resolution: $retina-dppx) {
+    stroke-width: 1px;
+  }
+}
+
+.icon--filled {
+  fill: currentColor;
+}

@@ -1,0 +1,142 @@
+.offer__price {
+  margin: 0;
+
+  @include media-tablet-landscape-up {
+    margin-bottom: $space*0.5;
+  }
+}
+
+.offer__short-info {
+  margin-bottom: $space;
+}
+
+.offer__short-info-term {
+  color: $color-font__secondary;
+}
+
+.offer__short-info-value {
+  font-weight: 600;
+}
+
+.offer__short-info-value--instock {
+  color: $color__stock;
+}
+
+.offer__alert {
+  margin-bottom: $space;
+
+  @include media-tablet-portrait-down {
+    @include full-width;
+  }
+}
+
+.offer__delivery-info {
+  margin-bottom: $space;
+}
+
+.offer__options {
+  margin-bottom: $space*1.5;
+}
+
+.offer__buy {
+  --gap: #{$space};
+
+  display: flex;
+  flex-wrap: wrap;
+  margin: calc(var(--gap) * -1) 0 $space calc(var(--gap) * -1);
+
+  &-elem {
+    margin-top: var(--gap);
+    margin-left: var(--gap);
+  }
+
+  &-elem--quantity {
+    flex-grow: 1;
+  }
+
+  &-elem--love {
+    flex-basis: 20%;
+    flex-grow: 1;
+  }
+
+  &-elem--buy {
+    flex-basis: 44%;
+    flex-grow: 3;
+  }
+
+  @include media-mobile-only {
+    &-elem--quantity {
+      flex-basis: 70%;
+    }
+  }
+
+  @include media-tablet-portrait-up {
+    &-elem--quantity {
+      flex-basis: 20%;
+    }
+  }
+}
+
+.offer__button-love {
+  white-space: nowrap;
+
+  @include media-mobile-only {
+    & .button__caption {
+      @include visually-hidden;
+    }
+
+    & .button__icon {
+      padding: 0;
+    }
+  }
+}
+
+
+.offer__price-notification {
+  margin-bottom: $space;
+}
+
+
+.offer__refund {
+  margin: 0 0 $space 0;
+}
+
+
+.offer__refund-dt {
+  float: left;
+  margin-right: $space*0.5;
+}
+
+.offer__refund-dd {
+  font-weight: 700;
+}
+
+
+.offer__share {
+  display: flex;
+  align-items: center;
+}
+
+
+.offer__share-caption {
+  margin: 0 $space 0 0;
+  font: inherit;
+}
+
+.offer__share-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: $space*-0.5;
+  padding: 0;
+  list-style: none;
+}
+
+.offer__share-link {
+  display: block;
+  padding: $space*0.5;
+}
+
+.offer__share-svg {
+  display: block;
+  border-radius: $controls__border-radius;
+}

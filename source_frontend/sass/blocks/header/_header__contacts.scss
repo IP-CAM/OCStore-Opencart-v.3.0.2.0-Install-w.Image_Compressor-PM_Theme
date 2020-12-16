@@ -1,0 +1,118 @@
+.header__contacts {
+  @include media-mobile-only {
+    max-width: $space*3;
+    flex-grow: 1;
+  }
+
+  @include media-tablet-portrait-up {
+    margin-right: auto;
+  }
+}
+
+.header__contacts-modal {
+  left: 50%;
+  transform: translateX(-50%);
+  width: $space * 17;
+  padding-top: $space * 2;
+  padding-bottom: $space * 2;
+}
+
+.header__contacts-button {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  color: inherit;
+
+  @include media-tablet-portrait-down {
+    min-height: $space*3.5;
+  }
+}
+
+.header__contacts-phone {
+  @include media-mobile-only {
+    display: none;
+  }
+
+  @include media-tablet-portrait-up {
+    font-size: $space * 1.15;
+    font-weight: 600;
+    color: $color-font__title-inverted;
+  }
+}
+
+.header__contacts-caption {
+  @include media-tablet-portrait-down {
+    display: none;
+  }
+
+  @include media-tablet-landscape-up {
+    font-size: 0.6875rem;
+    opacity: 0.8;
+  }
+}
+
+.header__contacts-list {
+  margin: 0 0 $space;
+  padding: 0;
+  list-style: none;
+
+  &:last-child {
+    margin: $space 0 0;
+  }
+}
+
+.header__contacts-list--tel .header__contacts-item {
+  text-align: center;
+}
+
+.header__contacts-item:not(:last-child) {
+  margin-bottom: 0.5 * $space;
+}
+
+.header__contacts-item--call-button {
+  margin-top: $space;
+}
+
+.header__call-button {
+  @include media-tablet-portrait-down {
+    width: 100%;
+    border-radius: 2rem;
+  }
+
+  @include media-tablet-landscape-up {
+    display: none;
+  }
+}
+
+.header__contacts-link {
+  display: flex;
+  align-items: center;
+  color: $color-font__base;
+  text-decoration: none;
+}
+
+.header__contacts-list--tel .header__contacts-link {
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.header__contacts-phoneprefix {
+  color: $color-font__secondary;
+}
+
+.header__contacts-phone-inner {
+  font-size: 112.5%;
+}
+
+.header__contacts-icon {
+  margin-right: $space;
+}
+
+.header__contacts-worktime {
+  margin: 0;
+  padding: $space 0;
+  text-align: center;
+  border-top: 1px solid $color__additional-2;
+  border-bottom: 1px solid $color__additional-2;
+}

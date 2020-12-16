@@ -1,0 +1,138 @@
+// @font-face {
+//   font-family: "Montserrat";
+//   font-style: normal;
+//   font-weight: 500;
+//   font-display: swap;
+//   src: local("Montserrat Medium"),
+//     local("Montserrat-Medium"),
+//     url("../fonts/montserrat-v14-latin_cyrillic-500.woff2") format("woff2"),
+//     url("../fonts/montserrat-v14-latin_cyrillic-500.woff") format("woff");
+// }
+
+// @font-face {
+//   font-family: "Montserrat";
+//   font-style: normal;
+//   font-weight: 600;
+//   font-display: swap;
+//   src: local("Montserrat SemiBold"),
+//     local("Montserrat-SemiBold"),
+//     url("../fonts/montserrat-v14-latin_cyrillic-600.woff2") format("woff2"),
+//     url("../fonts/montserrat-v14-latin_cyrillic-600.woff") format("woff");
+// }
+
+
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local(""),
+    url("../fonts/raleway-v18-latin_cyrillic-500.woff2") format("woff2"),
+    url("../fonts/raleway-v18-latin_cyrillic-500.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local(""),
+    url("../fonts/raleway-v18-latin_cyrillic-600.woff2") format("woff2"),
+    url("../fonts/raleway-v18-latin_cyrillic-600.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local(""),
+    url("../fonts/raleway-v18-latin_cyrillic-700.woff2") format("woff2"),
+    url("../fonts/raleway-v18-latin_cyrillic-700.woff") format("woff");
+}
+
+
+html {
+  box-sizing: border-box;
+
+  // @include media-tablet-portrait-down {
+  //   font-size: 87.5%;
+  // }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Raleway", "Arial", sans-serif;
+  // font-size: 1rem;
+  font-size: 87.5%;
+  line-height: $space * 1.5;
+  font-weight: 500;
+  color: $color-font__base;
+  background-color: $color__background;
+  -webkit-tap-highlight-color: transparent;
+  image-rendering: -webkit-optimize-contrast; /* stylelint-disable-line */
+  overflow-x: hidden;
+}
+
+img,
+frame {
+  max-width: 100%;
+  height: auto;
+}
+
+hr,
+.hr {
+  border: 1px solid;
+  margin: -1px 0;
+}
+
+sub,
+sup {
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+:focus {
+  outline: 2px dashed $color__primary;
+  outline-offset: -2px;
+}
+
+
+// html::-webkit-scrollbar {
+//   width: 24px;
+//   height: 24px;
+// }
+
+// html::-webkit-scrollbar-thumb {
+//   background: linear-gradient(180deg, $color__primary, $color__primary-dark);
+//   border-radius: 24px;
+//   box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25), inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+// }
+
+// html::-webkit-scrollbar-track {
+//   // background: linear-gradient(90deg, #201c29, #201c29 1px, #100e17 0, #100e17);
+//   background: rgba(0, 0, 0, 0.1);
+// }

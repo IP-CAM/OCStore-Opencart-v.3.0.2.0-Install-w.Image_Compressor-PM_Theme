@@ -1,0 +1,24 @@
+.often-looking {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.often-looking__label {
+  margin-right: $space;
+  color: $color-font__secondary;
+  font-weight: inherit;
+}
+
+.often-looking__list {
+  display: contents;
+  flex-shrink: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.often-looking__item {
+  &:not(:last-child) {
+    margin-right: $space;
+  }
+}

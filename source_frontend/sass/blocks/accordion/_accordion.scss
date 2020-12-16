@@ -1,0 +1,40 @@
+.accordion__button {
+  all: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: $space*0.75 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.accordion__button-icon {
+  display: block;
+  margin-left: $space*0.5;
+  fill: none;
+  stroke: $color__primary;
+  stroke-width: 2px;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+
+  @include media-tablet-landscape-down {
+    width: $space*2;
+    height: $space*2;
+  }
+
+  @include media-desktop-up {
+    width: $space*1.5;
+    height: $space*1.5;
+  }
+}
+
+.accordion__button[aria-expanded="true"] .accordion__button-icon {
+  transform: rotate(180deg);
+}
+
+.accordion__content-wrapper {
+  overflow: hidden;
+  transition: height 225ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height;
+}

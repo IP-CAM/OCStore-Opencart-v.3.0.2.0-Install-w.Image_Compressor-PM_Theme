@@ -1,0 +1,25 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid $color__additional-2;
+}
+
+
+.table__cation {
+  margin-bottom: $space*0.5;
+  font-weight: 700;
+  text-align: left;
+}
+
+.table__cell {
+  width: 50%;
+  padding: $space*0.5;
+  border-top: 1px solid $color__additional-2;
+}
+
+
+.table__cell--th {
+  font-weight: inherit;
+  text-align: left;
+  background-color: $color__primary-light;
+}

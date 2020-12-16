@@ -1,0 +1,130 @@
+.textfield {
+  // --textfield-bg: #ffffff;
+
+  position: relative;
+}
+
+.textfield__input-container {
+  --vertical-padding: #{$space*0.5};
+  --line-height: #{$space*2};
+  font-size: 1rem;
+  line-height: var(--line-height);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.textfield__trailing-icon {
+  position: absolute;
+  z-index: 1;
+  right: $space*0.5;
+  width: $space*2;
+  height: $space*2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &--error {
+    &::before {
+      content: "⚠";
+      color: $color__error;
+      font-size: 1.5rem;
+    }
+  }
+
+  &--clear {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke-linecap='round' stroke='%23888888' stroke-width='2'%3E%3Cline x1='7' y1='7' x2='17' y2='17' vector-effect='non-scaling-stroke' /%3E%3Cline x1='7' y1='17' x2='17' y2='7' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E");
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &--dropdown {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='%23888888' stroke-width='2'%3E%3Cpolyline points='7,11 12,15 17,11' fill='none' stroke-linejoin='round' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+}
+
+
+.textfield__input {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--vertical-padding) $space calc(var(--vertical-padding) - 2px);
+  font: inherit;
+  color: $color-font__input;
+  // background-color: transparent;
+  background-color: var(--textfield-bg, #ffffff);
+  border: 1px solid $color__additional-2;
+  border-radius: $controls__border-radius;
+  outline: 0;
+  appearance: none;
+
+  // &:focus {
+  //   border-color: $color__primary;
+  //   box-shadow: inset 0 0 0 1px $color__primary;
+  // }
+
+  &:disabled {
+    background-color: $color-font__input-disabled;
+  }
+}
+
+.textfield--active .textfield__input {
+  border-color: $color__primary;
+  box-shadow: inset 0 0 0 1px $color__primary;
+}
+
+.textfield__input-container:hover .textfield__input:not(:disabled) {
+  border-color: $color__primary;
+}
+
+.textfield__trailing-icon + .textfield__input {
+  padding-right: $space*3;
+}
+
+.textfield__label {
+  position: absolute;
+  top: var(--vertical-padding);
+  left: $space;
+  color: $color-font__placeholder;
+  pointer-events: none;
+  transform-origin: left;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.textfield--active .textfield__label,
+.textfield__label--top {
+  padding: 0 $space*0.25;
+  max-width: 100%;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: var(--textfield-bg, #ffffff);
+  border-radius: $controls__border-radius;
+  transform:
+    translateX(-2px)
+    translateY(calc(-1 * (var(--line-height) * 0.5 + var(--vertical-padding))))
+    scale(0.75);
+}
+
+.textfield__input:focus + .textfield__label {
+  color: $color__primary;
+}
+
+.textfield__input:disabled + .textfield__label {
+  color: $color-font__disable;
+}
+
+
+.textfield__help {
+  padding-left: $space;
+  padding-right: $space;
+  line-height: $space*1.25;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: $color-font__secondary;
+}

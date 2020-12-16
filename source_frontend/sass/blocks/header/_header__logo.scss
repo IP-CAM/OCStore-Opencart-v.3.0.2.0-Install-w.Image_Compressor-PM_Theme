@@ -1,0 +1,46 @@
+.header__logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
+
+  @include media-mobile-only {
+    width: 7.5rem;
+    padding-right: 0.5rem;
+  }
+
+  @include media-tablet-portrait-only {
+    width: 8rem;
+  }
+
+  @include media-tablet-portrait-down {
+    min-height: $space*3.5;
+    margin-right: auto;
+  }
+
+  @include media-tablet-landscape-up {
+    width: 9rem;
+  }
+
+  @include hover-effects;
+}
+
+.header__logo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.header__logo-caption {
+  @include media-tablet-portrait-down {
+    @include visually-hidden;
+  }
+
+  @include media-tablet-landscape-up {
+    display: block;
+    font-size: 0.6875rem;
+    line-height: 0.75rem;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,17 @@
+.list {
+  margin: 0;
+  padding: 0 0 0 $space*2;
+  list-style: none;
+}
+
+.list__item {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: $space*0.5;
+  }
+
+  &::before {
+    @include link-dot;
+  }
+}

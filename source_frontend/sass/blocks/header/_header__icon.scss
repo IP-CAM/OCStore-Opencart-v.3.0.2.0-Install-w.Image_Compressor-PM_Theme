@@ -1,0 +1,14 @@
+.header__icon {
+  flex-shrink: 0;
+
+  @include media-tablet-portrait-up {
+    width: $space*2.5;
+    height: $space*2.5;
+  }
+}
+
+.header__icon--tel {
+  @include media-tablet-portrait-up {
+    display: none;
+  }
+}

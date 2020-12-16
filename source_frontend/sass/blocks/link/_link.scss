@@ -1,0 +1,31 @@
+.link {
+  padding: 0;
+  font: inherit;
+  color: $color__primary;
+  transition: color 0.15s;
+  text-decoration: underline;
+  text-underline-position: under;
+  text-decoration-skip-ink: none;
+  border: none;
+  background: 0;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $color__primary-dark;
+    text-decoration: none;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
+
+.link--nounderline {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}

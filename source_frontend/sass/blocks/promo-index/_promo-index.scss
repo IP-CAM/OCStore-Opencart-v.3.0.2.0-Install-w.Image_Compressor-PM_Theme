@@ -1,0 +1,108 @@
+.promo-index {
+  @include media-tablet-portrait-up {
+    display: grid;
+    gap: $space*0.5;
+  }
+
+  @include media-tablet-portrait-down {
+    padding-left: 0;
+    padding-right: 0;
+
+    @include full-width;
+  }
+
+  @include media-tablet-portrait-only {
+    row-gap: $space*2;
+  }
+
+  @media (min-width: $tablet-portrait) and (max-width: $tablet-landscape-only) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "promo1 promo2"
+      "promo3 promo4";
+  }
+
+  @include media-desktop-up {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "promo1 promo1 promo2 promo4"
+      "promo1 promo1 promo3 promo4";
+  }
+}
+
+.promo-index__banner {
+  @include media-mobile-only {
+    &:not(:last-child) {
+      margin-bottom: $space*2;
+    }
+  }
+}
+
+.promo-index__banner1 {
+  @include media-tablet-portrait-up {
+    grid-area: promo1;
+  }
+
+  @include media-tablet-landscape-down {
+    --image-height: 300px;
+  }
+
+  @include media-desktop-up {
+    --image-height: 500px;
+  }
+}
+
+.promo-index__banner2 {
+  @include media-tablet-portrait-up {
+    grid-area: promo2;
+  }
+
+  @include media-tablet-landscape-down {
+    --image-height: 300px;
+  }
+
+  @include media-desktop-up {
+    --image-height: calc(250px - #{$space*0.25});
+  }
+}
+
+.promo-index__banner3 {
+  @include media-tablet-portrait-up {
+    grid-area: promo3;
+  }
+
+  @include media-tablet-landscape-down {
+    --image-height: 300px;
+  }
+
+  @include media-desktop-up {
+    --image-height: calc(250px - #{$space*0.25});
+  }
+}
+
+.promo-index__banner4 {
+  @include media-tablet-portrait-up {
+    grid-area: promo4;
+  }
+
+  @include media-tablet-landscape-down {
+    --image-height: 300px;
+  }
+
+  @include media-desktop-up {
+    --image-height: 500px;
+  }
+}
+
+.promo-index__banner-offer {
+  @include media-mobile-only {
+    max-width: none;
+    padding: var(--page-paddings);
+    text-align: center;
+  }
+
+  @include media-tablet-portrait-down {
+    position: static;
+    transform: none;
+  }
+}

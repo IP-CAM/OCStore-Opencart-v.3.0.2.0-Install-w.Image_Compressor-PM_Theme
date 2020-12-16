@@ -1,0 +1,17 @@
+.header__link {
+  min-height: $space*3.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-font__base-inverted;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $color-font__title-inverted;
+  }
+
+  &:focus {
+    outline: 2px dashed $color-font__title-inverted;
+  }
+}

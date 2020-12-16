@@ -1,0 +1,9 @@
+.alert {
+  padding: $space;
+  background-color: $color__additional-1-1;
+}
+
+
+.alert--info {
+  border-left: $space*0.5 solid $color__secondary;
+}

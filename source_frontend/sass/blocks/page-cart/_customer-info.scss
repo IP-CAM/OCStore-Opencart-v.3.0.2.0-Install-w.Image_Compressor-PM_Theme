@@ -1,0 +1,17 @@
+.customer-info__header {
+  display: grid;
+  grid-template-columns: minmax(0%, max-content) min-content;
+  column-gap: $space;
+  align-items: baseline;
+  margin-bottom: $space;
+}
+
+.customer-info__title {
+  margin: 0;
+}
+
+.customer-info__textfield {
+  &:not(:last-child) {
+    margin-bottom: $space;
+  }
+}

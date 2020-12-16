@@ -1,0 +1,17 @@
+.delivery__price {
+  font-weight: 600;
+
+  &--free {
+    color: $color__stock;
+  }
+}
+
+
+.delivery__term {
+  font-weight: 700;
+}
+
+
+.delivery__adress-field {
+  margin-top: $space;
+}

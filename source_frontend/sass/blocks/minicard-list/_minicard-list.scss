@@ -1,0 +1,65 @@
+.minicard-list__product-control {
+  margin-bottom: $space*1.5;
+}
+
+.minicard-list__list {
+  --row-gap: #{$space*2};
+
+  display: grid;
+  row-gap: var(--row-gap);
+  margin: 0 $space*-0.5;
+  padding: $space 0 0;
+  list-style: none;
+  border-top: 1px solid $color__additional-2;
+  // перекрытие border-bottom в нижем ряду items
+  padding-bottom: calc((var(--row-gap) / 2) - 1px);
+  border-bottom: 1px solid $color__background;
+}
+
+
+.minicard-list__list--grid {
+  @include media-mobile-only {
+    grid-template-columns: repeat(2, minmax(0%, 1fr));
+  }
+
+  @include media-tablet-portrait-up {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
+}
+
+
+.minicard-list__list--list {
+  grid-template-columns: 100%;
+}
+
+
+.minicard-list__item {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: $space*0.5;
+    right: $space*0.5;
+    z-index: -1;
+    bottom: calc(var(--row-gap) / -2);
+
+    height: 1px;
+    border-bottom: 1px dashed $color__additional-2;
+  }
+}
+
+
+.minicard-list__item-inner {
+  height: 100%;
+  border-radius: $cards__border-radius;
+  overflow: hidden;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover,
+  &:focus-within {
+    // transform: translateY(-5px);
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}

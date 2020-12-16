@@ -1,0 +1,35 @@
+.header__top-banner {
+  margin: 0;
+  padding-top: $space * 0.5;
+  padding-bottom: $space * 0.5;
+  color: $color-font__title-inverted;
+  background-color: $color__primary;
+
+  @include media-tablet-portrait-down {
+    width: 100%;
+    padding-left: var(--page-paddings);
+    padding-right: var(--page-paddings);
+  }
+
+  @include media-tablet-portrait-up {
+    font-size: 1rem;
+  }
+
+  @include media-tablet-landscape-up {
+    position: relative;
+    flex-grow: 1;
+    margin-right: $space * 3;
+    padding-right: $space;
+    border-bottom-right-radius: $space * 2;
+
+    &::before {
+      content: "";
+      position: absolute;
+      right: 100%;
+      top: 0;
+      bottom: 0;
+      width: 100vw;
+      background-color: inherit;
+    }
+  }
+}

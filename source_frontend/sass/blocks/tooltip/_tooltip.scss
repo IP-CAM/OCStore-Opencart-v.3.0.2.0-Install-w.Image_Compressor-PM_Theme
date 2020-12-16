@@ -1,0 +1,73 @@
+// * элемент [data-tooltip] считаем блоком tooltip по БЭМ
+
+@keyframes showTooltip {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+[data-tooltip] {
+  position: relative;
+}
+
+.tooltip--opened {
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    animation: showTooltip 0.15s ease-out both;
+  }
+}
+
+.tooltip--top {
+  &::before {
+    bottom: 100%;
+    border-top: 10px solid #ffffff;
+  }
+}
+
+.tooltip--bottom {
+  &::before {
+    top: calc(100% + 4px);
+    border-bottom: 10px solid #ffffff;
+  }
+}
+
+
+.tooltip__card {
+  position: absolute;
+  z-index: 1;
+  bottom: calc(100% + 8px);
+  padding: $space;
+  font-size: 0.75rem;
+  color: $color-font__base;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 3px 6px 0 $color__shadows;
+  transition: transform 0.15s ease;
+  animation: showTooltip 0.15s ease-out both;
+
+  @include media-mobile-only {
+    width: 320px;
+  }
+
+  @include media-tablet-portrait-up {
+    width: 440px;
+  }
+}

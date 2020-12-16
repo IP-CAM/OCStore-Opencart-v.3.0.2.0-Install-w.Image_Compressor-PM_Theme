@@ -1,0 +1,17 @@
+.header__search-form {
+  @include media-tablet-portrait-down {
+    order: 1;
+    width: 100%;
+    margin: 0 var(--page-paddings);
+  }
+
+  @include media-tablet-landscape-up {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: $max-width) {
+    width: 46%;
+  }
+}

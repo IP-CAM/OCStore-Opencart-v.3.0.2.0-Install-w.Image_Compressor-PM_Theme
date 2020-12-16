@@ -1,0 +1,53 @@
+// Эффекты наведения, непрорисованные в дизайне
+@mixin hover-effects {
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+@mixin hover-effects--light {
+  &:hover,
+  &:focus {
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 0.6;
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+@mixin full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+@mixin link-dot {
+  content: "";
+  position: absolute;
+  top: 0.64em;
+  left: $space*-1;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: $color__primary;
+}

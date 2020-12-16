@@ -1,0 +1,25 @@
+.modal-signin__header {
+  margin-bottom: $space*1.5;
+}
+
+.modal-signin__button-container {
+  display: flex;
+  align-items: center;
+}
+
+.modal-signin__signin-button {
+  width: 100%;
+  margin-top: $space*1.5;
+  margin-bottom: $space;
+}
+
+.modal-signin__forgot-button {
+  margin-bottom: $space;
+}
+
+.modal-signin__socials-login {
+  margin-bottom: $space;
+  padding: $space*0.5 0;
+  border-top: 1px solid $color__additional-2;
+  border-bottom: 1px solid $color__additional-2;
+}

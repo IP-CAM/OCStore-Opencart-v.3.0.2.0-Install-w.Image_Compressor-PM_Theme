@@ -1,0 +1,41 @@
+.review-write__title {
+  margin: 0 0 $space;
+}
+
+
+.review-write__form {
+  @include media-tablet-portrait-up {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: $space;
+  }
+}
+
+
+.review-write__elem {
+  margin-bottom: $space;
+
+  &:last-of-type {
+    margin-bottom: $space*2;
+  }
+
+  @include media-tablet-portrait-up {
+    grid-column: span 2;
+
+    &--half {
+      grid-column: span 1;
+    }
+  }
+}
+
+
+.review-write__submit-button {
+  width: 100%;
+}
+
+// подключаемый через js - accordion класс
+// для дополнительного отступа для outline
+.review-write__extra-space {
+  padding: 8px;
+  margin: -8px;
+}

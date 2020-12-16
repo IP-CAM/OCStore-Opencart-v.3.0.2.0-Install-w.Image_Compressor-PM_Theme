@@ -1,0 +1,120 @@
+.category-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include media-tablet-portrait-down {
+    grid-template-columns: repeat(auto-fit, minmax(212px, 1fr));
+    row-gap: $space*0.5;
+    column-gap: $space;
+  }
+
+  @include media-tablet-landscape-up {
+    display: flex;
+    flex-wrap: wrap;
+    margin: $space*-0.25 0 0 $space*-0.25;
+  }
+}
+
+.category-list__item {
+  @include media-tablet-landscape-up {
+    flex-basis: $space*9;
+    flex-grow: 1;
+    margin: $space*0.25 0 0 $space*0.25;
+  }
+}
+
+.category-list__link {
+  display: block;
+  height: 100%;
+  color: $color-font__subtitle1;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $color__primary;
+  }
+}
+
+.category-list__figure {
+  position: relative;
+  margin: 0;
+  border-radius: $cards__border-radius;
+  overflow: hidden;
+
+  @include media-tablet-portrait-down {
+    display: flex;
+    align-items: center;
+    padding: $space*0.25 0;
+    border: 1px solid $color__additional-2;
+
+    &::after {
+      content: "»";
+      width: $space*3;
+      margin-left: auto;
+      flex-shrink: 0;
+      color: $color__additional-4;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+
+  @include media-tablet-landscape-up {
+    padding: $space;
+    height: 100%;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $color__image-overlay;
+  }
+}
+
+.category-list__image-container {
+  @include media-tablet-portrait-down {
+    width: $space*3;
+    height: $space*3;
+    margin: $space*-0.25 $space*0.5 $space*-0.25 0;
+    padding: 4px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  @include media-tablet-landscape-up {
+    width: $space*8;
+    height: $space*8;
+    margin: 0 auto $space;
+  }
+}
+
+.category-list__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  will-change: transform;
+}
+
+.category-list__link:hover .category-list__image,
+.category-list__link:focus .category-list__image {
+  @include media-tablet-landscape-up {
+    transform: translateY(-4px);
+    transition: 0.15s;
+  }
+}
+
+.category-list__name {
+  font-weight: 600;
+  word-break: break-word;
+
+  @include media-tablet-landscape-up {
+    text-align: center;
+  }
+}

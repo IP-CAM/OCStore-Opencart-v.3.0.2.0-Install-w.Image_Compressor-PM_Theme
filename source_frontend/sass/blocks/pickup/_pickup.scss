@@ -1,0 +1,50 @@
+.pickup {
+  // для нормального ресайза карты, если тип элемента fieldset
+  min-width: 0;
+  margin: 0;
+  padding: $space 0 0;
+  border: none;
+}
+
+
+.pickup__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+.pickup__item {
+  &:not(:last-child) {
+    margin-bottom: $space*0.5;
+  }
+}
+
+
+.pickup__term {
+  color: $color-font__secondary;
+}
+
+.pickup__description {
+  font-weight: 600;
+}
+
+.pickup__info {
+  margin-top: $space*0.25;
+}
+
+
+.pickup__radio[data-checked="false"] + .pickup__info {
+  display: none;
+}
+
+
+.pickup__map {
+  height: 320px;
+  margin-top: $space*2;
+  overflow: hidden;
+
+  @include media-tablet-portrait-down {
+    @include full-width;
+  }
+}

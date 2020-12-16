@@ -1,0 +1,23 @@
+.header__main-panel {
+  display: flex;
+  padding-bottom: $space;
+
+  & *:focus {
+    outline: 2px dashed #ffffff;
+    outline-offset: 1px;
+  }
+
+  @include media-tablet-portrait-down {
+    flex-wrap: wrap;
+  }
+
+  @include media-tablet-landscape-up {
+    align-items: center;
+    padding: $space var(--page-paddings);
+  }
+
+  @media (min-width: $max-width) {
+    padding-left: $space*4;
+    padding-right: $space*4;
+  }
+}

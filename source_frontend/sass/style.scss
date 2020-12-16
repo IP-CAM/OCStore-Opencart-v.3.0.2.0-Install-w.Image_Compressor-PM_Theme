@@ -1,0 +1,70 @@
+// Базовые стили
+@import "media";
+@import "variables";
+@import "mixins";
+@import "global";
+@import "service"; // служебные блоки (visually-hidden и т.д.)
+
+// Компоненты
+@import "blocks/title/title";
+@import "blocks/admin-content/admin-content";
+@import "blocks/button/button";
+@import "blocks/icon/icon";
+@import "blocks/image-container/image-container";
+@import "blocks/link/link";
+@import "blocks/list/list";
+@import "blocks/dropdown-menu/dropdown-menu";
+@import "blocks/quantity-input/quantity-input";
+@import "blocks/textfield/textfield";
+@import "blocks/custom-select/custom-select";
+@import "blocks/socials-login/socials-login";
+@import "blocks/modal/modal";
+@import "blocks/overlay/overlay";
+@import "blocks/stars/stars";
+@import "blocks/tooltip/tooltip";
+@import "blocks/city-choose/city-choose";
+@import "blocks/chip-set/chip-set";
+@import "blocks/radiocheck/radiocheck";
+@import "blocks/accordion/accordion";
+@import "blocks/showmore/showmore";
+@import "blocks/slider/slider";
+@import "blocks/table/table";
+@import "blocks/dl/dl";
+@import "blocks/radio-tabs/radio-tabs";
+
+// Крупные компоненты
+@import "blocks/breadcrumbs/breadcrumbs";
+@import "blocks/search-form/search-form";
+@import "blocks/category-list/category-list";
+@import "blocks/catalog1lvl/catalog1lvl";
+@import "blocks/minicard/minicard";
+@import "blocks/product-stickers/product-stickers";
+@import "blocks/price/price";
+@import "blocks/switch-view/switch-view";
+@import "blocks/pagination/pagination";
+@import "blocks/minicard-list/minicard-list";
+@import "blocks/alert/alert";
+
+// Модули
+@import "blocks/page/page";
+@import "blocks/main/main";
+@import "blocks/banner/banner";
+@import "blocks/header/header";
+@import "blocks/main-nav/main-nav";
+@import "blocks/promo-index/promo-index";
+@import "blocks/footer/footer";
+@import "blocks/page-goods/page-goods";
+@import "blocks/page-product/page-product";
+@import "blocks/offer/offer";
+@import "blocks/cart-list/cart-list";
+@import "blocks/often-looking/often-looking";
+@import "blocks/product-control/product-control";
+@import "blocks/filter/filter";
+@import "blocks/delivery-info/delivery-info";
+@import "blocks/reviews/reviews";
+@import "blocks/review-write/review-write";
+@import "blocks/page-cart/page-cart";
+@import "blocks/pickup/pickup";
+
+// стили для переопределения остальных
+@import "blocks/ripple/ripple";

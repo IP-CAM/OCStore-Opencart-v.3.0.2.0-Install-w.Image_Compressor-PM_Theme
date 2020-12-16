@@ -1,0 +1,22 @@
+.details__title {
+  margin: 0 0 $space*2 0;
+}
+
+
+.details__section {
+  &:not(:last-child) {
+    margin-bottom: $space*2;
+  }
+}
+
+
+.details__section-title {
+  margin: 0 0 $space 0;
+}
+
+
+.details__table {
+  &:not(:last-child) {
+    margin-bottom: $space;
+  }
+}

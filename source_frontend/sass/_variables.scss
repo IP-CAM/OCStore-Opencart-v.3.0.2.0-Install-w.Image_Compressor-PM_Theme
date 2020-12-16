@@ -1,0 +1,79 @@
+$space: 1rem;
+$page-paddings-mobile: 1rem;
+$page-paddings-other: 2rem;
+
+$max-width: 1456px;
+
+$xs-column-count: 4;
+$sm-column-count: 6;
+$md-column-count: 12;
+$lg-column-count: 12;
+
+$xs-column-width: 100% / $xs-column-count;
+$sm-column-width: 100% / $sm-column-count;
+$md-column-width: 100% / $md-column-count;
+$lg-column-width: 100% / $lg-column-count;
+
+$retina-dpi: 144dpi;
+$retina-dppx: 1.5dppx;
+
+$color__background: #ffffff;
+$color__primary: #01768b;
+$color__primary-dark: #006475;
+$color__primary-light: #ebf4f6;
+$color__secondary: #ffd343;
+$color__secondary-bright: #f4b606;
+$color__secondary-dark: #c8a200;
+$color__third: #233240;
+$color__additional-1: #faf9f7; //бэкграунд некоторых элементов
+$color__additional-1-1: #f5f5f5;
+$color__additional-2: #e0e0e0; // бордеры
+$color__additional-3: #adadad; //контролы
+$color__additional-4: #888888; // бордеры
+$color__shadows: rgba(0, 0, 0, 0.16);
+$color__sale: #c91f24;
+$color__stock: #005a09;
+$color__image-overlay: rgba(0, 0, 0, 0.04);
+$color__modal-overlay: rgba(34, 25, 36, 0.5);
+$color__banner-offer: hsla(0, 0%, 100%, 0.7);
+$color__error: #df000f;
+$color__disabled: rgba(0, 0, 0, 0.12);
+
+$color-font__base: #505050;
+$color-font__base-inverted: #cccccc;
+$color-font__title: #4c4c4c;
+$color-font__title-inverted: #ffffff;
+$color-font__subtitle1: rgba(0, 0, 0, 0.7);
+$color-font__subtitle1-hover: $color__primary;
+$color-font__subtitle1-inverted: #ffffff;
+$color-font__subtitle2: #191919;
+$color-font__subtitle2-hover: $color__primary;
+$color-font__secondary: #757575;
+$color-font__secondary-inverted: rgba(255, 255, 255, 0.54);
+$color-font__button: #191919;
+$color-font__button-inverted: #ffffff;
+$color-font__input: #191919;
+$color-font__input-disabled: #eeeeee;
+$color-font__input-help: #757575;
+$color-font__placeholder: #666666;
+$color-font__link: $color__primary;
+$color-font__link-inverted: #cccccc;
+$color-font__link-inverted-hover: #ffffff;
+$color-font__price: #4c4c4c;
+$color-font__sale: #c91f24;
+$color-font__disable: rgba(0, 0, 0, 0.38);
+
+
+$controls__border-radius: 4px;
+$cards__border-radius: 8px;
+
+
+:root {
+  @include media-mobile-only {
+    --page-paddings: #{$page-paddings-mobile};
+  }
+
+  @include media-tablet-portrait-up {
+    --page-paddings: #{$page-paddings-other};
+  }
+}

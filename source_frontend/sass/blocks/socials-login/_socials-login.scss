@@ -1,0 +1,41 @@
+.socials-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.socials-login__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 $space*-0.5 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.socials-login__link {
+  display: flex;
+  align-items: center;
+  padding: $space*0.5;
+
+  &:hover,
+  &:focus {
+    filter: brightness(1.2);
+  }
+}
+
+.socials-login__icon {
+  border-radius: 2px;
+}
+
+.socials-login__icon--vk {
+  background-color: #48729e;
+}
+
+.socials-login__icon--fb {
+  background-color: #3c5a98;
+}
+
+.socials-login__icon--ok {
+  background-color: #eb722e;
+}

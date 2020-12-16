@@ -1,0 +1,58 @@
+.banner {
+  // высота изображения,
+  // подразумевается, что она будет меняться миксом (block__another-block)
+  --image-height: auto;
+
+  position: relative;
+  display: block;
+  color: $color-font__base;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+
+.banner__image-container {
+  margin: 0;
+  height: var(--image-height);
+}
+
+
+.banner__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner__offer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  // width: 60%;
+  min-width: 300px;
+  max-width: 420px;
+  max-height: 100%;
+  padding: $space*1.5;
+  background-color: $color__banner-offer;
+  overflow: hidden;
+
+  &--center {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+
+.banner__title {
+  margin: 0 0 $space;
+}
+
+.banner__text {
+  margin: 0 0 $space;
+}
+
+.banner__call2action-text {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}

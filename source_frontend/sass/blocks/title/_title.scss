@@ -1,0 +1,60 @@
+.title {
+  color: $color-font__title;
+}
+
+.title--1 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+
+  @include media-mobile-only {
+    font-size: 2.75rem;
+    line-height: 3rem;
+  }
+
+  @include media-tablet-portrait-up {
+    font-size: 3.375rem;
+    line-height: 3.5rem;
+  }
+}
+
+.title--2 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+
+  @include media-mobile-only {
+    font-size: 1.75rem;
+    line-height: 2rem;
+  }
+
+  @include media-tablet-portrait-up {
+    font-size: 2.25rem;
+    line-height: 3rem;
+  }
+}
+
+.title--3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+
+  @include media-mobile-only {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+
+  @include media-tablet-portrait-up {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+.title--4 {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+}
+
+.title--5 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1rem;
+}

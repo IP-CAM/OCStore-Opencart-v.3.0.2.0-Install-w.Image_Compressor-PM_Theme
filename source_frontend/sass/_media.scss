@@ -1,0 +1,144 @@
+
+$mobile: 0;
+$mobile-only: 607px;
+$tablet-portrait: 608px;
+$tablet-portrait-only: 979px;
+$tablet-landscape: 980px;
+$tablet-landscape-only: 1279px;
+$desktop: 1280px;
+
+
+@mixin media-mobile-only {
+  @media (max-width: $mobile-only) {
+    @content;
+  }
+}
+
+@mixin media-tablet-portrait-only {
+  @media (min-width: $tablet-portrait) and (max-width: $tablet-portrait-only) {
+    @content;
+  }
+}
+
+@mixin media-tablet-portrait-up {
+  @media (min-width: $tablet-portrait) {
+    @content;
+  }
+}
+
+@mixin media-tablet-portrait-down {
+  @media (max-width: $tablet-portrait-only) {
+    @content;
+  }
+}
+
+@mixin media-tablet-landscape-only {
+  @media (min-width: $tablet-landscape) and (max-width: $tablet-landscape-only) {
+    @content;
+  }
+}
+
+@mixin media-tablet-landscape-up {
+  @media (min-width: $tablet-landscape) {
+    @content;
+  }
+}
+
+@mixin media-tablet-landscape-down {
+  @media (max-width: $tablet-landscape-only) {
+    @content;
+  }
+}
+
+@mixin media-desktop-up {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}
+
+
+// $grid-breakpoints: (
+//   mobile: $mobile,
+//   tablet-portrait: $tablet-portrait,
+//   tablet-landscape: $tablet-landscape,
+//   desktop: $desktop
+//   ) !default;
+
+// @function breakpoint-next($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+//   $n: index($breakpoint-names, $name);
+//   @return if($n != null and $n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
+// }
+
+// @function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+//   $min: map-get($breakpoints, $name);
+//   @return if($min != 0, $min, null);
+// }
+
+// @function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+//   $next: breakpoint-next($name, $breakpoints);
+//   @return if($next, breakpoint-min($next, $breakpoints) - .02, null);
+// }
+
+// @function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+//   @return if(breakpoint-min($name, $breakpoints) == null, "", "-#{$name}");
+// }
+
+// @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+//   $min: breakpoint-min($name, $breakpoints);
+//   @if $min {
+//     @media (min-width: $min) {
+//       @content;
+//     }
+//   } @else {
+//     @content;
+//   }
+// }
+
+// @mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+//   $max: breakpoint-max($name, $breakpoints);
+//   @if $max {
+//     @media (max-width: $max) {
+//       @content;
+//     }
+//   } @else {
+//     @content;
+//   }
+// }
+
+// @mixin media-breakpoint-between($lower, $upper, $breakpoints: $grid-breakpoints) {
+//   $min: breakpoint-min($lower, $breakpoints);
+//   $max: breakpoint-max($upper, $breakpoints);
+
+//   @if $min != null and $max != null {
+//     @media (min-width: $min) and (max-width: $max) {
+//       @content;
+//     }
+//   } @else if $max == null {
+//     @include media-breakpoint-up($lower, $breakpoints) {
+//       @content;
+//     }
+//   } @else if $min == null {
+//     @include media-breakpoint-down($upper, $breakpoints) {
+//       @content;
+//     }
+//   }
+// }
+
+// @mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
+//   $min: breakpoint-min($name, $breakpoints);
+//   $max: breakpoint-max($name, $breakpoints);
+
+//   @if $min != null and $max != null {
+//     @media (min-width: $min) and (max-width: $max) {
+//       @content;
+//     }
+//   } @else if $max == null {
+//     @include media-breakpoint-up($name, $breakpoints) {
+//       @content;
+//     }
+//   } @else if $min == null {
+//     @include media-breakpoint-down($name, $breakpoints) {
+//       @content;
+//     }
+//   }
+// }

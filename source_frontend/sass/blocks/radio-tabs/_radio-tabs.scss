@@ -1,0 +1,39 @@
+.radio-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0; // для нормального ресайза карты, если тип элемента fieldset
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.radio-tabs__input:not(:checked):nth-of-type(1) ~ .radio-tabs__content:nth-of-type(1),
+.radio-tabs__input:not(:checked):nth-of-type(2) ~ .radio-tabs__content:nth-of-type(2),
+.radio-tabs__input:not(:checked):nth-of-type(3) ~ .radio-tabs__content:nth-of-type(3), {
+  display: none;
+}
+
+.radio-tabs__content {
+  width: 100%;
+  padding-top: $space;
+}
+
+.radio-tabs__label {
+  flex-grow: 1;
+  flex-basis: 0;
+  padding: $space*0.75;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: 1px solid $color__additional-2;
+}
+
+.radio-tabs__input:checked + .radio-tabs__label {
+  color: $color__primary;
+  box-shadow: inset 0 -3px 0 0 $color__primary;
+}
+
+.radio-tabs__input:not(:checked):hover + .radio-tabs__label {
+  background-color: $color__additional-1-1;
+  cursor: pointer;
+}

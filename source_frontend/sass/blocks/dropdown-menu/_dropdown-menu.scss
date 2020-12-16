@@ -1,0 +1,24 @@
+.dropdown-menu {
+  margin: 0;
+  padding: $space * 0.5 0;
+  list-style: none;
+  border-bottom: 1px solid $color__additional-2;
+}
+
+.dropdown-menu__link {
+  display: flex;
+  align-items: center;
+  padding: 0.75 * $space 2 * $space;
+  color: $color-font__base;
+  text-decoration: none;
+  transition: background-color 0.1s;
+
+  &:hover,
+  &:focus {
+    background-color: $color__primary-light;
+  }
+
+  &:active {
+    background-color: darken($color__primary-light, 5%);
+  }
+}

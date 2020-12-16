@@ -1,0 +1,160 @@
+.page-goods {
+  @include media-tablet-landscape-up {
+    display: grid;
+  }
+
+  @include media-tablet-landscape-only {
+    grid-template-columns: 100%;
+
+    &__promo {
+      grid-row: 2;
+    }
+  }
+
+  @include media-desktop-up {
+    // в этом варианте (grid-template) есть возможность
+    // установить высоту row именованной области
+    // этот код:
+    // grid-template-rows: repeat(6, auto) 1fr; такой возможности не дает
+    grid-template:
+      "breadcrumbs breadcrumbs"
+      "promo promo"
+      "header header"
+      "filter category-list"
+      "filter often-looking-top"
+      "filter minicardList" 1fr
+      ". often-looking-bottom"
+      "brands brands"
+      "admin-content admin-content"
+      / #{$space*19} 1fr;
+
+    column-gap: $space*2;
+    align-items: start;
+
+
+    // ! только свойства, относящиеся к grid
+    // для новых появляющихся блоков, что бы блок не
+    // позиционировался в пустоты
+    // & > * {
+    //   grid-column: 1/-1;
+    // }
+
+    &__breadcrumbs {
+      grid-area: breadcrumbs;
+    }
+
+    &__title-container {
+      grid-area: header;
+    }
+
+    &__category-list {
+      grid-area: category-list;
+    }
+
+    &__often-looking {
+      grid-area: often-looking-top;
+    }
+
+    &__minicard-list {
+      grid-area: minicardList;
+    }
+
+    &__often-looking-bottom {
+      grid-area: often-looking-bottom;
+    }
+
+    &__brands {
+      grid-area: brands;
+    }
+
+    &__admin-content {
+      grid-area: admin-content;
+    }
+
+    &__promo {
+      grid-area: promo;
+    }
+
+    &__filter {
+      grid-area: filter;
+    }
+  }
+}
+
+
+.page-goods__title-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin: 0 0 $space*2 $space*-1;
+
+  @include media-mobile-only {
+    margin-bottom: $space*1.5;
+  }
+}
+
+.page-goods__title {
+  margin: 0 0 0 $space;
+}
+
+.page-goods__subtitle {
+  margin-left: $space;
+  color: $color-font__secondary;
+}
+
+
+.page-goods__category-list {
+  margin-bottom: $space*1.5;
+}
+
+
+.page-goods__often-looking {
+  margin-bottom: $space*1.5;
+}
+
+
+.page-goods__minicard-list {
+  margin-bottom: $space*3;
+}
+
+
+.page-goods__often-looking-bottom {
+  margin-bottom: $space*3;
+}
+
+.page-goods__brands {
+  margin-bottom: $space*3;
+}
+
+.page-goods__admin-content {
+  @include media-mobile-only {
+    margin-bottom: $space*3;
+  }
+}
+
+.page-goods__promo {
+  @include media-tablet-landscape-up {
+    margin-top: $space;
+    margin-bottom: $space*3;
+  }
+}
+
+.page-goods__banner {
+  --image-height: 240px;
+}
+
+.page-goods__banner-offer {
+  @include media-mobile-only {
+    position: static;
+    transform: none;
+    max-width: none;
+    padding: $space 0;
+    text-align: center;
+  }
+}
+
+.page-goods__filter {
+  @include media-tablet-landscape-down {
+    display: none;
+  }
+}

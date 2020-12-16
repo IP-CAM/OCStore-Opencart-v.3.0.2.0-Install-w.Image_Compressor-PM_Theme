@@ -1,0 +1,32 @@
+.header {
+  position: relative;
+  z-index: 1;
+  color: $color-font__base-inverted;
+  background-color: $color__third;
+  background-image: url("../img/svg/background.svg");
+  transition: all 0.4s ease-in;
+
+  @include media-tablet-portrait-down {
+    background-size: 900px;
+    background-position: 0 236px;
+  }
+
+  @include media-tablet-landscape-up {
+    background-size: 1300px;
+    background-position: 0 -40px;
+  }
+}
+
+@import "header__icon";
+@import "header__link";
+@import "header__top-panel";
+@import "header__top-banner";
+@import "header__top-menu";
+@import "header__main-panel";
+@import "header__burger";
+@import "header__logo";
+@import "header__contacts";
+@import "header__wishlist";
+@import "header__user";
+@import "header__cart";
+@import "header__search-form";

@@ -1,0 +1,33 @@
+.price {
+  word-break: break-word;
+}
+
+.price__current {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: -0.02em;
+  color: $color-font__title;
+  white-space: nowrap;
+
+  &--discount {
+    color: $color-font__sale;
+  }
+}
+
+.price__old {
+  margin-left: $space * 0.5;
+  color: $color-font__secondary;
+  white-space: nowrap;
+}
+
+.price__current--big {
+  font-size: 2.25rem;
+  line-height: 4rem;
+}
+
+.price__discount-info {
+  margin-left: $space*0.5;
+  font-weight: 600;
+  color: $color-font__sale;
+  white-space: nowrap;
+}

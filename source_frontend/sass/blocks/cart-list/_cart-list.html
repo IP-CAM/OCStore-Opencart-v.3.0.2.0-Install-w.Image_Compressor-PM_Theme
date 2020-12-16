@@ -1,0 +1,59 @@
+<ul class="cart-list @@class">
+  <li class="cart-list__item">
+
+    <p class="image-container cart-list__image-container">
+      <picture>
+        <source srcset="img/raster/minicard-1_244w.webp" type="image/webp">
+        <img class="image-container__image" src="img/raster/minicard-1_244w.jpg" loading="lazy" width="90" alt="Кастрюля">
+      </picture>
+    </p>
+
+    <a class="cart-list__title" href="#">Набор кухонной посуды Peterhof PH-18256 на 12 персон</a>
+
+    <dl class="dl cart-list__options-list">
+      <dt class="dl__dt">Цвет</dt>
+      <dd class="dl__dd">Синий</dd>
+    </dl>
+
+    <div class="quantity-input cart-list__quantity-input">
+      @@include("./quantity-input/_quantity-input.html", {"index": "0"})
+    </div>
+
+    <div class="price cart-list__price">
+      <span class="price__current minicard__price" aria-label="Текущая цена: ">156<sup>80</sup> р.</span>
+      <del class="price__old" aria-label="Цена без скидки: ">196.30 р.</del>
+    </div>
+
+    <div class="cart-list__item-manage">
+      <button class="button cart-list__manage-item-button" type="button">Удалить</button>
+      <button class="button cart-list__manage-item-button" type="button">Сохранить</button>
+    </div>
+
+  </li>
+
+  <li class="cart-list__item">
+    <p class="image-container cart-list__image-container">
+      <picture>
+        <source srcset="img/raster/minicard-2_244w.webp" type="image/webp">
+        <img class="image-container__image" src="img/raster/minicard-2_244w.jpg" loading="lazy" width="90" alt="Кастрюля">
+      </picture>
+    </p>
+
+    <a class="cart-list__title" href="#">Набор кухонной посуды Peterhof PH-18256 на 12 персон</a>
+
+    <div class="quantity-input cart-list__quantity-input">
+      @@include("./quantity-input/_quantity-input.html", {"index": "1"})
+    </div>
+
+    <div class="price cart-list__price">
+      <span class="price__current minicard__price" aria-label="Текущая цена: ">156<sup>80</sup> р.</span>
+      <del class="price__old" aria-label="Цена без скидки: ">196.30 р.</del>
+    </div>
+
+    <div class="cart-list__item-manage">
+      <button class="button cart-list__manage-item-button" type="button">Удалить</button>
+      <button class="button cart-list__manage-item-button" type="button">Сохранить</button>
+    </div>
+
+  </li>
+</ul>

@@ -1,0 +1,43 @@
+.total {
+  display: flex;
+  flex-direction: column;
+  padding: var(--page-paddings);
+  background-color: $color__additional-1-1;
+  border: 1px solid $color__additional-2;
+  border-radius: $controls__border-radius;
+}
+
+
+.total__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: $space*0.25;
+
+  &--amount {
+    margin-bottom: $space;
+    font-weight: 700;
+  }
+}
+
+
+.total__number {
+  font-weight: 700;
+
+  &--amount {
+    padding-top: $space*0.5;
+    font-size: 2rem;
+    line-height: 1;
+    border-top: 1px solid $color__additional-4;
+  }
+}
+
+
+.total__order-info-term {
+  color: $color-font__secondary;
+}
+
+
+.total__textfield-comment {
+  margin: $space 0;
+}
