@@ -1,0 +1,29 @@
+{
+  "name": "pm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Интернет-магазин посуды",
+  "main": "gulpfile.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yulms/pm-ocstore.git"
+  },
+  "author": "Yury Lemesh",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Yulms/pm-ocstore/issues"
+  },
+  "homepage": "https://github.com/Yulms/pm-ocstore#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "eslint": "^7.6.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "stylelint": "^13.7.0",
+    "stylelint-config-htmlacademy": "^0.1.4"
+  }
+}

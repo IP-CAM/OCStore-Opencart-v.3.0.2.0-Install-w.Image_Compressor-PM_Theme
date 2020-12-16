@@ -1,0 +1,32 @@
+{
+  "extends": "stylelint-config-htmlacademy",
+  "rules": {
+    "declaration-no-important": true,
+    "indentation": [
+      2,
+      {
+        "ignore": [
+          "inside-parens"
+        ]
+      }
+    ],
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "mixin",
+          "define-mixin",
+          "include",
+          "content",
+          "rules",
+          "each",
+          "function",
+          "error",
+          "return",
+          "else",
+          "if"
+        ]
+      }
+    ]
+  }
+}
