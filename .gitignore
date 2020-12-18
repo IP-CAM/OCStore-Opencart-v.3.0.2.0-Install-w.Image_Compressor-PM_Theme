@@ -16,7 +16,7 @@ npm-debug.*
 /public_html/image/
 /storage/**/*.*
 !/storage/**/index.html
-public_html/catalog/view/theme/pm/
+public_html/catalog/view/theme/pm/*
 !public_html/catalog/view/theme/pm/template
 
 /public_html/admin/uploads/

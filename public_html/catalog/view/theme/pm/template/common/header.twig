@@ -43,7 +43,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="catalog/view/theme/pm/img/favicon/favicon-16x16.png">
   <link rel="manifest" href="catalog/view/theme/pm/img/favicon/site.webmanifest">
 
-
   {% for style in styles %}
     <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}">
   {% endfor %}
@@ -265,7 +264,8 @@
 
         <div class="header__user-call2reg">
           <span>Новый покупатель?</span>
-          <a class="link" href="{{register}}" data-modal="#modalRegister" data-modal-size="small">Зарегистрироваться</a>
+          {# <a class="link" href="{{ register }}" data-modal="#modalRegister" data-modal-size="small">Зарегистрироваться</a> #}
+          <a class="link" href="{{ register }}" data-modal-size="small">Зарегистрироваться</a>
         </div>
 
         <ul class="dropdown-menu header__user-dropdown-menu">
@@ -388,4 +388,4 @@
 
 
 
-{{ menu }}
+{# {{ menu }} #}
