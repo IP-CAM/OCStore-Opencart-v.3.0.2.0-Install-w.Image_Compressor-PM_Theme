@@ -20,7 +20,7 @@ const projectObjects = { // eslint-disable-line
   lazyLoad: initLazyload(),
   scrollOnLoad: initScrollOnLoad(),
   switchView: initSwitchView(),
-  mainNav: initMainNav(),
+  // mainNav: initMainNav(), проверить, почему при отсутствии меню в консоле ошибка
   modalsBounded: initBoundedModals(),
   modal: initModal(),
   quantityInput: initQuantityInput(),
