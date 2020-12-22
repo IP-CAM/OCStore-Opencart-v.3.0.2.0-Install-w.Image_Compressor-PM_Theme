@@ -1,0 +1,67 @@
+{% if categories %}
+
+<nav class="main-nav" aria-label="Навигация по каталогу">
+    <div class="main-nav__inner">
+      <ul class="main-nav__list main-nav__list--lvl1">
+        {# ! Категории 1 уровня #}
+        {% for category in categories %}
+          {% if category.children %}
+            <li class="main-nav__item-lvl1">
+              <a class="main-nav__link main-nav__link--lvl1" href="{{ category.href }}">{{ category.name }}</a>
+              <div class="main-nav__dropdown">
+                {# ! Категории 2 уровня #}
+                {% for children in category.children|batch(category.children|length / category.column|round(1, 'ceil')) %}
+                  <ul class="main-nav__list main-nav__list--lvl2">
+                    {% for child in children %}
+                      <li class="main-nav__item-lvl2">
+                        <a class="main-nav__link main-nav__link--lvl2" href="{{ child.href }}">{{ child.name }}</a>
+
+                          {# ! Категория 3 уровня #}
+                          {% if child.children %}
+                            <ul class="main-nav__list">
+                              {% for child3 in child.children %}
+                                <li><a class="main-nav__link main-nav__link--lvl3" href="{{ child3.href }}">{{ child3.name }}</a></li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endfor %}
+                {# <a class="banner main-nav__banner" href="#">
+                  <p class="banner__image-container main-nav__banner-image-container">
+                    <picture>
+                      <source srcset="img/raster/menu-banner-1.webp" type="image/webp">
+                      <img class="banner__image" src="img/raster/menu-banner-1.jpg" loading="lazy" width="400" height="400" alt="Перейти к спецпредложению">
+                    </picture>
+                  </p>
+                  <div class="banner__offer main-nav__banner-offer">
+                    <p class="title title--2 banner__title">Подари радость любимой</p>
+                    <p class="banner__text">Только к празнику всех влюбленных кастрюльки для вашей половинки по сниженной цене</p>
+                    <p class="banner__text">
+                      <strong>Спешите, количество ограничено</strong>
+                    </p>
+                    <span class="button button--action-secondary">Подробнее</span>
+                  </div>
+                </a> #}
+              </div>
+            </li>
+          {% else %}
+            {# ! #}
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <div class="main-nav__close-container">
+        <button class="button button--modal-close main-nav__close-button" type="button">
+          <span class="link link--nounderline">Закрыть</span>
+          <svg class="button__close-icon" width="40" height="40">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-close"></use>
+          </svg>
+        </button>
+      </div>
+      <div class="overlay main-nav__overlay"></div>
+    </div>
+  </nav>
+
+{% endif %}
