@@ -27,7 +27,7 @@
   <meta	property="og:site_name" content="{{ name }}">
 
   {# temp #}
-  <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+  <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
   {# <link rel="stylesheet" media="screen" href="catalog/view/javascript/bootstrap/css/bootstrap.min.css"> #}
   <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
   {# <link	rel="stylesheet" href="catalog/view/javascript/font-awesome/css/font-awesome.min.css"> #}
@@ -249,7 +249,7 @@
 
     <!-- User -->
     <div class="header__user">
-      <a class="header__link" href="#">
+      <a class="header__link" href="{{ account }}">
         <svg class="icon icon--stroked header__icon" width="24" height="24">
           <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-user"></use>
         </svg>
@@ -258,132 +258,69 @@
       <div class="modal modal--bounded modal--closed header__user-modal" aria-label="Меню пользователя">
         <h2 class="visually-hidden">Меню пользователя</h2>
         <p class="header__user-entry-text">Добро пожаловать</p>
-        <a class="button button--options-primary header__user-login-button" href="{{login}}" data-modal="#modalSignIn" data-modal-size="small">Войти</a>
+        <a class="button button--options-primary header__user-login-button" href="{{ login }}">Войти</a>
 
-        @@include("./socials-login/_socials-login.html", {"class": "header__user-socials-login"})
+        <div class="socials-login header__user-socials-login">
+          <span>Войти через:</span>
+          <ul class="socials-login__list">
+            <li>
+              <a class="socials-login__link" href="#">
+                <svg class="icon socials-login__icon" width="24" height="24">
+                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-google"></use>
+                </svg>
+                <span class="visually-hidden">Google</span>
+              </a>
+            </li>
+            <li>
+              <a class="socials-login__link" href="#">
+                <svg class="icon socials-login__icon socials-login__icon--vk" width="24" height="24">
+                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-vk"></use>
+                </svg>
+                <span class="visually-hidden">Вконтакте</span>
+              </a>
+            </li>
+            <li>
+              <a class="socials-login__link" href="#">
+                <svg class="icon socials-login__icon socials-login__icon--fb" width="24" height="24">
+                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-facebook"></use>
+                </svg>
+                <span class="visually-hidden">Фэйсбук</span>
+              </a>
+            </li>
+            <li>
+              <a class="socials-login__link" href="#">
+                <svg class="icon socials-login__icon socials-login__icon--ok" width="24" height="24">
+                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-ok"></use>
+                </svg>
+                <span class="visually-hidden">Однокласники</span>
+              </a>
+            </li>
+          </ul>
+        </div>
 
         <div class="header__user-call2reg">
           <span>Новый покупатель?</span>
-          {# <a class="link" href="{{ register }}" data-modal="#modalRegister" data-modal-size="small">Зарегистрироваться</a> #}
-          <a class="link" href="{{ register }}" data-modal-size="small">Зарегистрироваться</a>
+          <a class="link" href="{{ register }}">Зарегистрироваться</a>
         </div>
 
         <ul class="dropdown-menu header__user-dropdown-menu">
-          <li><a class="dropdown-menu__link" href="{{account}}">Личные данные</a></li>
-          <li><a class="dropdown-menu__link" href="{{order}}">История заказов</a></li>
-          <li><a class="dropdown-menu__link" href="#">История просмотров</a></li>
-          <li><a class="dropdown-menu__link" href="{{wishlist}}">Избранные товары</a></li>
+          <li><a class="dropdown-menu__link" href="{{ account }}">Личные данные</a></li>
+          <li><a class="dropdown-menu__link" href="{{ order }}">История заказов</a></li>
+          <li><a class="dropdown-menu__link" href="{{ wishlist }}">Избранные товары</a></li>
           <li><a class="dropdown-menu__link" href="#">Лист ожиданий</a></li>
         </ul>
-        <a class="link link--nounderline header__user-logout" href="#">Выйти</a>
+        <a class="link link--nounderline header__user-logout" href="{{ logout }}">Выйти</a>
       </div>
     </div>
 
     <!-- Корзина -->
-    <div class="header__cart">
-      <a class="header__link header__cart-link" href="#">
-        <div class="header__cart-quantity-positioner">
-          <svg class="icon icon--stroked header__icon" width="24" height="24">
-            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-cart"></use>
-          </svg>
-          <span class="visually-hidden">Товаров: </span>
-          <span class="header__cart-quantity">0</span>
-        </div>
-        <span class="header__link-caption">Корзина</span>
-      </a>
-
-      <div class="modal modal--bounded modal--closed header__cart-modal">
-        <h2 class="modal__header">Корзина товаров</h2>
-
-        @@include("./cart-list/_cart-list.html")
-
-        <div class="header__cart-footer">
-          <p class="header__cart-summary">
-            <span>Всего (2 товара):</span>
-            <span class="header__cart-summary-number">312,56 руб.</span>
-          </p>
-
-          <div class="header__cart-buttons">
-            <button class="link" type="button">Купить в 1 клик</button>
-            <button class="button button--action-primary header__cart-buy-button" type="button">Оформить заказ</button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
+    {{ cart }}
   </div>
 
 
-{# {{ text_account }} личный кабинет #}
-{# {{ text_order }} история заказов
-{{ text_logout }} выход
-{{ text_register }}
-{{ text_login }} #}
 
 
 
-<nav>
-  <div class="container">
-    <div id="top-links" class="nav pull-right">
-      <ul class="list-inline">
-        {# <li><a href="{{ contact }}"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">{{ telephone }}</span></li> #}
-        <li class="dropdown">
-          <a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-user"></i>
-            <span class="hidden-xs hidden-sm hidden-md">
-              {{ text_account }}</span>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-right" >
-            {# {% if logged %} #}
-            <li><a style="color: #ffffff;" href="{{ account }}">{{ text_account }}</a></li>
-            <li><a style="color: #ffffff;" href="{{ order }}">{{ text_order }}</a></li>
-            <li><a style="color: #ffffff;" href="{{ transaction }}">{{ text_transaction }}</a></li>
-            <li><a style="color: #ffffff;" href="{{ download }}">{{ text_download }}</a></li>
-            <li><a style="color: #ffffff;" href="{{ logout }}">{{ text_logout }}</a></li>
-            {# {% else %} #}
-            <li><a style="color: #ffffff;" href="{{ register }}">{{ text_register }}</a></li>
-            <li><a style="color: #ffffff;" href="{{ login }}">{{ text_login }}</a></li>
-            {# {% endif %} #}
-          </ul>
-        </li>
-        {# <li><a href="{{ wishlist }}" id="wishlist-total" title="{{ text_wishlist }}"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_wishlist }}</span></a></li> #}
-        <li><a href="{{ shopping_cart }}" title="{{ text_shopping_cart }}"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_shopping_cart }}</span></a></li>
-        <li><a href="{{ checkout }}" title="{{ text_checkout }}"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_checkout }}</span></a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-
-
-
-
-
-
-
-
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-		{# <div id="logo">
-          {% if logo %}
-            {% if home == og_url %}
-              <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
-            {% else %}
-              <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
-            {% endif %}
-          {% else %}
-            <h1><a href="{{ home }}">{{ name }}</a></h1>
-          {% endif %}
-		</div> #}
-      </div>
-      {# <div class="col-sm-5">{{ search }}</div> #}
-      <div class="col-sm-3">{{ cart }}</div>
-    </div>
-  </div>
 </header>
 
 

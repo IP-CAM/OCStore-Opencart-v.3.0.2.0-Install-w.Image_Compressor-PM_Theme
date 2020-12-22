@@ -1,0 +1,160 @@
+<div class="header__cart">
+  <a class="header__link header__cart-link" href="#">
+    <div class="header__cart-quantity-positioner">
+      <svg class="icon icon--stroked header__icon" width="24" height="24">
+        <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-cart"></use>
+      </svg>
+      <span class="visually-hidden">Товаров: </span>
+      <span class="header__cart-quantity js-cart-count">{{ cart_items_quantity }}</span>
+    </div>
+    <span class="header__link-caption">Корзина</span>
+  </a>
+
+  <div class="modal modal--bounded modal--closed header__cart-modal">
+    {% if products or vouchers %}
+      <h2 class="modal__header">Корзина товаров</h2>
+
+      <ul class="cart-list">
+        {% for product in products %}
+
+          <li class="cart-list__item">
+            <p class="image-container cart-list__image-container">
+              {% if product.thumb %}
+                <a href="{{ product.href }}">
+                  <img class="image-container__image" src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="90">
+                </a>
+              {% endif %}
+            </p>
+
+            <a class="cart-list__title" href="{{ product.href }}">{{ product.name }}</a>
+
+            {% if product.option %}
+              <dl class="dl cart-list__options-list">
+                {% for option in product.option %}
+                  <dt class="dl__dt">{{ option.name }}</dt>
+                  <dd class="dl__dd">{{ option.value }}</dd>
+                {% endfor %}
+              </dl>
+            {% endif %}
+
+            {% if product.recurring %}
+              {{ text_recurring }}
+              {{ product.recurring }}
+            {% endif %}
+
+            <div class="quantity-input cart-list__quantity-input">
+              <span class="visually-hidden">Управление количеством</span>
+              <div class="quantity-input__container">
+                <button class="quantity-input__button quantity-input__button--less" type="button" onclick="window.newcart.add('{{ product.product_id }}', -1);">
+                  <span class="visually-hidden">Уменьшить</span>
+                  <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                    <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                  </svg>
+                </button>
+                <input class="quantity-input__input-field" type="number" name="quantity" value="{{ product.quantity }}"
+                  data-product-quantity="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" onChange="window.newcart.change('{{ product.product_id }}', this.dataset.productQuantity, this.value);">
+                <button class="quantity-input__button quantity-input__button--more" type="button"  onclick="window.newcart.add('{{ product.product_id }}', 1);">
+                  <span class="visually-hidden">Увеличить</span>
+                  <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                    <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                    <line x1="12" y1="4" x2="12" y2="20" stroke-linecap="round"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="price cart-list__price">
+              {% if product.common_price %}
+                <span class="price__current price__current--discount minicard__price" aria-label="Текущая цена по акции:">
+                  {{ product.price_before }}
+                  <sup>{{ product.price_after }}</sup>
+                </span>
+                <del class="price__old" aria-label="Цена без скидки: ">{{ product.common_price }}</del>
+              {% else %}
+                <span class="price__current minicard__price" aria-label="Цена:">{{ product.price_before }}<sup>{{ product.price_after }}</sup>
+                  р.
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="cart-list__item-manage">
+              <button class="button cart-list__manage-item-button" type="button" onclick="window.newcart.remove('{{ product.cart_id }}');">Удалить</button>
+              <button class="button cart-list__manage-item-button" type="button" onclick="window.newwishlist.add('{{ product.product_id }}');">Сохранить</button>
+            </div>
+          </li>
+
+        {% endfor %}
+      </ul>
+
+      <div class="header__cart-footer">
+        <p class="header__cart-summary">
+          <span>Всего ({{ cart_items_quantity }}):</span>
+          <span class="header__cart-summary-number">{{ cart_items_currency }}</span>
+        </p>
+
+        <div class="header__cart-buttons">
+          <button class="link" type="button">Купить в 1 клик</button>
+          <a class="button button--action-primary header__cart-buy-button" href="{{ checkout }}">Оформить заказ</a>
+        </div>
+      </div>
+
+    {% else %}
+      {{ text_empty }}
+    {% endif %}
+  </div>
+
+</div>
+
+{#
+
+<div id="cart" class="btn-group btn-block">
+  <button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-cart"></i>
+  <span id="cart-total">{{ text_items }}</span>
+  </button>
+  <ul class="dropdown-menu pull-right">
+    {% if products or vouchers %}
+    <li>
+      <table class="table table-striped">
+        {% for product in products %}
+        <tr>
+
+          <td class="text-left">
+
+
+          <td class="text-right">x {{ product.quantity }}</td>
+          <td class="text-right">{{ product.total }}</td>
+          <td class="text-center">
+          <button type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
+        </tr>
+        {% endfor %}
+        {% for voucher in vouchers %}
+        <tr>
+          <td class="text-center"></td>
+          <td class="text-left">{{ voucher.description }}</td>
+          <td class="text-right">x&nbsp;1</td>
+          <td class="text-right">{{ voucher.amount }}</td>
+          <td class="text-center text-danger"><button type="button" onclick="voucher.remove('{{ voucher.key }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </li>
+    <li>
+      <div>
+        <table class="table table-bordered">
+          {% for total in totals %}
+          <tr>
+            <td class="text-right"><strong>{{ total.title }}</strong></td>
+            <td class="text-right">{{ total.text }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <p class="text-right"><a href="{{ cart }}"><strong><i class="fa fa-shopping-cart"></i> {{ text_cart }}</strong></a>&nbsp;&nbsp;&nbsp;<a href="{{ checkout }}"><strong><i class="fa fa-share"></i> {{ text_checkout }}</strong></a></p>
+      </div>
+    </li>
+    {% else %}
+    <li>
+      <p class="text-center">{{ text_empty }}</p>
+    </li>
+    {% endif %}
+  </ul>
+</div> #}
