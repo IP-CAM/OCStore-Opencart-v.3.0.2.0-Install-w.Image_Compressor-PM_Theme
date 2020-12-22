@@ -29,6 +29,7 @@ class Modal {
     const defaults = {
       triggerDataAttributeName: 'data-modal',
       closeModalClass : 'modal__content--closed',
+      contentModalClass: 'modal__content',
       modalTemplateSelector: '#modal',
       modalBodySelector: '.modal',
       modalTypeDataAttribute: 'modalPosition',
@@ -60,52 +61,70 @@ class Modal {
     this.handleEvent = (evt) => {
       switch(evt.type) {
         case 'keydown':
-          isEscapePressEvent(evt, this._closeAfterAnnimationEnd.bind(this));
+          isEscapePressEvent(evt, this.closeAfterAnnimationEnd.bind(this));
           break;
       }
     };
 
-
-
+    // открытие по клику
     document.addEventListener('click', (evt) => {
-      let triggerElement = evt.target.closest('[' + this.triggerDataAttributeName + ']');
+      const triggerElement = evt.target.closest('[' + this.triggerDataAttributeName + ']');
       if (!triggerElement) return;
-
       evt.preventDefault();
-      this._open(triggerElement);
+
+
+      const _getHomelandPosition = (modalContentElement) => {
+        return {
+          parentElement: modalContentElement.parentElement,
+          nextElement: modalContentElement.nextElementSibling
+        };
+      };
+
+      const modalContentSelector = triggerElement.getAttribute(this.triggerDataAttributeName);
+      const modalContentElement = document.querySelector(modalContentSelector);
+      const homelandPosition = _getHomelandPosition(modalContentElement); // сохранение позиции в DOM, из которой будет выдернут HTML внутренностей окна
+
+      const modalParams = {
+        content: modalContentElement,
+        modalPosition: triggerElement.dataset[this.modalTypeDataAttribute],
+        modalSize: triggerElement.dataset[this.modalSizeDataAttribute],
+        callbackOnClose: () => {
+          // возвращаем внутренности на первоначальную позицию
+          let {parentElement, nextElement} =  homelandPosition;
+          parentElement.insertBefore(modalContentElement, nextElement);
+        },
+        triggerElement: triggerElement
+      };
+
+      this.open(modalParams);
     });
 
   }
 
 
-  _open(triggerElement) {
+  open({content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement}) {
+
     const _cloneModalTemplate = () => {
       return document.querySelector(this.modalTemplateSelector)
         .content.querySelector(this.modalBodySelector)
         .cloneNode(true);
     };
 
-    const _addPositionClass = (currentModal) => {
-      const _readPositionAttribute = () => {
-        return triggerElement.dataset[this.modalTypeDataAttribute] || this.defaultPosition;
-      };
+    const _transformContent = (content) => {
+      let element = document.createElement('div');
+      element.classList.add(this.contentModalClass);
+      element.innerHTML = content;
+      return element;
+    };
 
-      let modalPosition = _readPositionAttribute();
+    const _addPositionClass = (currentModal) => {
       currentModal._modalElement.classList.add(ModalPositionClasses[modalPosition]);
     };
 
     const _addSizeClass = (currentModal) => {
-      let modalSize = triggerElement.dataset[this.modalSizeDataAttribute];
       if (modalSize) {
         currentModal._modalElement.classList.add(ModalSizeClasses[modalSize]);
       }
-    };
-
-    const _saveHomelandPosition = (currentModal) => {
-      currentModal._modalContentElementHomelandPosition = {
-        parentElement: currentModal._modalContentElement.parentElement,
-        nextElement: currentModal._modalContentElement.nextElementSibling
-      };
     };
 
     const _changeAriaAttrIfNeeded = (currentModal) => {
@@ -135,10 +154,13 @@ class Modal {
     };
 
     const _addHandlers = (currentModal) => {
-      let closeButtonElement = currentModal._modalElement.querySelector(this.closeButtonSelector);
-      closeButtonElement.addEventListener('click', this._closeAfterAnnimationEnd.bind(this));
 
-      currentModal._overlayElement.addEventListener('click', this._closeAfterAnnimationEnd.bind(this));
+      const closeHandler = () => {
+        this.closeAfterAnnimationEnd();
+      };
+      let closeButtonElement = currentModal._modalElement.querySelector(this.closeButtonSelector);
+      closeButtonElement.addEventListener('click', closeHandler);
+      currentModal._overlayElement.addEventListener('click', closeHandler);
 
       // обработчик на закрытие по Esc - один на все открытые окна
       if (!this._documentKeydownHandlerWasAdded) {
@@ -151,16 +173,15 @@ class Modal {
     this._modals.push({});
     let currentModal = this._modals[this._getLastModalIndex()];
 
-    currentModal._triggerElement = triggerElement;
     currentModal._modalElement = _cloneModalTemplate();
+
+    currentModal._modalContentElement = (typeof content === 'object') ? content : _transformContent(content);
+    // currentModal._modalContentElement = _transformContent(content);
+
+    currentModal._triggerElement = triggerElement;
+    currentModal._callbackOnClose = callbackOnClose;
     _addPositionClass(currentModal);
     _addSizeClass(currentModal);
-
-    let modalContentSelector = triggerElement.getAttribute(this.triggerDataAttributeName);
-    currentModal._modalContentElement = document.querySelector(modalContentSelector);
-
-    // сохранение позиции в DOM, из которой будет выдернут HTML внутренностей окна
-    _saveHomelandPosition(currentModal);
     _changeAriaAttrIfNeeded(currentModal);
 
     currentModal._modalElement.children[0].prepend(currentModal._modalContentElement);
@@ -178,8 +199,8 @@ class Modal {
   }
 
 
-  _closeAfterAnnimationEnd () {
-    let currentModal = this._modals[this._getLastModalIndex()];
+  closeAfterAnnimationEnd () {
+    const currentModal = this._modals[this._getLastModalIndex()];
     executeAfterAnimationEnd(
       {
         element: currentModal._modalElement,
@@ -211,8 +232,7 @@ class Modal {
       currentModal._modalContentElement.setAttribute('aria-hidden', true);
     }
 
-    let {parentElement, nextElement} =  currentModal._modalContentElementHomelandPosition;
-    parentElement.insertBefore(currentModal._modalContentElement, nextElement);
+    if (currentModal._callbackOnClose) currentModal._callbackOnClose();
 
     currentModal._modalElement.remove();
 
@@ -236,11 +256,13 @@ class Modal {
   _focus(currentModal, {shouldBeInside}) {
     // Метод переносит фокус с элемента открывающего окно
     // в само окно, и обратно, когда окно закрывается
-    const nodes = currentModal._modalElement.querySelectorAll(this.focusElements);
     if (shouldBeInside) {
+      const nodes = currentModal._modalElement.querySelectorAll(this.focusElements);
       if (nodes.length) nodes[0].focus();
     } else {
-      currentModal._triggerElement.focus();
+      if (currentModal._triggerElement) {
+        currentModal._triggerElement.focus();
+      }
     }
   }
 

@@ -30,7 +30,7 @@
 </template>
 
 
-# Содержимое модальдого окна спрятанного перед закрытием body
+# Содержимое модальдого окна, спрятанного перед закрытием body
 <secton class="modal__content modal__content--closed" aria-hidden="true" id="modalFilter">
   здесь содержимое окна
 </secton>
@@ -63,3 +63,15 @@ modal--left
 data-modal-size="small"
 data-modal-size="big"
 Добавляется модификатор ширины
+
+
+
+# update 21.12.20
+Добавлена возможность открытия окна извне с произвольным контентом,
+за это отвечает метод open ({...params})
+Параметры:
+content - может быть DOM элементом текстовым содержимым. Если текст - модуль конвертирует его в DOM элемент.
+modalPosition - 'center' - default, 'left'
+modalSize - 'small', 'big'
+callbackOnClose
+triggerElement (используется только для установки фокуса после закрытия окна)
