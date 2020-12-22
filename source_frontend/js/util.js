@@ -90,3 +90,53 @@ let id = 0;
 export function generateId() {
   return 'generatedId-' + ++id;
 }
+
+
+
+export function ajaxRequest({url, method = 'GET', responseType, sendingData, beforeSend, onLoad, onError, timeout = 10000, requestHeader}) {
+
+  const StatusCode = {
+    OK: 200
+  };
+
+  const xhr = new XMLHttpRequest();
+  xhr.open(method, url);
+  xhr.responseType = responseType;
+  xhr.timeout = timeout;
+  if (requestHeader) {
+    xhr.setRequestHeader(requestHeader.headerName, requestHeader.headerValue);
+  }
+  if (typeof beforeSend === 'function') {
+    beforeSend();
+  }
+
+  xhr.send(sendingData);
+
+  xhr.addEventListener('load', function () {
+    if (xhr.status === StatusCode.OK) {
+      if (typeof onLoad === 'function') {
+        onLoad(xhr.response);
+      }
+    } else {
+      onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+    }
+  });
+
+  xhr.addEventListener('error', function () {
+    if (typeof onError === 'function') {
+      onError('Произошла ошибка соединения');
+    } else {
+      console.log('Произошла ошибка соединения');
+    }
+  });
+
+  xhr.addEventListener('timeout', function () {
+    if (typeof onError === 'function') {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    } else {
+      console.log('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    }
+
+  });
+
+}
