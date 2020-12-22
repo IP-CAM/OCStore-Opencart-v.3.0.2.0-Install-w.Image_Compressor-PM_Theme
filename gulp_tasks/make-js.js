@@ -11,7 +11,7 @@ function makeJs(TEMPLATE_PATH) {
     .pipe(flatten())
     .pipe(plumber())
     // .pipe(concat('script.js'))
-    .pipe(uglify())
+    // .pipe(uglify())
     // .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(TEMPLATE_PATH + '/js'));
 }
