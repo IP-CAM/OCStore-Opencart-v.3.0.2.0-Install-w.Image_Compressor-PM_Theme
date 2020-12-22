@@ -16,7 +16,7 @@ class ControllerCommonCart extends Controller {
 			'taxes'  => &$taxes,
 			'total'  => &$total
 		);
-			
+
 		// Display prices
 		if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 			$sort_order = array();
@@ -48,6 +48,8 @@ class ControllerCommonCart extends Controller {
 		}
 
 		$data['text_items'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
+		$data['cart_items_quantity'] = $this->cart->countProducts();
+    $data['cart_items_currency'] = $this->currency->format($total, $this->session->data['currency']);
 
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
@@ -86,23 +88,30 @@ class ControllerCommonCart extends Controller {
 			// Display prices
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 				$unit_price = $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'));
-				
-				$price = $this->currency->format($unit_price, $this->session->data['currency']);
+
+        $price = $this->currency->format($unit_price, $this->session->data['currency']);
+        $price_clean = $this->currency->format($unit_price, $this->session->data['currency'] , '', true, true);
+        $price_before = floor($price_clean);
+        $price_after = explode('.', $price_clean)[1];
 				$total = $this->currency->format($unit_price * $product['quantity'], $this->session->data['currency']);
 			} else {
 				$price = false;
 				$total = false;
-			}
+      }
 
 			$data['products'][] = array(
-				'cart_id'   => $product['cart_id'],
+        'cart_id'   => $product['cart_id'],
+        'product_id'=> $product['product_id'],
 				'thumb'     => $image,
 				'name'      => $product['name'],
 				'model'     => $product['model'],
 				'option'    => $option_data,
 				'recurring' => ($product['recurring'] ? $product['recurring']['name'] : ''),
 				'quantity'  => $product['quantity'],
-				'price'     => $price,
+        'price'     => $price,
+        'price_before'=> $price_before,
+        'price_after' => $price_after,
+        'common_price' => $product['common_price'],
 				'total'     => $total,
 				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 			);

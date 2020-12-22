@@ -163,7 +163,8 @@ class Cart {
 					}
 				}
 
-				$price = $product_query->row['price'];
+        $price = $product_query->row['price'];
+        $common_price = $price;
 
 				// Product Discounts
 				$discount_quantity = 0;
@@ -233,7 +234,13 @@ class Cart {
 					);
 				} else {
 					$recurring = false;
-				}
+        }
+
+        if (($price + $option_price) == ($common_price + $option_price)) {
+          $common_price = false;
+        } else {
+          $common_price = $common_price + $option_price;
+        }
 
 				$product_data[] = array(
 					'cart_id'         => $cart['cart_id'],
@@ -248,7 +255,8 @@ class Cart {
 					'minimum'         => $product_query->row['minimum'],
 					'subtract'        => $product_query->row['subtract'],
 					'stock'           => $stock,
-					'price'           => ($price + $option_price),
+          'price'           => ($price + $option_price),
+          'common_price'    => $common_price,
 					'total'           => ($price + $option_price) * $cart['quantity'],
 					'reward'          => $reward * $cart['quantity'],
 					'points'          => ($product_query->row['points'] ? ($product_query->row['points'] + $option_points) * $cart['quantity'] : 0),

@@ -21,7 +21,7 @@ class Currency {
 		}
 	}
 
-	public function format($number, $currency, $value = '', $format = true) {
+	public function format($number, $currency, $value = '', $format = true, $shouldWithoutSymbols = false) {
 		$symbol_left = $this->currencies[$currency]['symbol_left'];
 		$symbol_right = $this->currencies[$currency]['symbol_right'];
 		$decimal_place = $this->currencies[$currency]['decimal_place'];
@@ -31,22 +31,22 @@ class Currency {
 		}
 
 		$amount = $value ? (float)$number * $value : (float)$number;
-		
+
 		$amount = round($amount, (int)$decimal_place);
-		
+
 		if (!$format) {
 			return $amount;
 		}
 
 		$string = '';
 
-		if ($symbol_left) {
+		if ($symbol_left && !$shouldWithoutSymbols) {
 			$string .= $symbol_left;
 		}
 
 		$string .= number_format($amount, (int)$decimal_place, $this->language->get('decimal_point'), $this->language->get('thousand_point'));
 
-		if ($symbol_right) {
+		if ($symbol_right && !$shouldWithoutSymbols) {
 			$string .= $symbol_right;
 		}
 
@@ -68,7 +68,7 @@ class Currency {
 
 		return $value * ($to / $from);
 	}
-	
+
 	public function getId($currency) {
 		if (isset($this->currencies[$currency])) {
 			return $this->currencies[$currency]['currency_id'];
