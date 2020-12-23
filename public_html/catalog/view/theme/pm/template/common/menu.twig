@@ -29,22 +29,7 @@
                     {% endfor %}
                   </ul>
                 {% endfor %}
-                {# <a class="banner main-nav__banner" href="#">
-                  <p class="banner__image-container main-nav__banner-image-container">
-                    <picture>
-                      <source srcset="img/raster/menu-banner-1.webp" type="image/webp">
-                      <img class="banner__image" src="img/raster/menu-banner-1.jpg" loading="lazy" width="400" height="400" alt="Перейти к спецпредложению">
-                    </picture>
-                  </p>
-                  <div class="banner__offer main-nav__banner-offer">
-                    <p class="title title--2 banner__title">Подари радость любимой</p>
-                    <p class="banner__text">Только к празнику всех влюбленных кастрюльки для вашей половинки по сниженной цене</p>
-                    <p class="banner__text">
-                      <strong>Спешите, количество ограничено</strong>
-                    </p>
-                    <span class="button button--action-secondary">Подробнее</span>
-                  </div>
-                </a> #}
+                {{ category.menu_banner }}
               </div>
             </li>
           {% else %}
