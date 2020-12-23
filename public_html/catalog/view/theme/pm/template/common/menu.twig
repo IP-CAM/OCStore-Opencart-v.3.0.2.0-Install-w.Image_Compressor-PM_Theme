@@ -33,7 +33,9 @@
               </div>
             </li>
           {% else %}
-            {# ! #}
+            <li class="main-nav__item-lvl1">
+              <a class="main-nav__link main-nav__link--lvl1" href="{{ category.href }}">{{ category.name }}</a>
+            </li>
           {% endif %}
         {% endfor %}
       </ul>
