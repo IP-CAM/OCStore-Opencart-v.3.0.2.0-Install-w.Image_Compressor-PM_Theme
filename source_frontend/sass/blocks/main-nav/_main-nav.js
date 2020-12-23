@@ -19,7 +19,9 @@ class MainNav {
 
     if (isTouchDevice()) {
       this._init();
-      this._enableFirstClickPrevention();
+      if (this._mainElement) {
+        this._enableFirstClickPrevention();
+      }
     }
   }
 
