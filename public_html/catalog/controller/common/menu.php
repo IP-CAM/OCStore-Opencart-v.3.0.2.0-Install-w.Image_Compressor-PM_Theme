@@ -53,7 +53,7 @@ class ControllerCommonMenu extends Controller {
 					'children' => $children_data,
 					'column'   => $category['column'] ? $category['column'] : 1,
           'href'     => $this->url->link('product/category', 'path=' . $category['category_id']),
-          'menu_banner' => $category['additional_1']
+          'menu_banner' => html_entity_decode($category['additional_1'], ENT_QUOTES, 'UTF-8')
 				);
 			}
 		}

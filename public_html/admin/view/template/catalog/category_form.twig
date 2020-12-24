@@ -84,7 +84,7 @@
 				          <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-additional_1{{ language.language_id }}">Дополнительное поле (additional_1)</label>
                     <div class="col-sm-10">
-                      <textarea name="category_description[{{ language.language_id }}][additional_1]" rows="16" placeholder="HTML code of banner" id="input-additional_1{{ language.language_id }}" class="form-control">{{ category_description[language.language_id] ? category_description[language.language_id].additional_1 }}</textarea>
+                      <textarea name="category_description[{{ language.language_id }}][additional_1]" rows="16" id="input-additional_1{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ category_description[language.language_id] ? category_description[language.language_id].additional_1 }}</textarea>
                     </div>
                   </div>
                 </div>
