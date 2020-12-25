@@ -1,0 +1,19 @@
+<section class="page__section">
+      <h2 class="title title--2 page__section-title">{{ box_title }}</h2>
+      <ul class="category-list">
+        {% for category in categories %}
+          <li class="category-list__item">
+            <a class="category-list__link" href="{{ category.href }}">
+              <figure class="category-list__figure">
+                <div class="category-list__image-container">
+                  <picture>
+                    <img class="category-list__image" src="{{ category.thumb }}" width="40" alt="Перейти в раздел {{ category.name }}">
+                  </picture>
+                </div>
+                <figcaption class="category-list__name">{{ category.name }}</figcaption>
+              </figure>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+</section>
