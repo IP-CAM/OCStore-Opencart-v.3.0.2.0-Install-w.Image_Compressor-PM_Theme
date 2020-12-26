@@ -148,6 +148,14 @@ class ControllerExtensionModuleFeaturedCategory extends Controller
             $data['status'] = '';
         }
 
+        if (isset($this->request->post['view_type'])) {
+            $data['view_type'] = $this->request->post['view_type'];
+        } elseif (!empty($module_info)) {
+            $data['view_type'] = $module_info['view_type'];
+        } else {
+            $data['view_type'] = 1;
+        }
+
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');

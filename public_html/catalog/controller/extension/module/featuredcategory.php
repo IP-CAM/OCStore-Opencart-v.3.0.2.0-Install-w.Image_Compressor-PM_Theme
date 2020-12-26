@@ -15,9 +15,10 @@ class ControllerExtensionModuleFeaturedCategory extends Controller {
 
 		if (!empty($setting['categoriesadded'])) {
 
-            $data['box_title'] = $setting['name'];
+      $data['box_title'] = $setting['name'];
+      $data['view_type'] = $setting['view_type'];
 
-            $categories_data = array();
+      $categories_data = array();
 
 			foreach ($setting['categoriesadded'] as $category_id) {
 				$category_info = $this->model_catalog_category->getCategory($category_id);
@@ -40,7 +41,7 @@ class ControllerExtensionModuleFeaturedCategory extends Controller {
 					'category_id'  => $category['category_id'],
 					'thumb'       => $image,
 					'name'        => $category['name'],
-					'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
+          'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
 				);
 			}
 		}
