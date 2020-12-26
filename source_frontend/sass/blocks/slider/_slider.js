@@ -17,8 +17,8 @@ function getButtonHTML(buttonText) {
 
   return `<button class="button slider__toggle ${buttonModClass}" type="button">
             <span class="visually-hidden">${buttonText}</span>
-            <svg class="slider__toggle-icon" width="24" height="24">
-              <use href="img/svg/_sprite.svg#icon-arrow"></use>
+            <svg class="slider__toggle-icon" viewBox="0 0 24 24" width="24" height="24">
+              <polyline points="7,11 12,15 17,11" fill="none" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
             </svg>
           </button>`;
 }
