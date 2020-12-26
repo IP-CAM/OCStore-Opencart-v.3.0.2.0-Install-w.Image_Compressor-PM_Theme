@@ -27,15 +27,27 @@ class ControllerExtensionModuleFeatured extends Controller {
 					}
 
 					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-						$price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+            $price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+            $price_clean = $this->currency->format($product_info['price'], $this->session->data['currency'], '', true, true);
+            $price_before = floor($price_clean);
+            $price_after = explode('.', $price_clean)[1];
 					} else {
-						$price = false;
+            $price = false;
+            $price_clean = false;
+            $price_before = false;
+            $price_after = false;
 					}
 
 					if ((float)$product_info['special']) {
-						$special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+            $special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+            $special_clean = $this->currency->format($product_info['special'], $this->session->data['currency'], '', true, true);
+            $special_before = floor($special_clean);
+            $special_after = explode('.', $special_clean)[1];
 					} else {
-						$special = false;
+            $special = false;
+            $special_clean = false;
+            $special_before = false;
+            $special_after = false;
 					}
 
 					if ($this->config->get('config_tax')) {
@@ -45,9 +57,9 @@ class ControllerExtensionModuleFeatured extends Controller {
 					}
 
 					if ($this->config->get('config_review_status')) {
-						$rating = $product_info['rating'];
+            $rating = $product_info['rating'];
 					} else {
-						$rating = false;
+            $rating = false;
 					}
 
 					$data['products'][] = array(
@@ -58,8 +70,17 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'price'       => $price,
 						'special'     => $special,
 						'tax'         => $tax,
-						'rating'      => $rating,
-						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
+            'rating'      => $rating,
+            'rating_percent' => (100 * $rating / 5) .'%',
+            'reviews'     => $product_info['reviews'],
+            'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+            'manufacturer' => $product_info['manufacturer'],
+            'price_clean'    => $price_clean,
+            'price_before'   => $price_before,
+            'price_after'    => $price_after,
+            'special_clean'  => $special_clean,
+            'special_before' => $special_before,
+            'special_after'  => $special_after
 					);
 				}
 			}
