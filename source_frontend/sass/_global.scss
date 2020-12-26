@@ -56,6 +56,7 @@ body {
   background-color: $color__background;
   -webkit-tap-highlight-color: transparent;
   image-rendering: -webkit-optimize-contrast; /* stylelint-disable-line */
+  overflow-x: hidden;
 }
 
 img,
