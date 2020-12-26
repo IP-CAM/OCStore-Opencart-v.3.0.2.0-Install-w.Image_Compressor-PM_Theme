@@ -21,15 +21,18 @@
                   </p>
                 </a>
 
-                {# <div class="product-stickers">
-                  <strong class="product-stickers__sticker @@stickerModClass">@@stickerCaption</strong>
-                </div> #}
+                {% if product.product_xdstickers is not empty %}
+                  <div class="product-stickers">
+                    {% for xdsticker in product.product_xdstickers %}
+                      <strong class="product-stickers__sticker {{xdsticker.id}}">{{xdsticker.text}}</strong>
+                    {% endfor %}
+                  </div>
+                {% endif %}
 
                 <p class="minicard__brand">
                   <span>Бренд:</span>
                   <span>{{ product.manufacturer }}</span>
                 </p>
-
 
                 {% if product.price %}
                   {% if not product.special %}

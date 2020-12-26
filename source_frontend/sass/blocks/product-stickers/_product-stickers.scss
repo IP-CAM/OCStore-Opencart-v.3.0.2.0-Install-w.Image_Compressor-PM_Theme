@@ -36,4 +36,27 @@
     color: #ffffff;
     background-color: $color__sale;
   }
+
+  &--last {
+    color: #ffffff;
+    background-color: $color__sale;
+  }
+
+  &--freeshipping {
+    color: #ffffff;
+    background-color: $color__stock;
+  }
+
+  &--5 { // нет в наличии (формирует cms)
+    color: #ffffff;
+    background-color: $color__disabled;
+  }
+
+  &--6 { // ожидание 2-3 дня (формирует cms)
+    color: #ffffff;
+    background-color: $color__disabled;
+  }
+
+  &--8 { // предзаказ (формирует cms)
+  }
 }
