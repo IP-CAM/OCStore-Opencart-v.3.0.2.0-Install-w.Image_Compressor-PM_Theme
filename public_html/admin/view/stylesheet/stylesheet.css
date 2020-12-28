@@ -10,6 +10,11 @@ html, body {
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
 }
+img,
+frame {
+  max-width: 100%;
+  height: auto;
+}
 .page-header {
 	vertical-align: middle;
 	margin: 20px 0 15px 0;

@@ -347,13 +347,14 @@ class ControllerDesignBanner extends Controller {
 					$image = '';
 					$thumb = 'no_image.png';
 				}
-				
+
 				$data['banner_images'][$key][] = array(
 					'title'      => $banner_image['title'],
 					'link'       => $banner_image['link'],
 					'image'      => $image,
 					'thumb'      => $this->model_tool_image->resize($thumb, 100, 100),
-					'sort_order' => $banner_image['sort_order']
+          'sort_order' => $banner_image['sort_order'],
+          'description'=> $banner_image['description']
 				);
 			}
 		}
