@@ -3,7 +3,19 @@ class ControllerCommonFooter extends Controller {
 	public function index() {
 		$this->load->language('common/footer');
 
-		$this->load->model('catalog/information');
+    $this->load->model('catalog/information');
+
+    $this->load->model('catalog/category');
+
+    $data['categories'] = array();
+    $categories = $this->model_catalog_category->getCategories(0);
+
+    foreach ($categories as $category) {
+      $data['categories'][] = array(
+        'name'        => $category['name'],
+        'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
+      );
+    }
 
 		$data['informations'] = array();
 
@@ -57,7 +69,7 @@ class ControllerCommonFooter extends Controller {
 		}
 
 		$data['scripts'] = $this->document->getScripts('footer');
-		
+
 		return $this->load->view('common/footer', $data);
 	}
 }

@@ -152,8 +152,8 @@
   @include media-tablet-landscape-up {
     grid-template-columns: 2fr 2fr 3fr 3fr;
     grid-template-areas:
-      "inf-links cat-links social cont"
-      "inf-links cat-links pay    shop";
+      "inf-links cat-links     social cont"
+      "inf-links account-links pay    shop";
   }
 }
 
@@ -165,6 +165,10 @@
 
   .footer__catalog-links {
     grid-area: cat-links;
+  }
+
+  .footer__account-links {
+    grid-area: account-links;
   }
 
   .footer__pay {

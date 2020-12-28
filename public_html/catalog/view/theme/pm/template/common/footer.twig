@@ -1,3 +1,230 @@
+<footer class="footer" role="contentinfo">
+
+  <h2 class="visually-hidden">Общая информация</h2>
+
+  <div class="footer__inner">
+
+    <section class="footer__benefits">
+      <h3 class="visually-hidden">Наши преимущества</h3>
+      <ul class="footer__benefits-list">
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-delivery"></use>
+          </svg>
+          <div data-tooltip="Бесплатная доставка при сумме заказа от 100 рублей">Бесплатная доставка</div>
+        </li>
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-garant"></use>
+          </svg>
+          <div data-tooltip="На купленную в нашем магазине посуду предоставляется официальная гарантия. Мы в кратчайшие сроки разрешаем возникшие непредвиденные проблемы с товаром.">Гарантия качества</div>
+        </li>
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-24hours"></use>
+          </svg>
+          <div>Прием заказов круглосуточно</div>
+        </li>
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-exchange"></use>
+          </svg>
+          <div>Возврат товара</div>
+        </li>
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-placeholder"></use>
+          </svg>
+          <div data-tooltip="Более 20 пунктов самовывоза по всей Республике Беларусь">Удобные пункты самовывоза</div>
+        </li>
+        <li class="footer__benefits-item">
+          <svg class="footer__benefits-icon" width="32" height="32">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-gift"></use>
+          </svg>
+          <div>Бонусы за покупки покупки</div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="footer__subscribe">
+      <h3 class="visually-hidden">Подписка на нашу рассылку</h3>
+
+      <p class="footer__subscribe-text">
+        <svg class="footer__subscribe-icon" width="32" height="32">
+          <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-newsletter"></use>
+        </svg>
+        Подпишитесь на нашу рассылку и получайте информацию о скидках
+      </p>
+
+      <form class="footer__subscribe-form">
+        <label class="visually-hidden" for="subscribe-input">
+          <span>Ваш email</span>
+        </label>
+        <input class="footer__subscribe-input" id="subscribe-input" type="email" name="email" placeholder="Ваш email ..." required>
+        <button class="button button--action-primary" type="submit">Подписаться!</button>
+      </form>
+
+    </section>
+
+    <div class="footer__main">
+
+      <section class="footer__info-links footer__menu">
+        <h3 class="title title--3 footer__title">Информация</h3>
+        <ul class="footer__menu-list">
+          {% for information in informations %}
+            <li><a class="footer__menu-link" href="{{ information.href }}">{{ information.title }}</a></li>
+          {% endfor %}
+          <li><a class="footer__menu-link" href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
+          <li><a class="footer__menu-link" href="{{ special }}">{{ text_special }}</a></li>
+          <li><a class="footer__menu-link" href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+          {# <li><a class="footer__menu-link" href="{{ contact }}">{{ text_contact }}</a></li> #}
+        </ul>
+      </section>
+
+      <section class="footer__catalog-links footer__menu">
+        <h3 class="title title--3 footer__title">Отделы</h3>
+        <ul class="footer__menu-list">
+          <li>
+            {% for category in categories %}
+              <a class="footer__menu-link" href="{{ category.href }}">{{ category.name }}</a>
+            {% endfor %}
+          </li>
+        </ul>
+      </section>
+
+      <section class="footer__account-links">
+        <h3 class="title title--3 footer__title">Личный кабинет</h3>
+        <ul class="footer__menu-list">
+          <li><a class="footer__menu-link" href="{{ account }}">{{ text_account }}</a></li>
+          <li><a class="footer__menu-link" href="{{ return }}">{{ text_return }}</a></li>
+          {# <li><a class="footer__menu-link" href="{{ voucher }}">{{ text_voucher }}</a></li> #}
+          {# <li><a class="footer__menu-link" href="{{ affiliate }}">{{ text_affiliate }}</a></li> #}
+          <li><a class="footer__menu-link" href="{{ order }}">{{ text_order }}</a></li>
+          <li><a class="footer__menu-link" href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+          <li><a class="footer__menu-link" href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+        </ul>
+      </section>
+
+      <section class="footer__social">
+        <h3 class="title title--3 footer__title">Мы в социальных сетях, присоединяйтесь!</h3>
+        <ul class="footer__social-list">
+          <li class="footer__social-item">
+            <a class="footer__social-link" href="#" target="_blank" rel="noopener nofollow" title="Наш Вконтакте">
+              <span class="visually-hidden">Наша группа в ВК</span>
+              <svg class="footer__social-icon" width="32" height="32">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-vk"></use>
+              </svg>
+            </a>
+          </li>
+          <li class="footer__social-item">
+            <a class="footer__social-link" href="#" target="_blank" rel="noopener nofollow" title="Наш Фэйсбук">
+              <span class="visually-hidden">Наша группа в Фэйсбук</span>
+              <svg class="footer__social-icon" width="32" height="32">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-facebook"></use>
+              </svg>
+            </a>
+          </li>
+          <li class="footer__social-item">
+            <a class="footer__social-link" href="#" target="_blank" rel="noopener nofollow" title="Наш Одноклассники">
+              <span class="visually-hidden">Наша группа в Одноклассниках</span>
+              <svg class="footer__social-icon" width="32" height="32">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-ok"></use>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="footer__pay">
+        <h3 class="title title--3 footer__title">Мы принимаем к оплате:</h3>
+        <ul class="footer__pay-list">
+          <li class="footer__pay-item">
+            <svg class="footer__pay-icon" width="64" height="40">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-card-visa"></use>
+            </svg>
+            <span class="visually-hidden">Visa</span>
+          </li>
+          <li class="footer__pay-item">
+            <svg class="footer__pay-icon" width="64" height="40">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-card-mastercard"></use>
+            </svg>
+            <span class="visually-hidden">Mastercard</span>
+          </li>
+          <li class="footer__pay-item">
+            <svg class="footer__pay-icon" width="64" height="40">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-card-maestro"></use>
+            </svg>
+            <span class="visually-hidden">Maestro</span>
+          </li>
+          <li class="footer__pay-item">
+            <svg class="footer__pay-icon" width="64" height="40">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-erip"></use>
+            </svg>
+            <span class="visually-hidden">Ерип расчет</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="footer__contact">
+        <h3 class="title title--3 footer__title">Свяжитесь с нами</h3>
+        <ul class="footer__contact-list">
+          <li class="footer__contact-item">
+            <a class="footer__contact-link" href="tel:+375296810507">
+              <svg class="footer__contact-icon" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-a1"></use>
+              </svg>
+              +375-29-681-05-07
+            </a>
+          </li>
+          <li class="footer__contact-item">
+            <a class="footer__contact-link" href="tel:+375336810507">
+              <svg class="footer__contact-icon" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-mts"></use>
+              </svg>
+              +375-33-681-05-07
+            </a>
+          </li>
+          <li class="footer__contact-item">
+            <a class="footer__contact-link" href="tel:+375256810507">
+              <svg class="footer__contact-icon" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-life"></use>
+              </svg>
+              +375-25-681-05-07
+            </a>
+          </li>
+          <li class="footer__contact-item">
+            <a class="footer__contact-link" href="#">
+              <svg class="footer__contact-icon" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-viber"></use>
+              </svg>
+              posudamart.by
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="footer__shop-official">
+        ИП Лемеш Юрий Ренальдович <br>
+        Режим работы: Пн-Вс с 9:00 до 21:00 <br>
+        Свидетельство 193155682 выдано 23.10.2018 Минским горисполкомом,
+        УНП 193155682 <br>
+        220121 г. Минск ул. Притыцкого 49-110 <br>
+        Дата регистрации в Торговом реестре РБ: 18.01.2019
+      </p>
+    </div>
+
+
+  </div>
+
+</footer>
+
+
+
+
+
+
+
+{#
 <footer>
   <div class="container">
     <div class="row">
@@ -41,7 +268,11 @@
     <hr>
     <p>{{ powered }}</p>
   </div>
-</footer>
+</footer> #}
+
+
+
+
 <script src="catalog/view/theme/pm/js/script.js" type="module"></script>
 <script src="catalog/view/theme/pm/js/common.js"></script>
 <script src="catalog/view/theme/pm/js/common-next.js" type="module"></script>
@@ -56,7 +287,7 @@
       <!-- сюда вставлять содержимое -->
       <button class="button button--modal-close modal__close-button" type="button">
         <svg class="button__close-icon" width="48" height="48">
-          <use href="img/svg/_sprite.svg#icon-close"></use>
+          <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-close"></use>
         </svg>
       </button>
     </div>
