@@ -31,6 +31,12 @@ class ControllerExtensionModuleCarousel extends Controller {
 			$data['error_name'] = $this->error['name'];
 		} else {
 			$data['error_name'] = '';
+    }
+
+		if (isset($this->error['html_heading'])) {
+			$data['error_html_heading'] = $this->error['html_heading'];
+		} else {
+			$data['error_html_heading'] = '';
 		}
 
 		if (isset($this->error['width'])) {
@@ -87,6 +93,14 @@ class ControllerExtensionModuleCarousel extends Controller {
 			$data['name'] = $module_info['name'];
 		} else {
 			$data['name'] = '';
+    }
+
+		if (isset($this->request->post['html_heading'])) {
+			$data['html_heading'] = $this->request->post['html_heading'];
+		} elseif (!empty($module_info)) {
+			$data['html_heading'] = $module_info['html_heading'];
+		} else {
+			$data['html_heading'] = '';
 		}
 
 		if (isset($this->request->post['banner_id'])) {

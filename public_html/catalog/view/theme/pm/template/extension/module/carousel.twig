@@ -1,0 +1,28 @@
+<div class="page__section full-width">
+  <section class="page__slider">
+    {{html_heading}}
+    <div class="slider slider--minicards">
+      <div class="slider__list-container">
+        <ul class="slider__list">
+          {% for banner in banners %}
+            <li class="slider__item">
+              {% if banner.link %}
+                <a class="image-container image-container--ratio-1-2" href="{{ banner.link }}">
+                  <picture>
+                    <img class="image-container__image image-container__image--big-margins" loading="lazy" data-src="{{ banner.image }}" width="170" alt="{{ banner.title }}">
+                  </picture>
+                </a>
+              {% else %}
+                <p class="image-container image-container--ratio-1-2">
+                  <picture>
+                    <img class="image-container__image image-container__image--big-margins" loading="lazy" data-src="{{ banner.image }}" width="170" alt="{{ banner.title }}">
+                  </picture>
+                </p>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
