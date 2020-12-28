@@ -4,10 +4,11 @@
 @import "mixins";
 @import "global";
 @import "service"; // служебные блоки (visually-hidden и т.д.)
+@import "blocks/admin-content/admin-content";
+@import "grid";
 
 // Компоненты
 @import "blocks/title/title";
-@import "blocks/admin-content/admin-content";
 @import "blocks/button/button";
 @import "blocks/icon/icon";
 @import "blocks/image-container/image-container";
