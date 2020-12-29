@@ -11,8 +11,8 @@ class ControllerProductCategory extends Controller {
 		$this->load->model('catalog/product');
 
 		$this->load->model('tool/image');
-		
-		
+
+
 		$data['text_empty'] = $this->language->get('text_empty');
 
 		if (isset($this->request->get['filter'])) {
@@ -101,23 +101,23 @@ class ControllerProductCategory extends Controller {
 		$category_info = $this->model_catalog_category->getCategory($category_id);
 
 		if ($category_info) {
-			
+
 			if ($category_info['meta_title']) {
 				$this->document->setTitle($category_info['meta_title']);
 			} else {
 				$this->document->setTitle($category_info['name']);
 			}
-			
+
 			if ($category_info['noindex'] <= 0) {
 				$this->document->setRobots('noindex,follow');
 			}
-			
+
 			if ($category_info['meta_h1']) {
 				$data['heading_title'] = $category_info['meta_h1'];
 			} else {
 				$data['heading_title'] = $category_info['name'];
 			}
-			
+
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
 
@@ -164,11 +164,16 @@ class ControllerProductCategory extends Controller {
 				$filter_data = array(
 					'filter_category_id'  => $result['category_id'],
 					'filter_sub_category' => true
-				);
+        );
+
+        // if ($result['image']) {
+				// 	$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'));
+				// }
 
 				$data['categories'][] = array(
 					'name' => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-					'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url)
+          'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url),
+          'thumb'=> $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'))
 				);
 			}
 
@@ -362,7 +367,7 @@ class ControllerProductCategory extends Controller {
 			} else {
 				$this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'] . '&page='. $page), 'canonical');
 			}
-			
+
 			if ($page > 1) {
 			    $this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'] . (($page - 2) ? '&page='. ($page - 1) : '')), 'prev');
 			}
@@ -383,7 +388,7 @@ class ControllerProductCategory extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-			
+
 
 			$this->response->setOutput($this->load->view('product/category', $data));
 		} else {
