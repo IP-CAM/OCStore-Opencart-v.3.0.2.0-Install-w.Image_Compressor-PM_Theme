@@ -166,10 +166,6 @@ class ControllerProductCategory extends Controller {
 					'filter_sub_category' => true
         );
 
-        // if ($result['image']) {
-				// 	$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'));
-				// }
-
 				$data['categories'][] = array(
 					'name' => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
           'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url),
@@ -200,15 +196,27 @@ class ControllerProductCategory extends Controller {
 				}
 
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+          $price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+          $price_clean = $this->currency->format($result['price'], $this->session->data['currency'], '', true, true);
+          $price_before = floor($price_clean);
+          $price_after = explode('.', $price_clean)[1];
 				} else {
-					$price = false;
+          $price = false;
+          $price_clean = false;
+          $price_before = false;
+          $price_after = false;
 				}
 
 				if ((float)$result['special']) {
-					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+          $special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+          $special_clean = $this->currency->format($result['special'], $this->session->data['currency'], '', true, true);
+          $special_before = floor($special_clean);
+          $special_after = explode('.', $special_clean)[1];
 				} else {
-					$special = false;
+          $special = false;
+          $special_clean = false;
+          $special_before = false;
+          $special_after = false;
 				}
 
 				if ($this->config->get('config_tax')) {
@@ -218,7 +226,7 @@ class ControllerProductCategory extends Controller {
 				}
 
 				if ($this->config->get('config_review_status')) {
-					$rating = (int)$result['rating'];
+					$rating = $result['rating'];
 				} else {
 					$rating = false;
 				}
@@ -227,13 +235,23 @@ class ControllerProductCategory extends Controller {
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'name'        => $result['name'],
-					'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
+          'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
+          'attribute_groups' => $this->model_catalog_product->getProductAttributes($result['product_id']),
 					'price'       => $price,
 					'special'     => $special,
-					'tax'         => $tax,
+          'tax'         => $tax,
+					'rating'      => $rating,
+          'rating_percent' => (100 * $rating / 5) .'%',
+          'reviews'     => $result['reviews'],
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
-					'rating'      => $result['rating'],
-					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
+          'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
+          'manufacturer' => $result['manufacturer'],
+          'price_clean'    => $price_clean,
+          'price_before'   => $price_before,
+          'price_after'    => $price_after,
+          'special_clean'  => $special_clean,
+          'special_before' => $special_before,
+          'special_after'  => $special_after
 				);
 			}
 
