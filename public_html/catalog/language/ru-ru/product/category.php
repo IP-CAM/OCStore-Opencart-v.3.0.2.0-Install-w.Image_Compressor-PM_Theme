@@ -3,7 +3,7 @@
 // *	@license	GNU General Public License version 3; see LICENSE.txt
 
 // Text
-$_['text_refine']       = 'Выберите подкатегорию';
+$_['text_refine']       = 'Подкатегории товаров';
 $_['text_product']      = 'Товары';
 $_['text_error']        = 'Категория не найдена!';
 $_['text_empty']        = 'В этой категории нет товаров.';
