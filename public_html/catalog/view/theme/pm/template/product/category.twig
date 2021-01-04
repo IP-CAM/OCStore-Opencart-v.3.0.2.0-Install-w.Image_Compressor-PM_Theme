@@ -16,51 +16,622 @@
     </ol>
   </nav>
 
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
+  <header class="page-goods__title-container">
+    <h1 class="title title--1 page-goods__title">{{ heading_title }}</h1>
+    <span class="page-goods__subtitle">235 товаров</span>
+  </header>
+
+
+  {{ column_left }}
+
+  {{ content_top }}
+
+  <section class="page-goods__category-list">
+    <h2 class="visually-hidden">{{ text_refine }}</h2>
+    {% if categories %}
+      <ul class="category-list">
+        {% for category in categories %}
+          <li class="category-list__item">
+            <a class="category-list__link" href="{{ category.href }}">
+              <figure class="category-list__figure">
+                <div class="category-list__image-container">
+                  <picture>
+                    <img class="category-list__image" src="{{ category.thumb }}" width="40" alt="Перейти в раздел {{ category.name }}">
+                  </picture>
+                </div>
+                <figcaption class="category-list__name">{{ category.name }}</figcaption>
+              </figure>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
-      {% if thumb or description %}
-      <div class="row"> {% if thumb %}
-        <div class="col-sm-2"><img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
-        {% endif %}
-        {% if description %}
-        <div class="col-sm-10">{{ description }}</div>
-        {% endif %}</div>
-      <hr>
-      {% endif %}
-      {% if categories %}
-      <h3>{{ text_refine }}</h3>
-      {% if categories|length <= 5 %}
-      <div class="row">
-        <div class="col-sm-3">
-          <ul>
-            {% for category in categories %}
-            <li><a href="{{ category.href }}">{{ category.name }}</a></li>
-            {% endfor %}
-          </ul>
+  </section>
+
+  <section class="often-looking page-goods__often-looking">
+    <h2 class="visually-hidden">Популярные подборки товаров</h2>
+    <strong class="often-looking__label">Часто ищут:</strong>
+    <ul class="often-looking__list">
+      <li class="often-looking__item">
+        <a class="link" href="#">для индукционной плиты</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">качественная</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">цена / качество</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">из нержавеющей стали</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">толстые стенки</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">лидеры продаж</a>
+      </li>
+      <li class="often-looking__item">
+        <a class="link" href="#">металлические ручки</a>
+      </li>
+    </ul>
+  </section>
+
+  {# ? фильтр #}
+  <section class="filter page-goods__filter" id="modalFilter">
+      <header class="filter__header">
+        <h2 class="title title--4 filter__title">Подбор товаров</h2>
+        <span class="filter__header-subtitle">Найдено: </span>
+        <span class="filter__header-subtitle">235</span>
+        <span class="filter__header-subtitle">товаров</span>
+      </header>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Бренд
+        </h3>
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="BergHOFF">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">BergHOFF</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="Peterhoff">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">Peterhoff</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="Zillinger">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">Zillinger</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Цена
+        </h3>
+
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price1">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">до 50 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price2">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 50 до 100 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price3">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 100 до 150 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price4">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 150 до 200 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price5">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 200 до 300 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="price6">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">свыше 300 руб.</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <div class="filter__range-inputs">
+              <div class="textfield filter__range-textfield">
+                <label class="textfield__input-container">
+                  <input class="textfield__input" type="number" value="1" min="1" max="1000" placeholder=" ">
+                  <span class="textfield__label">Минимум</span>
+                </label>
+              </div>
+              <span class="filter__range-inputs-between">до</span>
+              <div class="textfield filter__range-textfield">
+                <label class="textfield__input-container">
+                  <input class="textfield__input" type="number" value="10000" min="1" max="1000" placeholder=" ">
+                  <span class="textfield__label">Максимум</span>
+                </label>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Материал
+        </h3>
+
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio1" value="1" checked>
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Металл</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio1" value="2">
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Пластик</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio1" value="3">
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Дерево</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Тип комфорок
+        </h3>
+
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio3" value="1" checked>
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Электрическая</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio3" value="2">
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Индукционная</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio3" value="3">
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Газовая</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Ручки
+        </h3>
+
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio4" value="1" checked>
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Съемные</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="radio" name="radio4" value="2">
+              <span class="radiocheck__box radiocheck__box--radio"></span>
+              <span class="radiocheck__caption">Стационарные</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Количество предметов
+        </h3>
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq1">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">до 4</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq2">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 4 до 6</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq3">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 6 до 10</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq4">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 10 до 12</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq5">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 12 и выше</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <section class="filter__single-filter">
+        <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+          Количество предметов
+        </h3>
+        <ul class="filter__list">
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq1">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">до 4</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq2">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 4 до 6</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq3">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 6 до 10</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq4">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 10 до 12</span>
+            </label>
+          </li>
+          <li class="filter__item">
+            <label class="radiocheck">
+              <input class="radiocheck__input visually-hidden" type="checkbox" name="checkq5">
+              <span class="radiocheck__box radiocheck__box--check"></span>
+              <span class="radiocheck__caption">от 12 и выше</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+
+      <div class="filter__footer">
+        <button class="link filter__button-clear">Очистить</button>
+        <button class="button button--options-primary filter__button-submit" type="button">Применить</button>
+      </div>
+  </section>
+
+  {% if products %}
+  <article class="minicard-list page-goods__minicard-list">
+    <h2 class="visually-hidden">{{ category.name }} - предложения товаров</h2>
+
+    <section class="product-control minicard-list__product-control">
+
+      <h3 class="visually-hidden">Настройки показа предложений</h3>
+
+      <div class="product-control__element product-control__switch-view switch-view">
+        <span class="switch-view__label">Вид каталога:</span>
+        <label class="switch-view__box">
+          <span class="visually-hidden">Сетка</span>
+          <input class="switch-view__input switch-view__input--grid visually-hidden" type="radio" name="radio-view" value="1" checked>
+          <svg class="switch-view__icon" width="24" height="24" viewbox="0 0 24 24" stroke-width="2" stroke="#888" fill="none" aria-hidden="true">
+            <rect width="5" height="5" x="5" y="5" />
+            <rect width="5" height="5" x="5" y="14" />
+            <rect width="5" height="5" x="14" y="5" />
+            <rect width="5" height="5" x="14" y="14" />
+          </svg>
+        </label>
+
+        <label class="switch-view__box">
+          <span class="visually-hidden">Список</span>
+          <input class="switch-view__input switch-view__input--list visually-hidden" type="radio" name="radio-view" value="2">
+          <svg class="switch-view__icon" width="24" height="24" viewbox="0 0 24 24" stroke-width="2" stroke="#888" fill="none" aria-hidden="true">
+            <rect width="5" height="5" x="5" y="5" />
+            <rect width="5" height="5" x="5" y="14" />
+            <line x1="14" y1="5" x2="20" y2="5" />
+            <line x1="14" y1="9" x2="20" y2="9" />
+            <line x1="14" y1="14" x2="20" y2="14" />
+            <line x1="14" y1="18" x2="20" y2="18" />
+          </svg>
+        </label>
+      </div>
+
+      <div class="product-control__element product-control__quantity">
+        <div class="chip-set">
+          <span class="chip-set__element chip-set__label">{{ text_limit }}</span>
+          {% for limits in limits %}
+            {% if limits.value == limit %}
+              <label class="chip-set__element chip-set__chip">
+                <input class="chip-set__input visually-hidden" type="radio" name="chip-quantity" value="{{ limits.href }}" checked>
+                <div class="chip-set__box chip-set__box--base">{{ limits.text }}</div>
+              </label>
+            {% else %}
+              <label class="chip-set__element chip-set__chip">
+                <input class="chip-set__input visually-hidden" type="radio" name="chip-quantity" value="{{ limits.href }}" onchange="window.location = this.value;">
+                <div class="chip-set__box chip-set__box--base">{{ limits.text }}</div>
+              </label>
+            {% endif %}
+          {% endfor %}
+          <span class="chip-set__element chip-set__label">товаров</span>
         </div>
       </div>
-      {% else %}
-      <div class="row">{% for category in categories|batch((categories|length / 4)|round(1, 'ceil')) %}
-        <div class="col-sm-3">
-          <ul>
-            {% for child in category %}
-            <li><a href="{{ child.href }}">{{ child.name }}</a></li>
-            {% endfor %}
-          </ul>
+
+      {# ? кнопка вызова фильтра #}
+      <button class="product-control__element button button--options-primary product-control__filter-button" type="button" data-modal="#modalFilter" data-modal-position="left">
+        <span class="button__caption">Фильтр</span>
+        <svg class="button__icon" width="24" height="24">
+          <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-filter"></use>
+        </svg>
+      </button>
+
+      {# ? сортировка #}
+      <div class="product-control__element">
+        <div class="product-control__sort chip-set">
+          <span class="chip-set__element chip-set__label">{{ text_sort }}</span>
+          {% for sorts in sorts %}
+            {% if sorts.value == '%s-%s'|format(sort, order) %}
+              <label class="chip-set__element chip-set__chip">
+                <input class="chip-set__input visually-hidden" type="radio" name="chip-sort" value="{{ sorts.href }}" checked>
+                <div class="chip-set__box chip-set__box--base">{{ sorts.text }}</div>
+              </label>
+            {% else %}
+              <label class="chip-set__element chip-set__chip">
+                <input class="chip-set__input visually-hidden" type="radio" name="chip-sort" value="{{ sorts.href }}" onchange="window.location = this.value;">
+                <div class="chip-set__box chip-set__box--base">{{ sorts.text }}</div>
+              </label>
+            {% endif %}
+          {% endfor %}
         </div>
-        {% endfor %}</div>
-      <br />
-      {% endif %}
-      {% endif %}
-      {% if products %}
+      </div>
+
+
+
+
+
+      {# <label class="input-group-addon" for="input-sort">{{ text_sort }}</label>
+      <select id="input-sort" class="form-control" onchange="location = this.value;">
+        {% for sorts in sorts %}
+        {% if sorts.value == '%s-%s'|format(sort, order) %}
+        <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+        {% else %}
+        <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+        {% endif %}
+        {% endfor %}
+      </select> #}
+
+
+
+
+
+
+
+
+
+
+      {# ? фильтр #}
+      <div class="product-control__element">
+        <div class="product-control__filter-chips chip-set">
+          <button class="chip-set__element link" type="button">Очистить фильтр</button>
+
+          <label class="chip-set__element chip-set__chip">
+            <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="1" checked>
+            <div class="chip-set__box chip-set__box--filter">
+              <span class="chip-set__box-caption">от 100 до 200 р.</span>
+              <svg class="chip-set__icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-close"></use>
+              </svg>
+            </div>
+          </label>
+
+          <label class="chip-set__element chip-set__chip">
+            <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="2" checked>
+            <div class="chip-set__box chip-set__box--filter">
+              <span class="chip-set__box-caption">BergHOFF</span>
+              <svg class="chip-set__icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-close"></use>
+              </svg>
+            </div>
+          </label>
+
+          <label class="chip-set__element chip-set__chip">
+            <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="3" checked>
+            <div class="chip-set__box chip-set__box--filter">
+              <span class="chip-set__box-caption">Нержавеющая сталь</span>
+              <svg class="chip-set__icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-close"></use>
+              </svg>
+            </div>
+          </label>
+
+          <label class="chip-set__element chip-set__chip">
+            <input class="chip-set__input visually-hidden" type="checkbox" name="chip-filter" value="4" checked>
+            <div class="chip-set__box chip-set__box--filter">
+              <span class="chip-set__box-caption">от 3 до 4 предметов</span>
+              <svg class="chip-set__icon" width="24" height="24">
+                <use href="img/svg/_sprite.svg#icon-close"></use>
+              </svg>
+            </div>
+          </label>
+        </div>
+      </div>
+
+    </section>
+
+    <ul class="minicard-list__list minicard-list__list--grid">
+      {% for product in products %}
+        <li class="minicard-list__item">
+          <div class="minicard-list__item-inner">
+            <div class="minicard minicard--grid">
+              <a class="minicard__link" href="{{ product.href }}">
+                <h3 class="minicard__title">{{ product.name }}</h3>
+                <p class="image-container minicard__image-container">
+                  <picture>
+                    <img class="image-container__image" data-src="{{ product.thumb }}" loading="lazy" alt="Открыть страницу покупки {{ product.name }}" width="244">
+                  </picture>
+                </p>
+              </a>
+
+              {% if product.product_xdstickers is not empty %}
+                <div class="product-stickers">
+                  {% for xdsticker in product.product_xdstickers %}
+                    <strong class="product-stickers__sticker {{xdsticker.id}}">{{xdsticker.text}}</strong>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <p class="minicard__brand">
+                <span>Бренд:</span>
+                <span>{{ product.manufacturer }}</span>
+              </p>
+
+              {% if product.attribute_groups %}
+                {% set invalid_attr_id = [8] %}
+                <dl class="minicard__options">
+                  {% for attribute_group in product.attribute_groups %}
+                    {% if attribute_group.attribute_group_id not in invalid_attr_id %}
+                      {# не более 3 атрибутов #}
+                      {% for attribute in attribute_group.attribute|slice(0, 3) %}
+                        <dt class="minicard__options-dt">{{ attribute.name }}</dt>
+                        <dd class="minicard__options-dd">{{ attribute.text }}</dd>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                </dl>
+              {% endif %}
+
+              {% if product.price %}
+                {% if not product.special %}
+                  {# без акции #}
+                  <p class="price minicard__price">
+                    <span class="price__current" aria-label="Текущая цена: ">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
+                  </p>
+                {% else %}
+                  {# акция #}
+                  <p class="price minicard__price">
+                    <span class="price__current price__current--discount" aria-label="Текущая цена по акции: ">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
+                    <del class="price__old" aria-label="Цена без скидки: ">{{ product.price }}</del>
+                  </p>
+                {% endif %}
+              {% endif %}
+
+              {% if product.rating %}
+                <div class="stars stars--short minicard__stars">
+                  <span class="stars__elem stars__average-rating-caption">Средняя оценка:</span>
+                  <div class="stars__group stars__elem">
+                    <div class="stars__rating" style="width: {{product.rating_percent}}">
+                      <div class="stars__scale"></div>
+                    </div>
+                  </div>
+                  <span class="stars__elem stars__average-rating">{{product.rating}}</span>
+                  <a class="stars__elem stars__review-link link" href="product.html#reviews-title">
+                    <span class="visually-hidden">Количество отзывов:</span>
+                    <span>{{product.reviews}}</span>
+                    <span class="stars__quantity-caption">отзывов</span>
+                  </a>
+                </div>
+              {% endif %}
+
+              {# ! к доработке #}
+              <p class="minicard__delivery-info">
+                Доставка: сегодня после 18-00, бесплатно
+              </p>
+
+              <button class="button minicard__love-button" type="button" onclick="window.newwishlist.add('{{ product.product_id }}');">
+                <span class="visually-hidden">Добавить в избранные товары</span>
+                <svg class="minicard__love-icon icon icon--stroked" width="24" height="24">
+                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {{ pagination }}
+
+  </article>
+  {% endif %}
+
+</main>
+
+{{ footer }}
+
+
+
+      {# {% if thumb or description %}
+        <div class="row">
+          {% if thumb %}
+            <div class="col-sm-2"><img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
+          {% endif %}
+          {% if description %}
+            <div class="col-sm-10">{{ description }}</div>
+          {% endif %}
+        </div>
+        <hr>
+      {% endif %} #}
+
+
+      {# панель управления каталогом #}
+      {# {% if products %}
       <div class="row">
         <div class="col-md-2 col-sm-6 hidden-xs">
           <div class="btn-group btn-group-sm">
@@ -75,31 +646,13 @@
           <div class="form-group input-group input-group-sm">
             <label class="input-group-addon" for="input-sort">{{ text_sort }}</label>
             <select id="input-sort" class="form-control" onchange="location = this.value;">
-
-
-
               {% for sorts in sorts %}
               {% if sorts.value == '%s-%s'|format(sort, order) %}
-
-
-
               <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
-
-
-
               {% else %}
-
-
-
               <option value="{{ sorts.href }}">{{ sorts.text }}</option>
-
-
-
               {% endif %}
               {% endfor %}
-
-
-
             </select>
           </div>
         </div>
@@ -107,68 +660,62 @@
           <div class="form-group input-group input-group-sm">
             <label class="input-group-addon" for="input-limit">{{ text_limit }}</label>
             <select id="input-limit" class="form-control" onchange="location = this.value;">
-
-
-
               {% for limits in limits %}
               {% if limits.value == limit %}
-
-
-
               <option value="{{ limits.href }}" selected="selected">{{ limits.text }}</option>
-
-
-
               {% else %}
-
-
-
               <option value="{{ limits.href }}">{{ limits.text }}</option>
-
-
-
               {% endif %}
               {% endfor %}
-
-
-
             </select>
           </div>
         </div>
-      </div>
-      <div class="row"> {% for product in products %}
-        <div class="product-layout product-list col-xs-12">
-          <div class="product-thumb">
-            <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
-            <div>
-              <div class="caption">
-                <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
-                <p>{{ product.description }}</p>
-                {% if product.price %}
-                <p class="price"> {% if not product.special %}
-                  {{ product.price }}
-                  {% else %} <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span> {% endif %}
-                  {% if product.tax %} <span class="price-tax">{{ text_tax }} {{ product.tax }}</span> {% endif %} </p>
-                {% endif %}
-                {% if product.rating %}
-                <div class="rating"> {% for i in 1..5 %}
-                  {% if product.rating < i %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>{% endif %}
-                  {% endfor %} </div>
-                {% endif %} </div>
-              <div class="button-group">
-                <button type="button" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span></button>
-                <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart"></i></button>
-                <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="fa fa-exchange"></i></button>
+      </div> #}
+
+
+
+
+      {# <div class="row">
+        {% for product in products %}
+          <div class="product-layout product-list col-xs-12">
+            <div class="product-thumb">
+              <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
+              <div>
+                <div class="caption">
+                  <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                  <p>{{ product.description }}</p>
+                  {% if product.price %}
+                  <p class="price"> {% if not product.special %}
+                    {{ product.price }}
+                    {% else %} <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span> {% endif %}
+                    {% if product.tax %} <span class="price-tax">{{ text_tax }} {{ product.tax }}</span> {% endif %} </p>
+                  {% endif %}
+                  {% if product.rating %}
+                  <div class="rating"> {% for i in 1..5 %}
+                    {% if product.rating < i %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>{% endif %}
+                    {% endfor %} </div>
+                  {% endif %} </div>
+                <div class="button-group">
+                  <button type="button" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span></button>
+                  <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart"></i></button>
+                  <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="fa fa-exchange"></i></button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {% endfor %} </div>
-      <div class="row">
+        {% endfor %}
+      </div> #}
+
+
+
+
+
+      {# <div class="row">
         <div class="col-sm-6 text-left">{{ pagination }}</div>
         <div class="col-sm-6 text-right">{{ results }}</div>
       </div>
       {% endif %}
+
       {% if not categories and not products %}
       <p>{{ text_empty }}</p>
       <div class="buttons">
@@ -176,6 +723,4 @@
       </div>
       {% endif %}
       {{ content_bottom }}</div>
-    {{ column_right }}</div>
-</main>
-{{ footer }}
+    {{ column_right }}</div> #}
