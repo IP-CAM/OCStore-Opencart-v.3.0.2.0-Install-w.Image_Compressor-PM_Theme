@@ -1,0 +1,12 @@
+<section class="filter__single-filter" id="option-{{ option.option_id }}">
+  <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+    {{ option.name }}
+  </h3>
+  {% if option.type == 'slide' or option.type == 'slide_dual' %}
+    <div class="filter__item-container filter__tooltip-positioner">
+      {% include 'pm/template/extension/module/ocfilter/filter_slider_item.twig' %}
+    </div>
+  {% else %}
+    {% include 'pm/template/extension/module/ocfilter/value_list.twig' %}
+  {% endif %}
+</section>

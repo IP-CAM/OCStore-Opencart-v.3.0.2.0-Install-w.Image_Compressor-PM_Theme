@@ -1,0 +1,155 @@
+{% if value.selected %}
+  {# checked #}
+  {% if option.type == 'checkbox' %}
+    <label class="radiocheck filter__checkbox filter__checkbox--selected" data-option-id="{{ option.option_id }}" data-option-value-id="{{ value.id }}">
+      <input class="radiocheck__input visually-hidden" type="checkbox" checked autocomplete="off">
+      <span class="radiocheck__box radiocheck__box--check"></span>
+      <span class="radiocheck__caption">
+        {{ value.name }}
+        {% if show_counter %}
+          <span class="filter__product-count" aria-label="Количество вариантов">
+            {% if value.count %}
+              {{ value.count }}
+            {% else %}
+              0
+            {% endif %}
+          </span>
+        {% endif %}
+      </span>
+    </label>
+  {% else %}
+    <label class="radiocheck filter__radio filter__radio--selected" data-option-id="{{ option.option_id }}" data-option-value-id="{{ value.id }}">
+      <input class="radiocheck__input visually-hidden" type="radio" name="ocf[{{ option.option_id }}]" checked autocomplete="off">
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+      <span class="radiocheck__caption">
+        {{ value.name }}
+        {% if show_counter %}
+          <span class="filter__product-count" aria-label="Количество вариантов">
+            {% if value.count %}
+              {{ value.count }}
+            {% else %}
+              0
+            {% endif %}
+          </span>
+        {% endif %}
+      </span>
+    </label>
+  {% endif %}
+
+
+{% else %}
+  {# not checked #}
+  {% if option.type == 'checkbox' %}
+    <label class="radiocheck filter__checkbox" data-option-id="{{ option.option_id }}" data-option-value-id="{{ value.id }}">
+      <input class="radiocheck__input visually-hidden" type="{{ option.type }}" autocomplete="off">
+      <span class="radiocheck__box radiocheck__box--check"></span>
+      <span class="radiocheck__caption">
+        {{ value.name }}
+        {% if show_counter %}
+          <span class="filter__product-count" aria-label="Количество вариантов">
+            {% if value.count %}
+              {{ value.count }}
+            {% else %}
+              0
+            {% endif %}
+          </span>
+        {% endif %}
+      </span>
+    </label>
+  {% else %}
+    <label class="radiocheck filter__radio" data-option-id="{{ option.option_id }}" data-option-value-id="{{ value.id }}">
+      <input class="radiocheck__input visually-hidden" type="radio" name="ocf[{{ option.option_id }}]" autocomplete="off">
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+      <span class="radiocheck__caption">
+        {{ value.name }}
+        {% if show_counter %}
+          <span class="filter__product-count" aria-label="Количество вариантов">
+            {% if value.count %}
+              {{ value.count }}
+            {% else %}
+              0
+            {% endif %}
+          </span>
+        {% endif %}
+      </span>
+    </label>
+  {% endif %}
+{% endif %}
+
+
+{# {% else %} #}
+  {# not checked && количество == 0 #}
+  {# <label class="radiocheck filter__radiocheck" data-option-id="{{ option.option_id }}">
+    <input class="radiocheck__input visually-hidden" type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="" disabled autocomplete="off">
+    {% if option.type == 'checkbox' %}
+      <span class="radiocheck__box radiocheck__box--check"></span>
+    {% else %}
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+    {% endif %}
+    <span class="radiocheck__caption">
+      {{ value.name }}
+      {% if show_counter %}
+        <span class="filter__product-count" aria-label="Количество вариантов">0</span>
+      {% endif %}
+    </span>
+  </label>
+{% endif %} #}
+
+
+
+
+
+
+{# {% if value.selected %} #}
+
+  {# checked item #}
+
+  {# <label class="radiocheck filter__element filter__element--selected" data-option-id="{{ option.option_id }}">
+    <input class="radiocheck__input visually-hidden" type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="{{ value.params }}" checked autocomplete="off">
+    {% if option.type == 'checkbox' %}
+      <span class="radiocheck__box radiocheck__box--check"></span>
+    {% else %}
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+    {% endif %}
+    <span class="radiocheck__caption">{{ value.name }}</span>
+  </label>
+{% elseif value.count %} #}
+
+  {# not checked && количество > 0 #}
+
+
+  {# <label class="radiocheck filter__element" data-option-id="{{ option.option_id }}">
+    <input class="radiocheck__input visually-hidden" type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="{{ value.params }}" autocomplete="off">
+    {% if option.type == 'checkbox' %}
+      <span class="radiocheck__box radiocheck__box--check"></span>
+    {% else %}
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+    {% endif %}
+    <span class="radiocheck__caption">
+      {{ value.name }}
+      {% if show_counter %}
+        <span class="filter__product-count" aria-label="Количество вариантов">{{ value.count }}</span>
+      {% endif %}
+    </span>
+  </label>
+{% else %} #}
+
+
+  {# not checked && количество == 0 #}
+
+
+  {# <label class="radiocheck filter__element" data-option-id="{{ option.option_id }}">
+    <input class="radiocheck__input visually-hidden" type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="" disabled autocomplete="off">
+    {% if option.type == 'checkbox' %}
+      <span class="radiocheck__box radiocheck__box--check"></span>
+    {% else %}
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+    {% endif %}
+    <span class="radiocheck__caption">
+      {{ value.name }}
+      {% if show_counter %}
+        <span class="filter__product-count" aria-label="Количество вариантов">0</span>
+      {% endif %}
+    </span>
+  </label>
+{% endif %} #}

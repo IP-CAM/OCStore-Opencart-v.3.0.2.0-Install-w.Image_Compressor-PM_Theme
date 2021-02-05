@@ -1,0 +1,26 @@
+<div class="filter__range-inputs">
+  <div class="textfield filter__range-textfield">
+    <label class="textfield__input-container">
+      <input class="textfield__input" value="{{ option.slide_value_min_get }}" type="number" autocomplete="off">
+      <span class="textfield__label">От</span>
+    </label>
+  </div>
+  <span class="filter__range-inputs-between" aria-hidden="true">—</span>
+  <div class="textfield filter__range-textfield">
+    <label class="textfield__input-container">
+      <input class="textfield__input" value="{{ option.slide_value_max_get }}" type="number" autocomplete="off">
+      <span class="textfield__label">До</span>
+    </label>
+  </div>
+</div>
+
+<div class="nouislider"
+  data-option-id="{{ option.option_id }}"
+  data-start-min="{{ option.slide_value_min_get }}"
+  data-start-max="{{ option.slide_value_max_get }}"
+  data-range-min="{{ option.slide_value_min }}"
+  data-range-max="{{ option.slide_value_max }}"
+  {# id элемента, куда выводится значение #}
+  {# data-element-min="#left-value-{{ option.option_id }}" #}
+  {# data-element-max="#right-value-{{ option.option_id }}"> #}
+</div>

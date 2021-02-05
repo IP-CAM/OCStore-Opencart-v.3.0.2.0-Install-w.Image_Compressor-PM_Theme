@@ -1,0 +1,53 @@
+{% if options or show_price %}
+
+<section class="filter page-goods__filter" id="ocfilter">
+  {# <div class="panel-heading">{{ heading_title }}</div> #}
+  <header class="filter__header">
+    <h2 class="title title--4 filter__title">Подбор товаров</h2>
+    {# <span class="filter__header-subtitle">Найдено: </span> #}
+    <span class="filter__header-subtitle" data-filter-count>фильтр</span>
+  </header>
+  {# ?
+  <div class="hidden" id="ocfilter-button">
+    <button class="btn btn-primary disabled" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Загрузка.."></button>
+  </div> #}
+
+  {# примененные фильры (chip-set) #}
+  {% include 'pm/template/extension/module/ocfilter/selected_filter.twig' %}
+
+  {% include 'pm/template/extension/module/ocfilter/filter_price.twig' %}
+
+  {% include 'pm/template/extension/module/ocfilter/filter_list.twig' %}
+
+  <div class="filter__footer filter__footer--hidden">
+    <button class="link filter__button-clear" onclick="window.location = '{{ link }}';">Очистить</button>
+    <button class="button button--options-primary filter__button-submit" type="button">Применить</button>
+  </div>
+
+</section>
+
+<script>
+  const options = {
+    php: {
+      searchButton : {{ search_button ? 'true' : 'false' }},
+      showPrice    : {{ show_price ? 'true' : 'false' }},
+      showCounter  : {{ show_counter ? 'true' : 'false' }},
+      manualPrice  : {{ manual_price ? 'true' : 'false' }},
+      link         : '{{ link }}',
+      path         : '{{ path }}',
+      params       : '{{ params }}',
+      index        : '{{ index }}'
+    },
+    text: {
+      show_all: '{{ text_show_all }}',
+      hide    : '{{ text_hide }}',
+      load    : '{{ text_load }}',
+      any     : '{{ text_any }}',
+      select  : '{{ button_select }}'
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => window.projectObjects.filter.init(options));
+</script>
+
+{% endif %}

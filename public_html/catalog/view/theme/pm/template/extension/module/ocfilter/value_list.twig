@@ -1,0 +1,13 @@
+{% set values = option.values %}
+
+{% if show_values_limit > 0 and option.values|length > show_values_limit %}
+  <ul class="filter__item-container filter__list" data-showmore data-showmore-action="hideNodes" data-showmore-nodes="{{ show_values_limit }}" data-showmore-button-class="link link--nounderline filter__showmore-button" data-showmore-showtext="Все варианты ({{ option.values|length }})">
+{% else %}
+  <ul class="filter__item-container filter__list">
+{% endif %}
+  {% for value in values %}
+    <li class="filter__item filter__tooltip-positioner">
+      {% include 'pm/template/extension/module/ocfilter/value_item.twig' %}
+    </li>
+  {% endfor %}
+</ul>

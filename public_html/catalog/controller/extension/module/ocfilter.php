@@ -58,13 +58,13 @@ class ControllerExtensionModuleOCFilter extends Controller {
     	$data['show_options_limit'] = $this->config->get('module_ocfilter_show_options_limit');
 		} else {
       $data['show_options_limit'] = false;
-		}
+    }
 
-    $this->document->addStyle('catalog/view/javascript/ocfilter/nouislider.min.css');
-    $this->document->addStyle('catalog/view/theme/default/stylesheet/ocfilter/ocfilter.css');
+    // $this->document->addStyle('catalog/view/javascript/ocfilter/nouislider.min.css');
+    // $this->document->addStyle('catalog/view/theme/default/stylesheet/ocfilter/ocfilter.css');
 
-    $this->document->addScript('catalog/view/javascript/ocfilter/nouislider.min.js');
-    $this->document->addScript('catalog/view/javascript/ocfilter/ocfilter.js');
+    // $this->document->addScript('catalog/view/javascript/ocfilter/nouislider.min.js');
+    // $this->document->addScript('catalog/view/javascript/ocfilter/ocfilter.js');
 
 		return $this->load->view('extension/module/ocfilter/module', $data);
 	}

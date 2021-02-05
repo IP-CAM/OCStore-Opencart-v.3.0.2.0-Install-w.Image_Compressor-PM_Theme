@@ -1,0 +1,25 @@
+{% if selecteds %}
+  <script>
+    const resetFilterHtml = `
+        <div class="product-control__element">
+          <div class="product-control__filter-chips chip-set">
+            <button class="chip-set__element link" type="button" onclick="window.location = '{{ link }}';">Очистить фильтр</button>
+            {% for option in selecteds %}
+              {% for value in option.values %}
+                <label class="chip-set__element chip-set__chip">
+                  <input class="chip-set__input visually-hidden" type="checkbox" checked onchange="window.location = '{{ value.href }}';">
+                  <div class="chip-set__box chip-set__box--filter">
+                    <span class="chip-set__box-caption">{{ value.name }}</span>
+                    <svg class="chip-set__icon" width="24" height="24">
+                      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-close"></use>
+                    </svg>
+                  </div>
+                </label>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>`
+    const parentElement = document.querySelector('.product-control');
+    if (parentElement) parentElement.insertAdjacentHTML('beforeend', resetFilterHtml);
+  </script>
+{% endif %}

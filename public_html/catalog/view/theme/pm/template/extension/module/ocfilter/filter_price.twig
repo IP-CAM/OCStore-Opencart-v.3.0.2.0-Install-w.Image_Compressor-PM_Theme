@@ -1,0 +1,40 @@
+{% if show_price %}
+  <section class="filter__single-filter">
+    <h3 class="title title--5 filter__single-filter-title accordion" data-accordion-open="500">
+      {{ text_price }}
+    </h3>
+
+    <div class="filter__item-container filter__tooltip-positioner">
+      <div class="filter__range-inputs">
+        <div class="textfield filter__range-textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" value="{{ min_price_get }}" type="number" autocomplete="off">
+            <span class="textfield__label">От</span>
+          </label>
+        </div>
+        <span class="filter__range-inputs-between" aria-hidden="true">—</span>
+        <div class="textfield filter__range-textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" value="{{ max_price_get }}" type="number" autocomplete="off">
+            <span class="textfield__label">До</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="nouislider"
+        data-option-id="p"
+        data-start-min="{{ min_price_get }}"
+        data-start-max="{{ max_price_get }}"
+        data-range-min="{{ min_price }}"
+        data-range-max="{{ max_price }}"
+        {# id элемента, куда выводится значение, в оригинале - span, у меня не используется #}
+        {# data-element-min="#price-from" #}
+        {# data-element-max="#price-to" #}
+        {# в оригинале - input, в который выводится значение, у меня находятся по структуре в js #}
+        {# data-control-min="#price-from" #}
+        {# data-control-max="#price-to" #}
+        >
+      </div>
+    </div>
+  </section>
+{% endif %}

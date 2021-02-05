@@ -1,3 +1,13 @@
+@keyframes showFilterTooltip {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .filter {
   @include media-tablet-landscape-down {
     padding: 0 var(--page-paddings);
@@ -37,6 +47,7 @@
 .filter__footer {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
 
   @include media-tablet-landscape-down {
     position: sticky;
@@ -51,6 +62,11 @@
   @include media-desktop-up {
     margin-top: $space;
   }
+}
+
+
+.filter__footer--hidden {
+  display: none;
 }
 
 
@@ -84,12 +100,7 @@
   font-size: 0.875rem;
 }
 
-
-.filter__list {
-  margin: 0 0 $space*2 $space;
-  padding: 0;
-  list-style: none;
-
+.filter__item-container {
   @include media-tablet-landscape-down {
     margin: 0 0 $space*2 $space;
   }
@@ -97,6 +108,11 @@
   @include media-desktop-up {
     margin: 0 0 $space*1.5 0;
   }
+}
+
+.filter__list {
+  padding: 0;
+  list-style: none;
 }
 
 .filter__item {
@@ -111,11 +127,16 @@
   }
 }
 
+.filter__tooltip-positioner {
+  position: relative;
+}
+
 .filter__range-inputs {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: $space*1.5;
   padding-top: $space;
 }
 
@@ -136,4 +157,70 @@
 
 .filter__button-clear {
   flex-grow: 1;
+  margin-right: $space;
+  margin-bottom: $space*0.5;
+}
+
+.filter__showmore-button {
+  @include media-tablet-landscape-down {
+    margin-top: $space*-1.5;
+    margin-bottom: $space*2;
+    margin-left: $space;
+  }
+
+  @include media-desktop-up {
+    margin-top: $space*-1;
+    margin-bottom: $space*1.5;
+  }
+}
+
+.filter__product-count {
+  margin-left: $space*0.25;
+  color: $color-font__secondary;
+
+  &::before {
+    content: "(";
+  }
+
+  &::after {
+    content: ")";
+  }
+}
+
+// .filter__element--selected .filter__product-count {
+//   display: none;
+// }
+
+.filter__checkbox--selected .filter__product-count,
+.filter__radio--selected .filter__product-count {
+  display: none;
+}
+
+.filter__button-tooltip {
+  position: absolute;
+  z-index: 1;
+  left: 105%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  width: $space*15;
+  padding: $space;
+  background-color: #ffffff;
+  border-radius: $controls__border-radius;
+  // box-shadow: 0 3px 6px 0 $color__shadows;
+  box-shadow: -6px 3px 18px 2px $color__shadows;
+  animation: showFilterTooltip 0.15s ease-out both;
+
+  &::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    width: 0;
+    height: 0;
+    border-right: 10px solid #ffffff;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    animation: showFilterTooltip 0.15s ease-out both;
+  }
 }

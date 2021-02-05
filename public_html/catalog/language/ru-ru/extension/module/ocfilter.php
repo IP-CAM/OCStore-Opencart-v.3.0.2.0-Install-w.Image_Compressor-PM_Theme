@@ -20,6 +20,6 @@ $_['text_load']         							= 'Загрузка...';
 
 // Buttons
 $_['button_select']                   = 'Укажите параметры';
-$_['button_show_total_1']             = 'Показать %d товар';
-$_['button_show_total_2']             = 'Показать %d товара';
-$_['button_show_total_3']             = 'Показать %d товаров';
+$_['button_show_total_1']             = '%d товар';
+$_['button_show_total_2']             = '%d товара';
+$_['button_show_total_3']             = '%d товаров';
