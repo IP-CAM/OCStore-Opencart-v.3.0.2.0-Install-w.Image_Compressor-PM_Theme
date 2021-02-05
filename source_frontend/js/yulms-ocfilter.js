@@ -491,8 +491,11 @@ class DataManager {
       return paramsUrl;
     };
 
-    return fetch(this.requestUrl + createFilterParamsUrl())
-      .then(response => response.json())
+    return fetch(this.requestUrl + createFilterParamsUrl(), {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(response => response.json())
       .then(parsedData => this.serverData = parsedData);
   }
 
