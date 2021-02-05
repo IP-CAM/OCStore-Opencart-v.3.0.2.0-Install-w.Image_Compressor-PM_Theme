@@ -1,4 +1,4 @@
-import { isEscapePressEvent } from './util.js';
+import { isEscapePressEvent } from '../../../js/util.js';
 
 
 class ModalBounded {

@@ -1,5 +1,5 @@
 'use strict';
-import { scrollLock } from './util.js';
+import { scrollLock } from '../../../js/util.js';
 
 const SHOW_TEXT_DATA_ATTR = 'showmoreShowtext';
 const HIDE_TEXT_DATA_ATTR = 'showmoreHidetext';
@@ -7,8 +7,8 @@ const NODES_QUANTITY_DATA_ATTR = 'showmoreNodes';
 const COLLAPSED_HEIGHT_DATA_ATTR = 'showmoreHeight';
 const BUTTON_CLASS_DATA_ATTR = 'showmoreButtonClass';
 const BUTTON_HTML = `<button class="showmore__button link" aria-expanded="false" type="button">
-                      <svg class="showmore__button-icon" width="32" height="32">
-                        <use href="img/svg/_sprite.svg#icon-arrow"></use>
+                      <svg class="showmore__button-icon" viewBox="0 0 24 24" width="32" height="32">
+                        <path fill="none" vector-effect="non-scaling-stroke" d="M7 11l5 4 5-4"/>
                       </svg>
                     </button>`;
 
@@ -114,12 +114,14 @@ class ShowmoreNodes extends Showmore {
     this.element.addEventListener('transitionend', () => {
       scrollLock({lock: false});
       this.element.style.height = 'auto';
+      this.element.style.overflow = '';
     }, {once: true});
 
     // сохраним высоту для возврата к ней после закрытия
     this.collapsedHeight = this.element.scrollHeight;
     scrollLock({lock: true});
     this.element.style.height = this.element.scrollHeight + 'px';
+    this.element.style.overflow = 'hidden';
     this._toggleNodes({isHidden: false});
     this.element.style.height = this.element.scrollHeight + 'px';
     this.button.changeState({isExpanded: true});
@@ -132,6 +134,7 @@ class ShowmoreNodes extends Showmore {
       this._toggleNodes({isHidden: true});
       scrollLock({lock: false});
       this.element.style.height = 'auto';
+      this.element.style.overflow = '';
       this.element.style.transitionDuration = '';
     }, {once: true});
 
@@ -140,6 +143,7 @@ class ShowmoreNodes extends Showmore {
       scrollLock({lock: true});
       this.element.style.transitionDuration = '75ms';
       this.element.style.height = this.collapsedHeight + 'px';
+      this.element.style.overflow = 'hidden';
     }, 0);
     this.button.changeState({isExpanded: false});
     this.stateIsExpanded = false;

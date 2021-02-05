@@ -1,5 +1,5 @@
 'use strict';
-import { isEscapePressEvent, scrollLock, executeAfterAnimationEnd } from './util.js';
+import { isEscapePressEvent, scrollLock, executeAfterAnimationEnd } from '../../../js/util.js';
 
 
 const ModalPosition = {

@@ -1,5 +1,5 @@
 'use strict';
-import { isTouchDevice } from  './util.js';
+import { isTouchDevice } from  '../../../js/util.js';
 
 
 const Button = {

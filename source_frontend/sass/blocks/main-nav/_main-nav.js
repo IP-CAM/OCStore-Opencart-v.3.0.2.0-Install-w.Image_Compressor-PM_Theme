@@ -1,4 +1,4 @@
-import { isTouchDevice } from  './util.js';
+import { isTouchDevice } from  '../../../js/util.js';
 // Определить поддержку hover
 // Если поддержки нет - блокировать первый клик по меню первого уровня
 

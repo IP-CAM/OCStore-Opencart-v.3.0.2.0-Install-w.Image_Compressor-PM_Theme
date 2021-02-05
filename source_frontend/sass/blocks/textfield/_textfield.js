@@ -1,5 +1,4 @@
-import appendCustomFocusEvents from './custom-focus-events.js';
-
+import appendCustomFocusEvents from '../../../js/custom-focus-events.js';
 
 
 class Textfield {

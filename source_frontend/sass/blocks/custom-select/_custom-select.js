@@ -1,5 +1,5 @@
-import appendCustomFocusEvents from './custom-focus-events.js';
-import { generateId } from './util.js';
+import appendCustomFocusEvents from '../../../js/custom-focus-events.js';
+import { generateId } from '../../../js/util.js';
 
 
 class CustomSelect {
