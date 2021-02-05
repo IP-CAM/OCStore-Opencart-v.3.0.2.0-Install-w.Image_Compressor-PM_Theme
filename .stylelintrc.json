@@ -28,5 +28,9 @@
         ]
       }
     ]
-  }
+  },
+  "ignoreFiles": [
+    "node_modules/",
+    "**/*.js"
+  ]
 }
