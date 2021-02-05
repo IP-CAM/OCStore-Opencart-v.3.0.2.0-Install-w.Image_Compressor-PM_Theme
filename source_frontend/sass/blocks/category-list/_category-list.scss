@@ -1,13 +1,13 @@
 .category-list {
-  display: grid;
-  margin: 0;
   padding: 0;
   list-style: none;
 
   @include media-tablet-portrait-down {
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(212px, 1fr));
     row-gap: $space*0.5;
     column-gap: $space;
+    margin: 0;
   }
 
   @include media-tablet-landscape-up {
