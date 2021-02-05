@@ -1,19 +1,48 @@
 const gulp = require('gulp');
 const plumber = require('gulp-plumber');
-const uglify = require('gulp-uglify-es').default;
-const flatten = require('gulp-flatten');
-// const concat = require('gulp-concat');
-// const rename = require('gulp-rename');
+const webpack = require('webpack-stream');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
+const isDev = true;
 
-function makeJs(TEMPLATE_PATH) {
-  return gulp.src('source_frontend/**/*.js')
-    .pipe(flatten())
+const webpackConfig = {
+  mode: isDev ? 'development' : 'production',
+  output: {
+    filename: 'script.js'
+  },
+  watch: false,
+  devtool: isDev ? 'eval-source-map' : 'none',
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [['@babel/preset-env', {
+              debug: true,
+              corejs: 3,
+              useBuiltIns: 'usage'
+            }]]
+          }
+        }
+      }
+    ]
+  },
+  plugins: [
+    new CircularDependencyPlugin(),
+    new DuplicatePackageCheckerPlugin()
+  ]
+};
+
+function makeJs(server, TEMPLATE_PATH) {
+  return gulp.src('source_frontend/js/index.js')
     .pipe(plumber())
-    // .pipe(concat('script.js'))
-    // .pipe(uglify())
-    // .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest(TEMPLATE_PATH + '/js'));
+    .pipe(webpack(webpackConfig))
+    .pipe(gulp.dest(TEMPLATE_PATH + '/js'))
+    .pipe(server.stream());
 }
 
 
