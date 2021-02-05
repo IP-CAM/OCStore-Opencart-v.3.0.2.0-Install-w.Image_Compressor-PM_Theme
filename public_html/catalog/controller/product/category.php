@@ -184,7 +184,9 @@ class ControllerProductCategory extends Controller {
 				'limit'              => $limit
 			);
 
-			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+      $product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+      $data['product_total'] = $product_total;
+      $data['product_total_caption'] = 'товар' . $this->custom->convertEnding($product_total);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
 
