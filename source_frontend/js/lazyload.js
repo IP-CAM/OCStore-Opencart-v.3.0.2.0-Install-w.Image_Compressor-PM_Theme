@@ -38,8 +38,8 @@ function initLazyload() {
     });
 
     const script = document.createElement('script');
-    script.src = 'js/lazysizes.min.js';
-    document.body.appendChild(script);
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js';
+    document.head.append(script);
 
     nativeLazyloadIsEnabled = false;
 
