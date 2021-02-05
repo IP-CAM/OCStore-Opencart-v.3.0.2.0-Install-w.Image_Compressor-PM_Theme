@@ -8,6 +8,10 @@ $config->load('default');
 $config->load($application_config);
 $registry->set('config', $config);
 
+// Custom
+$custom = new Custom();
+$registry->set('custom', $custom);
+
 // Log
 $log = new Log($config->get('error_filename'));
 $registry->set('log', $log);
