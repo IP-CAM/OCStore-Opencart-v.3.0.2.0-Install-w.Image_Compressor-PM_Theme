@@ -398,7 +398,45 @@ class ControllerProductCategory extends Controller {
 
 			$data['sort'] = $sort;
 			$data['order'] = $order;
-			$data['limit'] = $limit;
+      $data['limit'] = $limit;
+
+      // ! OCFilter Page Links Start
+      $data['ocfilter_pages'] = array();
+
+      $this->load->model('extension/module/ocfilter');
+
+      $ocfilter_pages = $this->model_extension_module_ocfilter->getPages();
+
+      $ocfilter_page_info = $this->ocfilter->getPageInfo();
+
+      foreach ($ocfilter_pages as $ocfilter_page) {
+        if ($ocfilter_page['category_id'] != $category_id) {
+          continue;
+        }
+
+        if (isset($this->request->get['path'])) {
+          $link = rtrim($this->url->link('product/category', 'path=' . $this->request->get['path']), '/');
+        } else {
+          $link = rtrim($this->url->link('product/category', 'path=' . $ocfilter_page['category_id']), '/');
+        }
+
+        if ($ocfilter_page['keyword']) {
+          $link .= '/' . $ocfilter_page['keyword'];
+        } else {
+          $link .= '/' . $ocfilter_page['params'];
+        }
+
+        if ($this->config->get('config_seo_url_type') == 'seo_pro') {
+          $link .= '/';
+        }
+
+        $data['ocfilter_pages'][] = array(
+          'text' => $ocfilter_page['title'],
+          'selected' => (!empty($ocfilter_page_info) && $ocfilter_page_info['ocfilter_page_id'] == $ocfilter_page['ocfilter_page_id']),
+          'href' => $link
+        );
+      }
+      // ! OCFilter Page Links End
 
 			$data['continue'] = $this->url->link('common/home');
 
