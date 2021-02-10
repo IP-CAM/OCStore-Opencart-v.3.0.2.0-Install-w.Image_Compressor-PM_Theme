@@ -128,14 +128,14 @@ class Slider extends FilterControl {
 
     const minStr = sliderElement.dataset[this.rangeMinDataAttr];
     const maxStr = sliderElement.dataset[this.rangeMaxDataAttr];
-    this.min = parseFloat(minStr);
-    this.max = parseFloat(maxStr);
-    this.startMin =  parseFloat(sliderElement.dataset[this.startMinDataAttr]);
+    this.startMin = parseFloat(sliderElement.dataset[this.startMinDataAttr]);
     this.startMax = parseFloat(sliderElement.dataset[this.startMaxDataAttr]);
+    // предотвращение бага бэкэнда (в некоторых случаях получаем стартовые значение за пределами диапазона слайдера)
+    this.min = Math.min(parseFloat(minStr), this.startMin);
+    this.max = Math.max(parseFloat(maxStr), this.startMax);
     this.decimals = this._calculateMaxDecimalsNumber(minStr, maxStr);
 
     this._createSlider(sliderElement);
-    // this.currentValues = this.element.noUiSlider.get();
     this.element.noUiSlider.currentValues = this.element.noUiSlider.get();
     this._bindInputs();
     this._createFilterChangeEvent();
@@ -184,7 +184,6 @@ class Slider extends FilterControl {
     this.element.noUiSlider.on('set', (values) => {
 
       const valueIsChanges = ([leftValue, rightValue]) => {
-        // let [leftCurrentValue, rightCurrentValue] = this.currentValues;
         let [leftCurrentValue, rightCurrentValue] = this.element.noUiSlider.currentValues;
         return (leftCurrentValue !== leftValue || rightCurrentValue !== rightValue) ? true : false;
       };
@@ -192,8 +191,6 @@ class Slider extends FilterControl {
 
 
       const updateCurrentValues = ([leftValue, rightValue]) =>  {
-        // this.currentValues[0] = leftValue;
-        // this.currentValues[1] = rightValue;
         this.element.noUiSlider.currentValues[0] = leftValue;
         this.element.noUiSlider.currentValues[1] = rightValue;
       };
@@ -273,43 +270,45 @@ class FilterControlUpdater {
       const optionId = elem.dataset[this.slider.optionIdDataAttr];
 
       if (slidersResponseData[optionId]) {
-        // elem.disabled = false;
-        const currentRangeMin = elem.noUiSlider.options.range.min;
-        const currentRangeMax = elem.noUiSlider.options.range.max;
-        const responsedRangeMin = slidersResponseData[optionId].min;
-        const responsedRangeMax = slidersResponseData[optionId].max;
 
-        class Options {
-          constructor(rangeMin, rangeMax, startValuesIsEqualToRangeValues) {
-            if (rangeMin || rangeMax) {
-              this.range = {};
-              if (rangeMin) this.range.min = rangeMin;
-              if (rangeMax) this.range.max = rangeMax;
+        const SliderOptions = function({currentRangeMin, currentRangeMax, responsedRangeMin, responsedRangeMax, optionWasSetted}) {
 
-              if (startValuesIsEqualToRangeValues) {
-                this.start = [rangeMin, rangeMax];
-              }
-            }
+          const setRange = (property, value) => {
+            if (!this.range) this.range = {};
+            this.range[property] = value;
+          };
+
+          if (responsedRangeMin === responsedRangeMax) return;
+
+          if (optionWasSetted) {
+            if (responsedRangeMin < currentRangeMin) setRange('min', responsedRangeMin);
+            if (responsedRangeMax > currentRangeMax) setRange('max', responsedRangeMax);
+          } else {
+            setRange('min', responsedRangeMin);
+            setRange('max', responsedRangeMax);
+            this.start = [responsedRangeMin, responsedRangeMax];
           }
-        }
+        };
 
-        let rangeMin;
-        let rangeMax;
-        let startValuesIsEqualToRangeValues;
+        const params = {
+          currentRangeMin: elem.noUiSlider.options.range.min,
+          currentRangeMax: elem.noUiSlider.options.range.max,
+          responsedRangeMin: slidersResponseData[optionId].min,
+          responsedRangeMax: slidersResponseData[optionId].max,
+          optionWasSetted: dataManager.hasOption(optionId)
+        };
 
-        if (responsedRangeMin < currentRangeMin) rangeMin = responsedRangeMin;
-        if (responsedRangeMax > currentRangeMax) rangeMax = responsedRangeMax;
-
-        if (!dataManager.hasOption(optionId)) {
-          startValuesIsEqualToRangeValues = true;
-        }
-
-        const newOptions = new Options(rangeMin, rangeMax, startValuesIsEqualToRangeValues);
+        let newOptions = new SliderOptions(params);
         if (Object.keys(newOptions).length !== 0) {
-          elem.noUiSlider.updateOptions(
-            newOptions,
-            false // Boolean 'fireSetEvent'
-          );
+          try {
+            elem.noUiSlider.updateOptions(
+              newOptions,
+              false // Boolean 'fireSetEvent'
+            );
+          } catch(err) {
+            alert('slider error');
+            console.log(err);
+          }
         }
 
         elem.noUiSlider.currentValues = elem.noUiSlider.get();
@@ -572,7 +571,6 @@ class Filter {
       });
     });
 
-    console.log(this);
   }
 
 
