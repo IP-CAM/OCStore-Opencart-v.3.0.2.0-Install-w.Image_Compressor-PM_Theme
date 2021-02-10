@@ -272,7 +272,6 @@ class FilterControlUpdater {
       if (slidersResponseData[optionId]) {
 
         const SliderOptions = function({currentRangeMin, currentRangeMax, responsedRangeMin, responsedRangeMax, optionWasSetted}) {
-
           const setRange = (property, value) => {
             if (!this.range) this.range = {};
             this.range[property] = value;
@@ -306,8 +305,7 @@ class FilterControlUpdater {
               false // Boolean 'fireSetEvent'
             );
           } catch(err) {
-            alert('slider error');
-            console.log(err);
+            console.log('slider error', err);
           }
         }
 
@@ -494,7 +492,13 @@ class DataManager {
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
-    }).then(response => response.json())
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw Error(`${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then(parsedData => this.serverData = parsedData);
   }
 
@@ -556,19 +560,21 @@ class Filter {
     this.element.addEventListener('filterChange', (evt) => {
       const changedParams = evt.detail;
       const promise = this._dataManager.processChangedParams(changedParams).requestServerData();
-      promise.then((serverData) => {
-        if (this.options.php.searchButton) {
-          if (!this._controlUpdater) {
-            this._controlUpdater = new FilterControlUpdater(this.element);
+      promise
+        .then((serverData) => {
+          if (this.options.php.searchButton) {
+            if (!this._controlUpdater) {
+              this._controlUpdater = new FilterControlUpdater(this.element);
+            }
+            this._controlUpdater.updateRadiochecks(serverData, this.options.php.showCounter);
+            this._controlUpdater.updateSliders(serverData, this._dataManager);
+            this._controlUpdater.updateCountCaption(serverData);
+            this._filterButton.update(serverData, evt.detail.targetElement);
+          } else {
+            window.location = serverData.href;
           }
-          this._controlUpdater.updateRadiochecks(serverData, this.options.php.showCounter);
-          this._controlUpdater.updateSliders(serverData, this._dataManager);
-          this._controlUpdater.updateCountCaption(serverData);
-          this._filterButton.update(serverData, evt.detail.targetElement);
-        } else {
-          window.location = serverData.href;
-        }
-      });
+        })
+        .catch(err => console.log('Ошибка скрипта фильтра', err));
     });
 
   }
