@@ -1,14 +1,14 @@
 .page-goods {
   @include media-tablet-landscape-up {
     display: grid;
+
+    &__column-right {
+      order: -1;
+    }
   }
 
   @include media-tablet-landscape-only {
     grid-template-columns: 100%;
-
-    &__promo {
-      grid-row: 2;
-    }
   }
 
   @include media-desktop-up {
@@ -21,20 +21,12 @@
       grid-column: 1/3;
     }
 
-    &__category-list {
+    &__main-content {
       grid-column: 2/3;
     }
 
-    &__content-top {
-      grid-column: 2/3;
-    }
-
-    &__often-looking {
-      grid-column: 2/3;
-    }
-
-    &__minicard-list {
-      grid-column: 2/3;
+    &__main-content--full {
+      grid-column: 1/3;
     }
 
     &__column-left {
@@ -47,11 +39,10 @@
     }
 
     &__content-bottom {
-      order: -1;
       grid-column: 1/3;
     }
 
-    &__empty {
+    &__universal {
       grid-column: 1/3;
     }
   }
@@ -91,33 +82,6 @@
 
 .page-goods__often-looking {
   margin-bottom: $space*1.5;
-}
-
-
-.page-goods__minicard-list {
-  margin-bottom: $space*3;
-}
-
-
-.page-goods__often-looking-bottom {
-  margin-bottom: $space*3;
-}
-
-.page-goods__brands {
-  margin-bottom: $space*3;
-}
-
-.page-goods__admin-content {
-  @include media-mobile-only {
-    margin-bottom: $space*3;
-  }
-}
-
-.page-goods__promo {
-  @include media-tablet-landscape-up {
-    margin-top: $space;
-    margin-bottom: $space*3;
-  }
 }
 
 .page-goods__banner {

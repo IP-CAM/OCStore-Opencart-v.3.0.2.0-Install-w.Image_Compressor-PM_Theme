@@ -14,7 +14,7 @@
 
 .page__section {
   &:not(:last-child) {
-    margin-bottom: $space*4;
+    margin-bottom: $vertical-margin;
   }
 }
 
