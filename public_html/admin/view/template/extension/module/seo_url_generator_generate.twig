@@ -1,0 +1,384 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-warning"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+          <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <!-- /page-header -->
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger">
+      <i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="panel-title"><i class="fa fa-magic"></i> {{ text_part_generate }}</span>
+      </div>
+
+      <!-- Customization.Begin -->
+      <!-- Loader icon -->
+      <link href="view/stylesheet/load-bar.css" type="text/css"	rel="stylesheet" media="screen" />
+      <!-- custom syle -->
+      <style>
+        ._relative {
+          position: relative; /* for button loading */
+        }
+      </style>
+
+      <div class="panel-body">
+
+        <div class="module-navigation">
+          <a class="btn btn-default navbar-btn" href="{{ link_part_settings }}">{{ text_part_settings }}</a>
+          <a class="btn btn-default navbar-btn active" href="{{ link_part_generate }}">{{ text_part_generate }}</a>
+          <!--
+          <a class="btn btn-default navbar-btn" href="{{ link_part_edit_seo_url }}">{{ text_part_edit }}</a>
+          <a class="btn btn-default navbar-btn" href="{{ link_part_redirects }}">{{ text_part_redirects }}</a>
+          -->
+        </div>
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" id="form-html" class="form-horizontal">
+          {% if (errors['error_formulas_none'] is defined) %} 
+          <div class="alert alert-danger">{{ errors['error_formulas_none'] }}</div>
+          {% else %} 
+          <fieldset>
+            <!-- tab.begin
+            ======================================================================================================== -->
+            <div class="tab-pane">
+              <ul class="nav nav-tabs" id="tab-generate">
+                <li class="active"><a href="#tab-generate-product" data-toggle="tab">{{ tab_product }}</a></li>
+                <li><a href="#tab-generate-category" data-toggle="tab">{{ tab_category }}</a></li>
+                <li><a href="#tab-generate-manufacturer" data-toggle="tab">{{ tab_manufacturer }}</a></li>
+                <li><a href="#tab-generate-information" data-toggle="tab">{{ tab_information }}</a></li>
+                <!-- custom tabs -->
+                {% for tab in custom_tabs %} 
+                  <li><a href="#tab-generate-{{ tab['table'] }}" data-toggle="tab">{{ tab['title'] }}</a></li>
+                  {% endfor %} 
+              </ul>
+              <div class="tab-content">
+
+                <!-- product -->
+                <div class="tab-pane active" id="tab-generate-product" data-essence-name="{{ tab_product }}">
+                  <div id="generation-answer_product" class="form-control">{{ text_answer_place }}</div>
+                  <br>
+                  <button id="generate-seo-url_product_empty" class="btn btn-primary _relative">
+										{{ button_generate_seo_url_product_empty }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                  <button id="generate-seo-url_product_replace" class="btn btn-warning _relative">
+										{{ button_generate_seo_url_product_replace }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- category -->
+                <div class="tab-pane" id="tab-generate-category"  data-essence-name="{{ tab_category }}">
+                  <div id="generation-answer_category" class="form-control">{{ text_answer_place }}</div>
+                  <br>
+                  <button id="generate-seo-url_category_empty" class="btn btn-primary _relative">
+										{{ button_generate_seo_url_category_empty }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                  <button id="generate-seo-url_category_replace" class="btn btn-warning _relative">
+										{{ button_generate_seo_url_category_replace }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- manufacturer -->
+                <div class="tab-pane" id="tab-generate-manufacturer" data-essence-name="{{ tab_manufacturer }}">
+                  <div id="generation-answer_manufacturer" class="form-control">{{ text_answer_place }}</div>
+                  <br>
+                  <button id="generate-seo-url_manufacturer_empty" class="btn btn-primary _relative">
+										{{ button_generate_seo_url_manufacturer_empty }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                  <button id="generate-seo-url_manufacturer_replace" class="btn btn-warning _relative">
+										{{ button_generate_seo_url_manufacturer_replace }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- information -->
+                <div class="tab-pane" id="tab-generate-information" data-essence-name="{{ tab_information }}">
+                  <div id="generation-answer_information" class="form-control">{{ text_answer_place }}</div>
+                  <br>
+                  <button id="generate-seo-url_information_empty" class="btn btn-primary _relative">
+										{{ button_generate_seo_url_information_empty }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                  <button id="generate-seo-url_information_replace" class="btn btn-warning _relative">
+										{{ button_generate_seo_url_information_replace }} 
+                    <div class="load-bar">
+                      <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- custom tabs -->
+                {% for tab in custom_tabs %} 
+                  <div class="tab-pane" id="tab-generate-{{ tab['table'] }}" data-essence-name="{{ tab['title'] }}">
+                    <div id="generation-answer_{{ tab['table'] }}" class="form-control">{{ text_answer_place }}</div>
+                    <br>
+                    <button id="generate-seo-url_{{ tab['table'] }}_empty" class="btn btn-primary _relative" >
+											{{ button_generate_seo_url_custom_empty ~ ' ' ~ tab['title'] }} 
+                      <div class="load-bar">
+                        <div class="spinner">
+                          <div class="bounce1"></div>
+                          <div class="bounce2"></div>
+                          <div class="bounce3"></div>
+                        </div>
+                      </div>
+                    </button>
+                    <button id="generate-seo-url_{{ tab['table'] }}_replace" class="btn btn-warning _relative">
+											{{ button_generate_seo_url_custom_replace ~ ' ' ~ tab['title'] }} 
+                      <div class="load-bar">
+                        <div class="spinner">
+                          <div class="bounce1"></div>
+                          <div class="bounce2"></div>
+                          <div class="bounce3"></div>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                {% endfor %} 
+
+              </div>
+              <!-- /tab-content -->
+            </div>
+            <!-- /tab-pane -->
+            <!-- tab.end
+            ======================================================================================================== -->
+          </fieldset>
+           {% endif %} 
+        </form>
+      </div>
+      <!-- /panel-body-->
+      <!-- /Customization.End -->
+
+
+
+    </div>
+    <!-- /panel-default-->
+
+    <div class="copywrite" style="padding: 10px 10px 0 10px; border: 1px dashed #ccc;">
+      <p>&copy; {{ text_author }}: <a href="https://clc.to/pvPm8A" target="_blank">Serge Tkach</a>
+        <br />
+        {{ text_author_support }}: <a href="mailto:sergetkach.help@gmail.com">sergetkach.help@gmail.com</a>
+      </p>
+    </div>
+
+  </div>
+  <!-- /container-fluid-->
+</div>
+<!-- /content-->
+
+<!-- js.begin-->
+<script>
+
+/* product */
+$('#generate-seo-url_product_empty').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('product', 'empty');
+});
+$('#generate-seo-url_product_replace').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('product', 'replace');
+});
+
+/* category */
+$('#generate-seo-url_category_empty').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('category', 'empty');
+});
+$('#generate-seo-url_category_replace').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('category', 'replace');
+});
+
+/* manufacturer */
+$('#generate-seo-url_manufacturer_empty').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('manufacturer', 'empty');
+});
+$('#generate-seo-url_manufacturer_replace').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('manufacturer', 'replace');
+});
+
+/* information */
+$('#generate-seo-url_information_empty').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('information', 'empty');
+});
+$('#generate-seo-url_information_replace').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('information', 'replace');
+});
+
+/* custom tabs */
+{% for tab in custom_tabs %} 
+$('#generate-seo-url_{{ tab['table'] }}_empty').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('{{ tab['table'] }}', 'empty', true);
+});
+$('#generate-seo-url_{{ tab['table'] }}_replace').click(function (e) {
+  e.preventDefault();
+  actionMassGenerateURLByAjax('{{ tab['table'] }}', 'replace', true);
+});
+{% endfor %} 
+
+
+
+/* generate by ajax
+ ---------------------------------------------------------------- */
+function actionMassGenerateURLByAjax(essence, generationType, custom_tab) {
+	console.clear();
+	
+	console.log('button #generate-seo-url_' + essence + '_' + generationType + ' is pressed');
+	
+	var succesMassGenerateUrl = '{{ success_mass_generate_url }}'.replace(/\[essence\]/, $('#tab-generate-' + essence).data('essence-name'));
+	
+	console.log('essence : ' + essence);
+	console.log('succesMassGenerateUrl : ' + succesMassGenerateUrl);
+	console.log('$(\'#tab-generate-\' + essence).data(\'essence-name\') : ' + $('#tab-generate-' + essence).data('essence-name'));
+
+  
+
+  // defaults
+  if (!custom_tab)
+    custom_tab = false;
+  stop = false;
+  stepPE = 1;
+  stepsAll = 1;
+
+  
+
+  $('#generation-answer_' + essence).html('<p>{{ text_answer_processing }}</p>');
+
+  $('#generate-seo-url_' + essence + '_' + generationType).attr('disabled', 'disabled');
+  $('#generate-seo-url_' + essence + '_' + generationType + ' .load-bar').css('display', 'block');
+
+  do {
+    console.log('---------------------------------------------------');
+    console.log('Поток 1-а');
+
+    $.ajax({
+      url: 'index.php?route=extension/module/seo_url_generator/actionMassGenerateURL&user_token={{ user_token }}',
+      dataType: 'json',
+      type: "POST",
+      data: {'step': stepPE, 'essence': essence, 'generationType': generationType, 'custom_tab': custom_tab},
+      async: false, // !important
+      success: function (json) {
+        if (json.error) {
+          $('#generation-answer_' + essence).empty();
+          $('#generation-answer_' + essence).html('<p class="text-danger">' + json.answer + '</p>');
+          stop = true;
+        } else {
+          console.log('Поток 2');
+          console.log('AJAX Return Success!');
+
+          stepsAll = json.steps_all;
+
+          $('#generation-answer_' + essence).empty();
+          $('#generation-answer_' + essence).html('<p class="text-success">' + json.answer + '</p>');
+
+          // finsih all steps
+          if (stepPE >= stepsAll) {
+            stop = true;
+          
+            $('#generation-answer_' + essence).html('<p class="text-success">' + succesMassGenerateUrl + '</p>');
+          }
+
+          console.log('stepPE : ' + stepPE);
+          console.log('stepsAll : ' + stepsAll);
+        }
+      }, error: function (xhr, ajaxOptions, thrownError) {
+        stop = true;
+				
+        $('#generate-empty-seo-url-product .load-bar').css('display', 'none');
+        $('#generation-answer_' + essence).empty();
+        $('#generation-answer_' + essence).html("<p class='text-danger'>{{ errors['error_ajax_response'] | format("index.php?route=tool/log&user_token=" ~ user_token) }}</p>");
+				
+        console.log('response: ' + xhr.status); // пoкaжeм oтвeт сeрвeрa
+        console.log('error description: ' + thrownError); // и тeкст oшибки
+
+      }
+    });
+
+    console.log('Поток 1-б');
+    // final
+    stepPE++;
+
+    if (stop) {
+      $('#generate-seo-url_' + essence + '_' + generationType).removeAttr('disabled');
+
+      $('#generate-seo-url_' + essence + '_' + generationType + ' .load-bar').css('display', 'none');
+
+    }
+
+  } while (stop === false);
+
+}
+
+
+</script>
+<!-- /js.end -->
+{{ footer }} 
