@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>for Y.CMS 2.0 by sitecreator</name>
+    <code>for Y.CMS 2.0 by sitecreator</code>
+    <version>1.0</version>
+    <author>sitecreator.ru</author>
+	
+	<file path="catalog/controller{/,/extension/}payment/yandex_money.php">
+	<operation error="skip">
+		<search regex="true"><![CDATA[~600\s*,\s*600\s*\)\s*\)~]]></search>
+		<add position="replace"><![CDATA[600, 600, '', 'market', $product))]]></add>
+	</operation>
+	</file>
+</modification>

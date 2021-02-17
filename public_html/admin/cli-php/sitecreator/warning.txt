@@ -1,0 +1,7 @@
+Предупреждение от sitecreator.
+Не изменяйте и не удаляйте никакие файлы в этот папке (/cli-php/sitecreator/), который установлены модулем "Компрессор" ("Image COMPRESSOR & Watermark & WebP & Lazy Load etc. by Sitecreator").
+Не удаляйте файл .htaccess даже если у вас работает только nginx.
+
+Warning from sitecreator.
+Do not modify or delete any files in this folder (/cli-php/sitecreator/), which are installed by the "Compressor" ("Image COMPRESSOR & Watermark & WebP & Lazy Load etc. by Sitecreator") module.
+Do not delete the .htaccess file even if only nginx works for you.

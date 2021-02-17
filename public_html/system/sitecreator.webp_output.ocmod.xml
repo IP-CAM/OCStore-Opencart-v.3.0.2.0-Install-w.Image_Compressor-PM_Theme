@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>image compressor by sitecreator</name>
+    <code>image  compressor by sitecreator</code>
+    <version>2.1.25 for php 5.6, 7.0, 7.1, 7.2, 7.3, 7.4</version>
+    <author>Malyutin Roman aka sitecreator. sitecreator.pro (c)</author>
+    <file path="system/engine/router.php|system/engine/front.php">
+        <operation error="skip">
+            <search><![CDATA[$this->registry = $registry;]]></search>
+            <add position="after"><![CDATA[   // sitecreator Compressor ++++++++
+    $is_adminka = (defined('DIR_CATALOG') && DIR_APPLICATION != DIR_CATALOG ) ? true: false;
+    if(!$is_adminka && substr(php_sapi_name(), 0 , 3)  != 'cli' &&
+      method_exists($this->registry, 'get') && is_object($this->registry->get('response')) &&
+      method_exists('Response', 'sitecreatorRegistry')) {
+    $this->registry->get('response')->sitecreatorRegistry($registry);
+    }
+    // sitecreator Compressor --------
+]]></add>
+        </operation>
+    </file>
+	<file path="system/library/response.php">
+        <operation>
+            <search><![CDATA[private $output]]></search>
+            <add position="after"><![CDATA[  private $webpimage = true;  // sitecreator Compressor
+  private $sitecreator_registry = [];  // sitecreator Compressor
+]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[public function addHeader(]]></search>
+            <add position="before"><![CDATA[  public function sitecreatorRegistry($registry) {  // sitecreator Compressor
+    $this->sitecreator_registry = $registry;
+  }]]></add>
+        </operation>
+		<operation>
+            <search><![CDATA[public function output() {]]></search>
+			<add position="after"><![CDATA[    $this->level = 0; // sitecreator]]></add>
+		</operation>
+        <operation>
+            <search><![CDATA[echo $ou]]></search>
+            <add position="before"><![CDATA[
+        // sitecreator ++++++
+        $is_adminka = (defined('DIR_CATALOG') && DIR_APPLICATION != DIR_CATALOG ) ? true: false;
+        if($is_adminka) $output = $this->output;
+        else {
+          $php_v = (int)(substr(phpversion(),0,3) * 10);
+          if(extension_loaded('ionCube Loader') && $php_v >= 56 && ioncube_loader_iversion() >= 100000) {
+            if (!class_exists('WebpImage', true)) { // сработает автозагрузка перед проверкой существования класса
+              // если не работает автозагрузка класса, то окажемся здесь
+              if (file_exists(DIR_SYSTEM . 'library/webpimage.php')) require_once DIR_SYSTEM . 'library/webpimage.php';
+            }
+
+            if(class_exists('WebpImage')) {
+              // если есть nitro и он активен
+              if (function_exists('isNitroEnabled') && isNitroEnabled()) {
+                // если добавлена вручную адаптация в Nitro
+                if (function_exists('compressor_by_sitecreator_for_nitro')) { // входной поток для nitro, функционал webp после выхода кеша nitro
+                  if(!empty($this->hi_opti_output)) $this->output = $this->hi_opti_output;
+                  $output = $this->output;
+                }
+                else { // входной поток для nitro "uni-cache", функционал webp до входа в кеш nitro
+                  if(!empty($this->hi_opti_output)) $output = WebpImage::webp_output($this->hi_opti_output, true, $this->sitecreator_registry, $this->headers);
+                  else $output = WebpImage::webp_output($this->output, true, $this->sitecreator_registry, $this->headers);
+                }
+              }
+              else {
+                if(!empty($this->hi_opti_output)) $output = WebpImage::webp_output($this->hi_opti_output, null, $this->sitecreator_registry, $this->headers);
+                else {
+                  $output = WebpImage::webp_output($this->output, null, $this->sitecreator_registry, $this->headers);
+                }
+              }
+            }
+          }
+        }
+        if(isset($output)) $ouput = & $output; //for 2.0.0 sitecreator
+        // sitecreator ------
+]]></add>
+        </operation>
+	</file>
+    <file path="system/nitro/core/top.php">
+        <operation error="skip">
+            <search><![CDATA[<?php]]></search>
+            <add position="after"><![CDATA[
+            // sitecreator ++++++
+            function compressor_by_sitecreator_for_nitro() {}
+			// sitecreator ------
+]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[readfile($cachefile);]]></search>
+            <add position="before"><![CDATA[
+            // Данные сведения приведены  как информация и руководство к действию для достижения совместимости с кеширующим ускорителем Nitro.
+            // This information is provided as a guide to achieving compatibility with the Nitro caching accelerator.
+
+            // Модифицированный файл будет успешно создан и размещен в /system/storage/modification/system/nitro/core/top.php
+            // (для opencart 3.0 в соответствующем месте: DIR_STORAGE. 'modification/system/nitro/core/top.php' )
+            // Но вам нужно будет вручную скопировать (с заменой оригинального файла Nitro) этот модифицированный файл в /system/nitro/core/top.php.
+
+            // The modified file will be successfully created and placed in /system/storage/modification/system/nitro/core/top.php
+             // (for opencart 3.0 in the appropriate place: DIR_STORAGE. 'modification / system / nitro / core / top.php')
+             // But you will need to manually copy (with replacement of the original Nitro file) this modified file in /system/nitro/core/top.php.
+
+             // Модификацию средствами движка Opencart бесполезно делать для Nitro, т.к. оно не позволяет использовать ocmod для себя, оно его просто ИГНОРИРУЕТ.
+             // И это несмотря на успешно созданный файл модификации для Nitro.
+
+             // Modification by means of the Opencart engine is useless to do for Nitro, because it does not allow you to use ocmod for yourself; it simply IGNORES it.
+             // And this despite the successfully created modification file for Nitro.
+			// sitecreator ++++++
+		$webp_start = false;
+		$php_v = (int)(substr(phpversion(),0,3) * 10);
+		if(extension_loaded('ionCube Loader') && $php_v >= 56 && ioncube_loader_iversion() >= 100000) {
+			if (!class_exists('WebpImage', true)) { // сработает автозагрузка перед проверкой существования класса
+				// если не работает автозагрузка класса, то окажемся здесь
+				if (file_exists(DIR_SYSTEM . 'library/webpimage.php')) require_once DIR_SYSTEM . 'library/webpimage.php';
+			}
+			if(class_exists('WebpImage') && method_exists('WebpImage', 'webp_output')) {
+				$webp_start = true;
+				ob_start(['WebpImage', 'webp_output']);
+			}
+		}
+]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[readfile($cachefile);]]></search>
+            <add position="after"><![CDATA[
+			if(!empty($webp_start)) ob_end_flush();
+			// sitecreator ------
+]]></add>
+        </operation>
+    </file>
+    <file path="admin/model/tool/image.php|catalog/model/tool/image.php">
+    <operation error="skip">
+        <search>filectime(</search>
+        <add position="replace ">filemtime(</add>
+    </operation>
+    </file>
+</modification>	

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>image compressor by sitecreator</name>
+    <code>image  compressor by sitecreator</code>
+    <version>1.17.0 for php 5.6, 7.0, 7.1, 7.2, 7.3</version>
+    <author>sitecreator.ru</author>
+    <file path="system/library/image.php">
+        <operation>
+            <search regex="true"><![CDATA[~class\s+Image~]]></search>
+            <add position="replace"><![CDATA[class ImageFake]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[class ImageFake]]></search>
+            <add position="before"><![CDATA[//mod by sitecreator
+$php_v = (int)(substr(phpversion(),0,3) * 10);
+if(extension_loaded('ionCube Loader') && $php_v >= 56
+    && is_file(DIR_SYSTEM.'library/image_sitecreator0.php')) require_once(DIR_SYSTEM.'library/image_sitecreator0.php');
+else {
+  class Image extends ImageFake {
+  }
+}
+		]]></add>
+        </operation>
+        <operation>
+        <search><![CDATA[function watermark]]></search>
+        <add position="after"><![CDATA[
+        return; //mod by sitecreator
+        ]]></add>
+        </operation>
+    </file>
+	<file path="catalog/model/tool/image.php">
+        <operation>
+            <search regex="true"><![CDATA[~class\s+ModelToolImage~]]></search>
+            <add position="replace"><![CDATA[class ModelToolImageFake]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[class ModelToolImageFake]]></search>
+            <add position="before"><![CDATA[//mod by sitecreator
+$php_v = (int)(substr(phpversion(),0,3) * 10);
+if(extension_loaded('ionCube Loader') && $php_v >= 56) {
+  if(defined('DIR_CATALOG') && DIR_CATALOG != DIR_APPLICATION && is_file(DIR_CATALOG.'model/tool/image_sitecreator.php')) require_once(DIR_CATALOG.'model/tool/image_sitecreator.php');
+  elseif(is_file(DIR_APPLICATION.'model/tool/image_sitecreator.php')) require_once(DIR_APPLICATION.'model/tool/image_sitecreator.php');
+  else {
+    class ModelToolImage extends ModelToolImageFake {
+    }
+  }
+}
+else {
+  class ModelToolImage extends ModelToolImageFake {
+  }
+}
+        ]]></add>
+        </operation>
+    </file>
+</modification>

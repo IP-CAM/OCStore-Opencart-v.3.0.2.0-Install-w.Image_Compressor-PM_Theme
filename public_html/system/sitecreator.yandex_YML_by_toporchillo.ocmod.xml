@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>for yandex_YML_by_toporchillo by sitecreator</name>
+    <code>for yandex_YML_by_toporchillo by sitecreator</code>
+    <version>1.0</version>
+    <author>sitecreator.ru</author>
+	
+	<file path="catalog/controller{/,/extension/}feed/yandex_yml.php">
+	<operation error="skip">
+		<search><![CDATA[resize($image, $this->image_width, $this->image_height)]]></search>
+		<add position="replace"><![CDATA[resize($image, $this->image_width, $this->image_height, '', 'market', $product)]]></add>
+	</operation>
+	<operation error="skip">
+		<search><![CDATA[protected function prepareImage($image)]]></search>
+		<add position="replace"><![CDATA[protected function prepareImage($image, $product = [])]]></add>
+	</operation>
+	<operation error="skip">
+		<search><![CDATA[prepareImage($product['image'])]]></search>
+		<add position="replace"><![CDATA[prepareImage($product['image'], $product)]]></add>
+	</operation>
+	<operation error="skip">
+		<search><![CDATA[prepareImage($image)]]></search>
+		<add position="replace"><![CDATA[prepareImage($image, $product)]]></add>
+	</operation>
+	</file>
+	
+	
+</modification>
