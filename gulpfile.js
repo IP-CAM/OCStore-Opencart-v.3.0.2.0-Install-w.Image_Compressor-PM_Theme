@@ -49,7 +49,7 @@ function reload(done) {
 
 function server() {
   browserSync.init({
-    proxy: 'pm',
+    proxy: 'pm.local',
     notify: false,
     cors: true,
     ui: false
