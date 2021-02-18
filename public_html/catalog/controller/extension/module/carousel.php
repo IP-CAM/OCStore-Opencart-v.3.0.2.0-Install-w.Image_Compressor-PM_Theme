@@ -14,12 +14,20 @@ class ControllerExtensionModuleCarousel extends Controller {
 
 		$results = $this->model_design_banner->getBanner($setting['banner_id']);
 
-		foreach ($results as $result) {
+    foreach ($results as $result) {
 			if (is_file(DIR_IMAGE . $result['image'])) {
+        $image1x = $this->model_tool_image->resize($result['image'], $setting['width']*1, $setting['height']*1);
+        $image2x = $this->model_tool_image->resize($result['image'], $setting['width']*2, $setting['height']*2);
+        $image3x = $this->model_tool_image->resize($result['image'], $setting['width']*3, $setting['height']*3);
+        $image = $image3x;
+
 				$data['banners'][] = array(
-					'title' => $result['title'],
-					'link'  => $result['link'],
-					'image' => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])
+					'title'   => $result['title'],
+					'link'    => $result['link'],
+					'image'   => $image,
+					'image1x' => $image1x,
+					'image2x' => $image2x,
+					'image3x' => $image3x
 				);
 			}
 		}
