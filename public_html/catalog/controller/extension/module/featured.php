@@ -21,7 +21,11 @@ class ControllerExtensionModuleFeatured extends Controller {
 
 				if ($product_info) {
 					if ($product_info['image']) {
-						$image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
+						// $image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
+						$image244w = $this->model_tool_image->resize($product_info['image'], 244, 244);
+						$image366w = $this->model_tool_image->resize($product_info['image'], 366, 366);
+						$image488w = $this->model_tool_image->resize($product_info['image'], 488, 488);
+            $image = $image488w;
 					} else {
 						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
 					}
@@ -65,6 +69,9 @@ class ControllerExtensionModuleFeatured extends Controller {
 					$data['products'][] = array(
 						'product_id'  => $product_info['product_id'],
 						'thumb'       => $image,
+						'thumb244w'       => $image244w,
+						'thumb366w'       => $image366w,
+						'thumb488w'       => $image488w,
 						'name'        => $product_info['name'],
 						'description' => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
 						'price'       => $price,
