@@ -1,4 +1,3 @@
-
 // WEBP detect by sitecreator (c) 2019 https://sitecreator.ru webp_detect.js ver. 2.1.1
 // Code Developer Malyutin R. A. All rights reserved.
 (function() {
