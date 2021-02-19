@@ -9,14 +9,14 @@
               {% if banner.link %}
                 <a class="image-container image-container--ratio-1-2" href="{{ banner.link }}">
                   <img class="image-container__image image-container__image--big-margins"
-                    srcset="/catalog/view/theme/pm/img/svg/lazy-dummy.svg"
+                    srcset="/catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
                     data-srcset="{{ banner.image1x }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x"
                     src="{{ banner.image }}" loading="lazy" width="192" height="80" alt="{{ banner.title }}">
                 </a>
               {% else %}
                 <p class="image-container image-container--ratio-1-2">
                   <img class="image-container__image image-container__image--big-margins"
-                    srcset="/catalog/view/theme/pm/img/svg/lazy-dummy.svg"
+                    srcset="/catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
                     data-srcset="{{ banner.image1x }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x"
                     src="{{ banner.image }}" loading="lazy" width="192" height="80" alt="{{ banner.title }}">
                 </p>
