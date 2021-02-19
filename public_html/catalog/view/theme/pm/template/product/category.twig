@@ -168,9 +168,23 @@
                     <a class="minicard__link" href="{{ product.href }}">
                       <h3 class="minicard__title">{{ product.name }}</h3>
                       <p class="image-container minicard__image-container">
-                        <picture>
-                          <img class="image-container__image" data-src="{{ product.thumb }}" loading="lazy" alt="Открыть страницу покупки {{ product.name }}" width="244">
-                        </picture>
+                        {% if product.thumb244w %}
+                          <img class="image-container__image"
+                              sizes="(min-width: 1456px) 244px,
+                                    (min-width: 1344px) calc((100vw - 480px) / 4),
+                                    (min-width: 1280px) calc((100vw - 456px) / 3),
+                                    (min-width: 1248px) calc(20vw - 48px),
+                                    (min-width: 1007px) calc(25vw - 48px),
+                                    (min-width: 768px) calc(33vw - 48px),
+                                    (min-width: 608px) calc(50vw - 48px),
+                                    calc(50vw - 32px)"
+                              srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
+                              data-srcset="{{ product.thumb244w }} 244w, {{ product.thumb366w }} 366w, {{ product.thumb488w }} 488w"
+                              src="{{ product.thumb }}" width="244" height="244" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                        {% else %}
+                          <img class="image-container__image noimage"
+                              src="{{ product.thumb }}" width="244" height="244" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                        {% endif %}
                       </p>
                     </a>
 

@@ -211,11 +211,20 @@ class ControllerProductCategory extends Controller {
 			$results = $this->model_catalog_product->getProducts($filter_data);
 
 			foreach ($results as $result) {
-				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-				}
+        // изображения товара
+        if ($result['image']) {
+          // $image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
+          $image244w = $this->model_tool_image->resize($result['image'], 244, 244);
+          $image366w = $this->model_tool_image->resize($result['image'], 366, 366);
+          $image488w = $this->model_tool_image->resize($result['image'], 488, 488);
+          $image     = $image488w;
+        } else {
+          // $image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
+          $image244w = NULL;
+          $image366w = NULL;
+          $image488w = NULL;
+          $image     = PLACEHOLDER_IMAGE;
+        }
 
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
           $price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
@@ -254,26 +263,29 @@ class ControllerProductCategory extends Controller {
 				}
 
 				$data['products'][] = array(
-					'product_id'  => $result['product_id'],
-					'thumb'       => $image, // товар
-					'name'        => $result['name'],
-          'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
-          'attribute_groups' => $this->model_catalog_product->getProductAttributes($result['product_id']),
-					'price'       => $price,
-					'special'     => $special,
-          'tax'         => $tax,
-					'rating'      => $rating,
-          'rating_percent' => (100 * $rating / 5) .'%',
-          'reviews'     => $result['reviews'],
-					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
-          'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
-          'manufacturer' => $result['manufacturer'],
-          'price_clean'    => $price_clean,
-          'price_before'   => $price_before,
-          'price_after'    => $price_after,
-          'special_clean'  => $special_clean,
-          'special_before' => $special_before,
-          'special_after'  => $special_after
+					'product_id'       => $result['product_id'],
+					'thumb'            => $image,
+					'thumb244w'        => $image244w,
+					'thumb366w'        => $image366w,
+					'thumb488w'        => $image488w,
+					'name'             => $result['name'],
+					'description'      => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
+					'attribute_groups' => $this->model_catalog_product->getProductAttributes($result['product_id']),
+					'price'            => $price,
+					'special'          => $special,
+					'tax'              => $tax,
+					'rating'           => $rating,
+					'rating_percent'   => (100 * $rating / 5) .'%',
+					'reviews'          => $result['reviews'],
+					'minimum'          => $result['minimum'] > 0 ? $result['minimum'] : 1,
+					'href'             => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
+					'manufacturer'     => $result['manufacturer'],
+					'price_clean'      => $price_clean,
+					'price_before'     => $price_before,
+					'price_after'      => $price_after,
+					'special_clean'    => $special_clean,
+					'special_before'   => $special_before,
+					'special_after'    => $special_after
 				);
 			}
 
