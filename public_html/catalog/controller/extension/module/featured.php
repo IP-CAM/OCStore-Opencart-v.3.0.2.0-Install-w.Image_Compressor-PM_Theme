@@ -27,7 +27,10 @@ class ControllerExtensionModuleFeatured extends Controller {
 						$image488w = $this->model_tool_image->resize($product_info['image'], 488, 488);
             $image = $image488w;
 					} else {
-						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+            $image244w = NULL;
+            $image366w = NULL;
+            $image488w = NULL;
+						$image = PLACEHOLDER_IMAGE;
 					}
 
 					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
@@ -67,27 +70,27 @@ class ControllerExtensionModuleFeatured extends Controller {
 					}
 
 					$data['products'][] = array(
-						'product_id'  => $product_info['product_id'],
-						'thumb'       => $image,
-						'thumb244w'       => $image244w,
-						'thumb366w'       => $image366w,
-						'thumb488w'       => $image488w,
-						'name'        => $product_info['name'],
-						'description' => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
-						'price'       => $price,
-						'special'     => $special,
-						'tax'         => $tax,
-            'rating'      => $rating,
-            'rating_percent' => (100 * $rating / 5) .'%',
-            'reviews'     => $product_info['reviews'],
-            'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
-            'manufacturer' => $product_info['manufacturer'],
-            'price_clean'    => $price_clean,
-            'price_before'   => $price_before,
-            'price_after'    => $price_after,
-            'special_clean'  => $special_clean,
-            'special_before' => $special_before,
-            'special_after'  => $special_after
+						'product_id'        => $product_info['product_id'],
+						'thumb'             => $image,
+						'thumb244w'         => $image244w,
+						'thumb366w'         => $image366w,
+						'thumb488w'         => $image488w,
+						'name'              => $product_info['name'],
+						'description'       => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
+						'price'             => $price,
+						'special'           => $special,
+						'tax'               => $tax,
+						'rating'            => $rating,
+						'rating_percent'    => (100 * $rating / 5) .'%',
+						'reviews'           => $product_info['reviews'],
+						'href'              => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+						'manufacturer'      => $product_info['manufacturer'],
+						'price_clean'       => $price_clean,
+						'price_before'      => $price_before,
+						'price_after'       => $price_after,
+						'special_clean'     => $special_clean,
+						'special_before'    => $special_before,
+						'special_after'     => $special_after
 					);
 				}
 			}
