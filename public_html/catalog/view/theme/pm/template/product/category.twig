@@ -35,9 +35,14 @@
                 <a class="category-list__link" href="{{ category.href }}">
                   <figure class="category-list__figure">
                     <div class="category-list__image-container">
-                      <picture>
-                        <img class="category-list__image" src="{{ category.thumb }}" width="40" alt="Перейти в раздел {{ category.name }}">
-                      </picture>
+                        {% if category.thumb40w %}
+                          <img class="category-list__image"
+                            sizes="(min-width: 980px) 128px, 40px"
+                            srcset="{{ category.thumb40w }} 40w, {{ category.thumb80w }} 80w, {{ category.thumb128w }} 128w, {{ category.thumb256w }} 256w"
+                            src="{{ category.thumb }}" width="40" height="40" alt="Перейти в раздел {{ category.name }}">
+                        {% else %}
+                          <img class="category-list__image" src="{{ category.thumb }}" width="40" height="40" alt="Перейти в раздел {{ category.name }}">
+                        {% endif %}
                     </div>
                     <figcaption class="category-list__name">{{ category.name }}</figcaption>
                   </figure>

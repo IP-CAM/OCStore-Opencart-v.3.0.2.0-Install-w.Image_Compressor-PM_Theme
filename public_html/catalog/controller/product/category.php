@@ -166,10 +166,30 @@ class ControllerProductCategory extends Controller {
 					'filter_sub_category' => true
         );
 
+        // подкатегории
+        if ($result['image']) {
+          $image40w  = $this->model_tool_image->resize($result['image'], 40, 40);
+					$image80w  = $this->model_tool_image->resize($result['image'], 80, 80);
+					$image128w = $this->model_tool_image->resize($result['image'], 128, 128);
+					$image256w = $this->model_tool_image->resize($result['image'], 256, 256);
+					$image     = $image256w;
+				} else {
+          $image40w  = NULL;
+          $image80w  = NULL;
+          $image128w = NULL;
+          $image256w = NULL;
+          $image     = PLACEHOLDER_IMAGE;
+				}
+
 				$data['categories'][] = array(
-					'name' => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-          'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url),
-          'thumb'=> $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'))
+					'name'      => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+          'href'      => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url),
+          'thumb'     => $image,
+          'thumb40w'  => $image40w,
+          'thumb80w'  => $image80w,
+          'thumb128w' => $image128w,
+          'thumb256w' => $image256w
+          // 'thumb'=> $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'))
 				);
 			}
 
@@ -235,7 +255,7 @@ class ControllerProductCategory extends Controller {
 
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
-					'thumb'       => $image,
+					'thumb'       => $image, // товар
 					'name'        => $result['name'],
           'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
           'attribute_groups' => $this->model_catalog_product->getProductAttributes($result['product_id']),
