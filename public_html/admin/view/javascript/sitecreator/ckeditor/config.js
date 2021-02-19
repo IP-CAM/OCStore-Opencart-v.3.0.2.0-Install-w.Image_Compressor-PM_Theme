@@ -38,7 +38,7 @@ CKEDITOR.editorConfig = function( config ) {
   config.dataIndentationChars = '  ';
   config.allowedContent = true;
   config.height = 400;
-  // config.enterMode = CKEDITOR.ENTER_BR;
+  config.enterMode = CKEDITOR.ENTER_BR;
 };
 
 
