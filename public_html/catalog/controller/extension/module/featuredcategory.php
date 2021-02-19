@@ -38,16 +38,17 @@ class ControllerExtensionModuleFeaturedCategory extends Controller {
 					$image256w = $this->model_tool_image->resize($category['image'], 256, 256);
 					$image = $image256w;
 				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+					$image_placeholder = $this->model_tool_image->resize('placeholder.svg', $setting['width'], $setting['height']);
 				}
 
 				$data['categories'][] = array(
 					'category_id' => $category['category_id'],
-					'thumb'       => $image,
-					'thumb40w'    => $image40w,
-					'thumb80w'    => $image80w,
-					'thumb128w'   => $image128w,
-					'thumb256w'   => $image256w,
+					'thumb'       => isset($image) ? $image : NULL,
+					'thumb40w'    => isset($image40w) ? $image40w : NULL,
+					'thumb80w'    => isset($image80w) ? $image80w : NULL,
+					'thumb128w'   => isset($image128w) ? $image128w : NULL,
+					'thumb256w'   => isset($image256w) ? $image256w : NULL,
+					'thumb_placeholder'   => isset($image_placeholder) ? $image_placeholder : NULL,
 					'name'        => $category['name'],
           'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
 				);
