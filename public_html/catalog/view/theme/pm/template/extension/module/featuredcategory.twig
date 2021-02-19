@@ -7,13 +7,13 @@
               <a class="category-list__link" href="{{ category.href }}">
                 <figure class="category-list__figure">
                   <div class="category-list__image-container">
-                    {% if category.thumb %}
+                    {% if category.thumb40w %}
                       <img class="category-list__image"
                         sizes="(min-width: 980px) 128px, 40px"
                         srcset="{{ category.thumb40w }} 40w, {{ category.thumb80w }} 80w, {{ category.thumb128w }} 128w, {{ category.thumb256w }} 256w"
                         src="{{ category.thumb }}" width="40" height="40" alt="Перейти в раздел {{ category.name }}">
                     {% else %}
-                      <img class="category-list__image" src="{{ category.thumb_placeholder }}" width="40" height="40" alt="Перейти в раздел {{ category.name }}">
+                      <img class="category-list__image" src="{{ category.thumb }}" width="40" height="40" alt="Перейти в раздел {{ category.name }}">
                     {% endif %}
                   </div>
                   <figcaption class="category-list__name">{{ category.name }}</figcaption>
@@ -29,14 +29,14 @@
                 <a class="catalog1lvl__link" href="{{ category.href }}">
                   <figure class="catalog1lvl__figure">
                     <div class="catalog1lvl__image-container">
-                    {% if category.thumb %}
+                    {% if category.thumb256w %}
                       <img class="catalog1lvl__image"
                         srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
                         data-srcset="{{ category.thumb256w }} 1x"
                         src="{{ category.thumb }}" loading="lazy" width="160" height="160" alt="Перейти в раздел {{ category.name }}">
                     {% else %}
                       <img class="catalog1lvl__image"
-                        src="{{ category.thumb_placeholder }}" loading="lazy" width="160" height="160" alt="Перейти в раздел {{ category.name }}">
+                        src="{{ category.thumb }}" loading="lazy" width="160" height="160" alt="Перейти в раздел {{ category.name }}">
                     {% endif %}
                     </div>
                     <figcaption class="catalog1lvl__caption">{{ category.name }}</figcaption>

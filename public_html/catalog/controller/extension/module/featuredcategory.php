@@ -32,23 +32,26 @@ class ControllerExtensionModuleFeaturedCategory extends Controller {
 
 			foreach ($categories as $category) {
 				if ($category['image']) {
-          $image40w = $this->model_tool_image->resize($category['image'], 40, 40);
-					$image80w = $this->model_tool_image->resize($category['image'], 80, 80);
+          $image40w  = $this->model_tool_image->resize($category['image'], 40, 40);
+					$image80w  = $this->model_tool_image->resize($category['image'], 80, 80);
 					$image128w = $this->model_tool_image->resize($category['image'], 128, 128);
 					$image256w = $this->model_tool_image->resize($category['image'], 256, 256);
-					$image = $image256w;
+					$image     = $image256w;
 				} else {
-					$image_placeholder = $this->model_tool_image->resize('placeholder.svg', $setting['width'], $setting['height']);
+          $image40w  = NULL;
+          $image80w  = NULL;
+          $image128w = NULL;
+          $image256w = NULL;
+          $image     = PLACEHOLDER_IMAGE;
 				}
 
 				$data['categories'][] = array(
 					'category_id' => $category['category_id'],
-					'thumb'       => isset($image) ? $image : NULL,
-					'thumb40w'    => isset($image40w) ? $image40w : NULL,
-					'thumb80w'    => isset($image80w) ? $image80w : NULL,
-					'thumb128w'   => isset($image128w) ? $image128w : NULL,
-					'thumb256w'   => isset($image256w) ? $image256w : NULL,
-					'thumb_placeholder'   => isset($image_placeholder) ? $image_placeholder : NULL,
+					'thumb'       => $image,
+					'thumb40w'    => $image40w,
+					'thumb80w'    => $image80w,
+					'thumb128w'   => $image128w,
+					'thumb256w'   => $image256w,
 					'name'        => $category['name'],
           'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
 				);
