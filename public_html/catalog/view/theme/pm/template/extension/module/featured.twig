@@ -48,7 +48,7 @@
                       <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
                     {% else %}
                       {# акция #}
-                      <span class="visually-hidden">{{ product.price }}</span>
+                      <span class="visually-hidden">{{ product.special }}</span>
                       <span class="price__current price__current--discount" aria-hidden="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
                       <del class="price__old">{{ product.price }}</del>
                     {% endif %}
