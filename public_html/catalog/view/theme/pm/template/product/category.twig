@@ -16,7 +16,7 @@
     </ol>
   </nav>
 
-  <main class="main page-goods" id="product-category">
+  <main class="main page-goods">
 
     <header class="page-goods__title-container">
       <h1 class="title title--1 page-goods__title">{{ heading_title }}</h1>
@@ -217,18 +217,18 @@
                     {% endif %}
 
                     {% if product.price %}
+                      <p class="price minicard__price">
                       {% if not product.special %}
                         {# без акции #}
-                        <p class="price minicard__price">
-                          <span class="price__current" aria-label="Текущая цена: ">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
-                        </p>
+                          <span class="visually-hidden">{{ product.price }}</span>
+                          <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
                       {% else %}
                         {# акция #}
-                        <p class="price minicard__price">
-                          <span class="price__current price__current--discount" aria-label="Текущая цена по акции: ">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
+                          <span class="visually-hidden">{{ product.special }}</span>
+                          <span class="price__current price__current--discount" aria-hiddel="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
                           <del class="price__old" aria-label="Цена без скидки: ">{{ product.price }}</del>
-                        </p>
                       {% endif %}
+                      </p>
                     {% endif %}
 
                     {% if product.rating %}
@@ -243,7 +243,6 @@
                         <a class="stars__elem stars__review-link link" href="product.html#reviews-title">
                           <span class="visually-hidden">Количество отзывов:</span>
                           <span>{{product.reviews}}</span>
-                          <span class="stars__quantity-caption">отзывов</span>
                         </a>
                       </div>
                     {% endif %}
