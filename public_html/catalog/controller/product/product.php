@@ -293,14 +293,28 @@ class ControllerProductProduct extends Controller {
 
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 				$data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+        $data['price_clean'] = $this->currency->format($product_info['price'], $this->session->data['currency'], '', true, true);
+        $data['price_before'] = floor($data['price_clean']);
+        $data['price_after'] = explode('.', $data['price_clean'])[1];
 			} else {
 				$data['price'] = false;
+        $data['price_clean'] = false;
+        $data['price_before'] = false;
+        $data['price_after'] = false;
 			}
 
 			if ((float)$product_info['special']) {
 				$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+        $data['special_clean'] = $this->currency->format($product_info['special'], $this->session->data['currency'], '', true, true);
+        $data['special_before'] = floor($data['special_clean']);
+        $data['special_after'] = explode('.', $data['special_clean'])[1];
+        $data['special_discount_text'] = 'скидка ' . round((1 - $data['special_clean'] / $data['price_clean']) * 100, 0) . '%';
 			} else {
 				$data['special'] = false;
+        $data['special_clean'] = false;
+        $data['special_before'] = false;
+        $data['special_after'] = false;
+        $data['special_discount_text'] = false;
 			}
 
 			if ($this->config->get('config_tax')) {
