@@ -222,17 +222,17 @@ class ControllerProductProduct extends Controller {
 			} else {
 				$this->document->setTitle($product_info['name']);
 			}
-			
+
 			if ($product_info['noindex'] <= 0) {
 				$this->document->setRobots('noindex,follow');
 			}
-			
+
 			if ($product_info['meta_h1']) {
 				$data['heading_title'] = $product_info['meta_h1'];
 			} else {
 				$data['heading_title'] = $product_info['name'];
 			}
-			
+
 			$this->document->setDescription($product_info['meta_description']);
 			$this->document->setKeywords($product_info['meta_keyword']);
 			$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
@@ -375,8 +375,11 @@ class ControllerProductProduct extends Controller {
 				$data['customer_name'] = '';
 			}
 
-			$data['reviews'] = sprintf($this->language->get('text_reviews'), (int)$product_info['reviews']);
-			$data['rating'] = (int)$product_info['rating'];
+      $reviews_count = (int)$product_info['reviews'];
+      $reviews_posttext = ' отзыв' . $this->custom->convertEnding($reviews_count);
+      $data['reviews'] = $reviews_count . $reviews_posttext;
+			$data['rating'] = $product_info['rating'];
+			$data['rating_percent'] = (100 * $data['rating'] / 5) .'%';
 
 			// Captcha
 			if ($this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('review', (array)$this->config->get('config_captcha_page'))) {
@@ -454,7 +457,7 @@ class ControllerProductProduct extends Controller {
 			$data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
 
 			$this->model_catalog_product->updateViewed($this->request->get['product_id']);
-			
+
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['column_right'] = $this->load->controller('common/column_right');
 			$data['content_top'] = $this->load->controller('common/content_top');
@@ -638,7 +641,7 @@ class ControllerProductProduct extends Controller {
 		}
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
-		
+
 		$recurring_info = $this->model_catalog_product->getProfile($product_id, $recurring_id);
 
 		$json = array();
