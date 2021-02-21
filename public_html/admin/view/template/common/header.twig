@@ -11,6 +11,12 @@
 <meta name="keywords" content="{{ keywords }}" />
 {% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="view/image/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="view/image/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="view/image/favicon/favicon-16x16.png">
+<link rel="manifest" href="view/image/favicon/site.webmanifest">
+
 <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
 <link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
@@ -36,11 +42,11 @@
 <header id="header" class="navbar navbar-static-top">
   <div class="container-fluid">
 
-  
+
     <div id="header-logo" class="navbar-header"><a href="{{ home }}" class="navbar-brand"><img src="view/image/logo.png" alt="{{ heading_title }}" title="{{ heading_title }}" /></a></div>
     <a href="#" id="button-menu" class="hidden-md hidden-lg"><span class="fa fa-bars"></span></a>{% if logged %}
-    
-    
+
+
 	<ul class="nav pull-left">
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"  title="{{ text_new }}"><i class="fa fa-plus fa-lg"></i> <span class="header-item">{{ text_new }}</span></a>
       <ul class="dropdown-menu dropdown-menu-left alerts-dropdown">
@@ -50,14 +56,22 @@
         <li><a href="{{ new_customer }}" style="display: block; overflow: auto;">{{ text_new_customer }}</a></li>
         <li><a href="{{ new_download }}" style="display: block; overflow: auto;">{{ text_new_download }}</a></li>
       </ul>
-    </li> 
+    </li>
     </ul>
-	
+
 	<div id="oc-search-div" class="col-sm-3 col-md-3 pull-left">
     {{ search }}
 	</div>
-    
+
     <ul class="nav navbar-nav navbar-right">
+      {# * Myadd #}
+      <li>
+        <a href="{{ refresh_modificators }}">
+          <i class="fa fa-refresh"></i>
+          Обновить модификаторы
+        </a>
+      </li>
+
       <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ image }}" alt="{{ firstname }} {{ lastname }}" title="{{ username }}" id="user-profile" class="img-circle" />{{ firstname }} {{ lastname }} <i class="fa fa-caret-down fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-right">
           <li><a href="{{ profile }}"><i class="fa fa-user-circle-o fa-fw"></i> {{ text_profile }}</a></li>
