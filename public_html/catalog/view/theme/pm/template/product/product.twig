@@ -1,0 +1,361 @@
+{{ header }}
+
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-product">
+
+    <header class="page-product__header" data-scroll-on-load data-scroll-maxvw="607">
+      <h1 class="title title--2 page-product__title">{{ heading_title }}</h1>
+
+      {% if rating %}
+        <div class="stars stars--product-header">
+          <span class="stars__elem stars__average-rating-caption">Средняя оценка:</span>
+          <div class="stars__group stars__elem">
+            <div class="stars__rating" style="width: {{rating_percent}}">
+              <div class="stars__scale"></div>
+            </div>
+          </div>
+          <span class="stars__elem stars__average-rating">{{rating}}</span>
+          <a class="stars__elem stars__review-link link" href="#">
+            <span class="visually-hidden">Количество отзывов:</span>
+            <span>{{reviews}}</span>
+          </a>
+        </div>
+      {% endif %}
+
+      <div>
+        <span class="page-product__code-caption page-product__code-caption--short" aria-hidden="true">{{ text_model }}</span>
+        <span class="page-product__code-caption page-product__code-caption--full">{{ text_model_full }}</span>
+        <span class="page-product__code">{{ model }}</span>
+      </div>
+    </header>
+
+
+
+    {% if thumb or images %}
+      <section class="page-product__gallery">
+        <h2 class="visually-hidden">Изображения товара</h2>
+
+        <div class="slider slider--snapped-items slider--holy-albatros">
+
+          {# * Слайдер #}
+          <div class="slider__list-container">
+            {% if xdstickers is not empty %}
+              <div class="product-stickers">
+                {% for xdsticker in xdstickers %}
+                  <strong class="product-stickers__sticker {{xdsticker.id}}">{{xdsticker.text}}</strong>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <ul class="slider__list">
+              {# * первое изображение #}
+              {% if thumb %}
+                <li class="slider__item" id="slider__item-0">
+                  <div class="slider__image-container">
+                    <img class="slider__image"
+                      {# для одного изображения и нескольких разный sizes #}
+                      {% if images %}
+                        sizes="(min-width: 1456px) 444px,
+                          (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
+                          (min-width: 512px) calc(50vw - 4px), 100vw"
+                      {% else %}
+                        sizes="(min-width: 1456px) 736px,
+                          (min-width: 980px) calc((2 * (100vw - 112px) / 3 ) - 10rem),
+                          (min-width: 512px) calc(100vw - 10rem), 100vw"
+                      {% endif %}
+                      srcset="{{ thumb444w }} 444w, {{ thumb640w }} 640w, {{ thumb920w }} 920w, {{ thumb1220w }} 1220w"
+                      src="{{ thumb }}" width="360" height="360" alt="{{ heading_title }}">
+                  </div>
+                </li>
+              {% endif %}
+
+              {# * остальные изображения #}
+              {% if images %}
+                {% for image in images %}
+                  <li class="slider__item" id="slider__item-{{ loop.index }}">
+                    <div class="slider__image-container">
+                      <img class="slider__image"
+                        sizes="(min-width: 1456px) 444px,
+                          (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
+                          (min-width: 512px) calc(50vw - 4px), 100vw"
+                        srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
+                        data-srcset="{{ image.thumb444w }} 444w, {{ image.thumb640w }} 640w, {{ image.thumb920w }} 920w, {{ image.thumb1220w }} 1220w"
+                        src="{{ image.thumb }}" loading="lazy" width="360" height="360" alt="{{ heading_title }}">
+                    </div>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+
+          {# * превью изображений #}
+          <div class="slider__nav">
+            <ul class="slider__nav-list">
+              {% if thumb %}
+                <li class="slider__nav-item">
+                  <a class="slider__nav-link" href="#slider__item-0" aria-label="Перейти к изображению 1">
+                    <img class="slider__nav-image"
+                      srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
+                      data-srcset="{{ thumb96w }} 1x"
+                      src="{{ thumb96w }}" loading="lazy" width="48" height="48" alt="">
+                  </a>
+                </li>
+              {% endif %}
+
+              {% if images %}
+                {% for image in images %}
+                  <li class="slider__nav-item">
+                    <a class="slider__nav-link" href="#slider__item-{{ loop.index }}" aria-label="Перейти к изображению {{ loop.index + 1 }}">
+                      <img class="slider__nav-image"
+                        srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
+                        data-srcset="{{ image.thumb96w }} 1x"
+                        src="{{ image.thumb96w }}" loading="lazy" width="48" height="48" alt="">
+                    </a>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+
+        </div>
+
+
+
+      </section>
+    {% endif %}
+
+
+
+    <section class="offer page-product__offer">
+      <h2 class="visually-hidden">Уловия продажи</h2>
+
+      {% if price %}
+        <p class="price offer__price">
+          {% if not special %}
+            <span class="visually-hidden">{{ price }}</span>
+            <span class="price__current price__current--big" aria-hidden="true">{{ price_before }}<sup>{{ price_after }}</sup> р.</span>
+          {% else %}
+            <span class="visually-hidden">{{ special }}</span>
+            <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_before }}<sup>{{ special_after }}</sup> р.</span>
+            <del class="price__old">{{ price }}</del>
+            <strong class="price__discount-info">{{ special_discount_text }}</strong>
+          {% endif %}
+        </p>
+      {% endif %}
+
+      <div class="offer__short-info">
+        {% if manufacturer %}
+          <div class="page-product__short-info-item">
+            <span class="offer__short-info-term">{{ text_product_manufacturer }}</span>
+            <span class="offer__short-info-value">{{ manufacturer }}</span>
+          </div>
+        {% endif %}
+        <div class="offer__short-info-item">
+          <span class="offer__short-info-term">{{ text_stock }}</span>
+          <span class="offer__short-info-value offer__short-info-value--instock">{{ stock }}</span>
+        </div>
+      </div>
+
+      {# * рекламный блок #}
+      {# <div class="alert alert--info offer__alert">
+        Этот товар можно купить с дополнительной скидкой 10% после регистрации.
+        <br>
+        <a class="link" href="#">Зарегистрироваться</a>
+        или
+        <a class="link" href="#">Войти</a>
+      </div> #}
+
+      {# * инфо о доставке #}
+      {# <section class="delivery-info offer__delivery-info">
+        <h3 class="visually-hidden">Выбор населенного пункта</h3>
+        <div class="city-choose delivery-info__city-choose">
+          <span class="city-choose__caption">Доставка в город: </span>
+          <button class="link city-choose__button" data-modal="#modalCity">
+            <svg class="icon icon--2x icon--stroked city-choose__pin-icon" width="24" height="24">
+              <use href="img/svg/_sprite.svg#icon-place"></use>
+            </svg>
+            <span class="visually-hidden">Текущий выбор: </span>
+            <span class="city-choose__current-city">г.&nbsp;Минск</span>
+            <svg class="icon icon--stroked" width="24" height="24">
+              <use href="img/svg/_sprite.svg#icon-arrow"></use>
+            </svg>
+          </button>
+        </div>
+        <div class="delivery-info__delivery-list">
+          <ul class="list" data-showmore data-showmore-action="hideNodes" data-showmore-nodes="2" data-showmore-showtext="Показать все варианты доставки" data-showmore-hidetext="Скрыть дополнительные варианты" data-showmore-button-class="delivery-info__showmore-button">
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Курьером</span>
+              <span>сегодня после 18-00 -</span>
+              <strong class="delivery-info__price">5 руб.</strong>
+            </li>
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Самовывоз</span>
+              <span>метро Спортивная сегодня после 18-00 -</span>
+              <strong class="delivery-info__price delivery-info__price--free">бесплатно</strong>
+            </li>
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Самовывоз</span>
+              <span>метро Восток завтра -</span>
+              <strong class="delivery-info__price delivery-info__price--free">бесплатно</strong>
+            </li>
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Самовывоз</span>
+              <span>торговый центр Шик 02.11.19 -</span>
+              <strong class="delivery-info__price delivery-info__price--free">бесплатно</strong>
+            </li>
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Самовывоз</span>
+              <span>метро Восток 08.11.19 -</span>
+              <strong class="delivery-info__price delivery-info__price--free">бесплатно</strong>
+            </li>
+            <li class="list__item delivery-info__item">
+              <span class="delivery-info__type">Самовывоз</span>
+              <span>торговый центр Шик 08.11.19 -</span>
+              <strong class="delivery-info__price delivery-info__price--free">бесплатно</strong>
+            </li>
+          </ul>
+        </div>
+      </section> #}
+
+      {# * опции #}
+      {# <div class="offer__options chip-set">
+        @@include("./chip-set/_chip-set.html", {"type": "productOptions"})
+      </div> #}
+
+      {# <div class="offer__buy">
+
+        <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select">
+          <div class="visually-hidden" aria-live="polite"></div>
+          <label class="textfield__input-container">
+            <span class="textfield__trailing-icon textfield__trailing-icon--dropdown"></span>
+            <input class="textfield__input" type="text" aria-describedby="custom-select-info" autocomplete="off" value="1" readonly>
+            <span class="textfield__label">Количество</span>
+          </label>
+
+          <ul class="custom-select__list custom-select__list--closed">
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">1</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">2</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">3</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">4</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">5</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">6</strong>
+            </li>
+            <li class="custom-select__item">
+              <strong class="custom-select__item-title">7</strong>
+            </li>
+          </ul>
+
+        </div>
+
+        <button class="offer__buy-elem offer__buy-elem--love button button--action-secondary offer__button-love" type="button">
+          <svg class="button__icon button__icon--love" width="24" height="24">
+            <use href="img/svg/_sprite.svg#icon-love"></use>
+          </svg>
+          <span class="button__caption">Сохранить</span>
+          <span class="visually-hidden">в избранное</span>
+        </button>
+
+        <button class="offer__buy-elem offer__buy-elem--buy button button--action-primary" type="button">Купить</button>
+
+      </div> #}
+
+      {# * уведомление о снижении цены #}
+      {# <div class="offer__price-notification">
+        <b>Слишком дорого?</b> Мы можем уведомить вас, когда цена на товар снизится.
+        <button class="link">Следить за ценой</button>
+      </div> #}
+
+      {# * инфо о гарантии и возврате #}
+      {# <dl class="offer__refund">
+        <dt class="offer__refund-dt">Гарантия:</dt>
+        <dd class="offer__refund-dd">12 месяцев</dd>
+
+        <dt class="offer__refund-dt">Возврат товара:</dt>
+        <dd class="offer__refund-dd">в течение 14 дней</dd>
+      </dl> #}
+
+      {# * поделиться #}
+      {# <aside class="offer__share">
+        <h3 class="offer__share-caption">Рассказать друзьям</h3>
+
+        <ul class="offer__share-list">
+          <li>
+            <a class="offer__share-link" href="#">
+              <span class="visually-hidden">Поделиться в Viber</span>
+              <svg class="offer__share-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true" focusable="false">
+                <path fill="#7d3daf" d="M0 0h24v24H0z" />
+                <g fill="#fff">
+                  <path d="M19.6 7.7a5.5 5.5 0 00-3.7-3.5 20.6 20.6 0 00-7.8 0 5.5 5.5 0 00-3.7 3.5 15.1 15.1 0 000 6.6A5.5 5.5 0 008 17.8v1.7a.7.7 0 001.2.5l1.8-1.8H12a20.6 20.6 0 003.9-.4 5.5 5.5 0 003.7-3.5 15.1 15.1 0 000-6.6zM18.2 14a4.1 4.1 0 01-2.6 2.5 19.2 19.2 0 01-4.1.4.1.1 0 00-.1 0l-1.3 1.3-1.3 1.4a.2.2 0 01-.3 0v-3a4.1 4.1 0 01-2.7-2.6 13.7 13.7 0 010-5.9 4.1 4.1 0 012.6-2.5 19.1 19.1 0 017.2 0A4.1 4.1 0 0118.2 8a13.7 13.7 0 010 6z" />
+                  <path d="M14.3 15.3l-.5-.2a10.3 10.3 0 01-3.9-2.6 10.1 10.1 0 01-1.5-2.3L8 9.1a1 1 0 01.3-1 2.4 2.4 0 01.8-.7.5.5 0 01.7.2 8.3 8.3 0 011 1.4.7.7 0 01-.2.9c-.1 0-.2 0-.2.2a.7.7 0 00-.2.1.5.5 0 000 .4 3.7 3.7 0 002 2.3 1 1 0 00.6.2c.3 0 .4-.4.6-.6a.6.6 0 01.8 0l.7.4a8.1 8.1 0 01.7.5.5.5 0 01.1.7 2.2 2.2 0 01-1 1 2.3 2.3 0 01-.3.2c-.2 0 .1 0 0 0zM12 7a4 4 0 013.8 3.2l.1 1a.2.2 0 01-.2.2c-.1 0-.2-.1-.2-.3v-.8a3.4 3.4 0 00-2.8-2.8l-.7-.1c-.1 0-.3 0-.3-.2a.2.2 0 01.2-.3h.1c2 0 0 0 0 0z" />
+                  <path d="M15 10.7a.9.9 0 010 .1.2.2 0 01-.5 0 .6.6 0 010-.1 2.3 2.3 0 00-.3-1.2 2.2 2.2 0 00-1-.8 2.6 2.6 0 00-.7-.3h-.3a.2.2 0 01-.2-.2.2.2 0 01.2-.2 3 3 0 011.3.3 2.5 2.5 0 011.4 2v.4s0-.1 0 0z" />
+                  <path d="M13.7 10.7a.2.2 0 01-.2-.3 2.4 2.4 0 000-.3.9.9 0 00-.4-.5.8.8 0 00-.3-.1h-.3a.2.2 0 01-.2-.3.2.2 0 01.2-.2 1.3 1.3 0 011.4 1.3.6.6 0 010 .2.2.2 0 01-.2.2c-.1 0 .1 0 0 0z" />
+                </g>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="offer__share-link" href="#">
+              <span class="visually-hidden">Поделиться в Вконтакте</span>
+              <svg class="offer__share-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true" focusable="false">
+                <path fill="#44678d" d="M0 0h24v24H0z" />
+                <path d="M6.2 7.3a15.8 15.8 0 002.3 4 2.1 2.1 0 00.4.4.3.3 0 00.6-.2 5 5 0 00.2-1.2V8.1a1 1 0 00-1-1c-.2-.1-.3-.3-.1-.5a1.5 1.5 0 011.2-.5h2.4a4.6 4.6 0 01.9.1.9.9 0 01.7.8 3.3 3.3 0 010 .6v2.7a4.6 4.6 0 000 1c.2.5.5.6.8.3a11.6 11.6 0 001.2-1.5 14.2 14.2 0 001.5-2.9c.2-.5.3-.6.9-.6h3.2a2 2 0 01.5 0 .5.5 0 01.4.7 5.3 5.3 0 01-1 1.9l-2 2.7a3.4 3.4 0 00-.2.3.8.8 0 00.1 1.1l1.8 1.8a10.4 10.4 0 011.1 1.4.8.8 0 01-.6 1.4h-3a2.3 2.3 0 01-1.6-.7l-1.4-1.5a4 4 0 00-.4-.4c-.4-.3-.8-.2-1 .3a8.8 8.8 0 00-.3 1.5.8.8 0 01-.8.7 7.9 7.9 0 01-4.3-.8 9 9 0 01-2.8-2.4 30 30 0 01-3.2-5.2l-1-2.1a.5.5 0 01.3-.7h3.2a1 1 0 011 .7z" fill="#fff" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="offer__share-link" href="#">
+              <span class="visually-hidden">Поделиться в Facebook</span>
+              <svg class="offer__share-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true" focusable="false">
+                <path fill="#fff" d="M0 0h24v24H0z" />
+                <path d="M0 0v24h12.8v-9.3H9.7V11h3V7.8A4.2 4.2 0 0117 3.6h3.2V7H18a1.3 1.3 0 00-1.3 1.3V11h3.6l-.5 3.8h-3.1V24H24V0z" fill="#3a559f" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="offer__share-link" href="#">
+              <span class="visually-hidden">Поделиться в одноклассниках</span>
+              <svg class="offer__share-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path fill="#f7931e" d="M0 0h24v24H0z" />
+                <g fill="#fff">
+                  <path d="M12 4a4.4 4.4 0 104.3 4.4A4.4 4.4 0 0012 4zm0 6.2a1.8 1.8 0 111.8-1.8 1.8 1.8 0 01-1.8 1.8z" />
+                  <path d="M13.5 16.2a7 7 0 002.8-1.2 1.2 1.2 0 00.2-1.7 1.2 1.2 0 00-1.6-.2 5.1 5.1 0 01-3 1 5.2 5.2 0 01-3-1 1.2 1.2 0 00-1.6.2 1.2 1.2 0 00.1 1.7 7.2 7.2 0 003 1.2L7.9 19a1.2 1.2 0 000 1.7 1.2 1.2 0 001.7 0l2.3-2.6 2.6 2.5a1.2 1.2 0 001.6 0 1.2 1.2 0 000-1.6z" />
+                </g>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </aside> #}
+
+    </section>
+  </main>
+</div>
+
+
+
+{{ footer }}
