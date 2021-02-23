@@ -46,7 +46,7 @@
 
 
 
-    {% if thumb or images %}
+    {% if images %}
       <section class="page-product__gallery">
         <h2 class="visually-hidden">Изображения товара</h2>
 
@@ -63,32 +63,26 @@
             {% endif %}
 
             <ul class="slider__list">
-              {# * первое изображение #}
-              {% if thumb %}
-                <li class="slider__item" id="slider__item-0">
+              {% for image in images %}
+                <li class="slider__item" id="slider__item-{{ loop.index }}">
                   <div class="slider__image-container">
-                    <img class="slider__image"
-                      {# для одного изображения и нескольких разный sizes #}
-                      {% if images %}
-                        sizes="(min-width: 1456px) 444px,
-                          (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
-                          (min-width: 512px) calc(50vw - 4px), 100vw"
-                      {% else %}
-                        sizes="(min-width: 1456px) 736px,
-                          (min-width: 980px) calc((2 * (100vw - 112px) / 3 ) - 10rem),
-                          (min-width: 512px) calc(100vw - 10rem), 100vw"
-                      {% endif %}
-                      srcset="{{ thumb444w }} 444w, {{ thumb640w }} 640w, {{ thumb920w }} 920w, {{ thumb1220w }} 1220w"
-                      src="{{ thumb }}" width="360" height="360" alt="{{ heading_title }}">
-                  </div>
-                </li>
-              {% endif %}
-
-              {# * остальные изображения #}
-              {% if images %}
-                {% for image in images %}
-                  <li class="slider__item" id="slider__item-{{ loop.index }}">
-                    <div class="slider__image-container">
+                    {# ! первое изображение #}
+                    {% if loop.index == 1  %}
+                      <img class="slider__image"
+                        {# для одного изображения и нескольких разный sizes #}
+                        {% if images|length > 1 %}
+                          sizes="(min-width: 1456px) 444px,
+                            (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
+                            (min-width: 512px) calc(50vw - 4px), 100vw"
+                        {% else %}
+                          sizes="(min-width: 1456px) 736px,
+                            (min-width: 980px) calc((2 * (100vw - 112px) / 3 ) - 10rem),
+                            (min-width: 512px) calc(100vw - 10rem), 100vw"
+                        {% endif %}
+                        srcset="{{ image.thumb444w }} 444w, {{ image.thumb640w }} 640w, {{ image.thumb920w }} 920w, {{ image.thumb1220w }} 1220w"
+                        src="{{ image.thumb }}" width="360" height="360" alt="{{ heading_title }}">
+                    {% else %}
+                      {# ! второе и более изображение #}
                       <img class="slider__image"
                         sizes="(min-width: 1456px) 444px,
                           (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
@@ -96,28 +90,17 @@
                         srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
                         data-srcset="{{ image.thumb444w }} 444w, {{ image.thumb640w }} 640w, {{ image.thumb920w }} 920w, {{ image.thumb1220w }} 1220w"
                         src="{{ image.thumb }}" loading="lazy" width="360" height="360" alt="{{ heading_title }}">
-                    </div>
-                  </li>
-                {% endfor %}
-              {% endif %}
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
             </ul>
           </div>
 
           {# * превью изображений #}
-          <div class="slider__nav">
-            <ul class="slider__nav-list">
-              {% if thumb %}
-                <li class="slider__nav-item">
-                  <a class="slider__nav-link" href="#slider__item-0" aria-label="Перейти к изображению 1">
-                    <img class="slider__nav-image"
-                      srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1x"
-                      data-srcset="{{ thumb96w }} 1x"
-                      src="{{ thumb96w }}" loading="lazy" width="48" height="48" alt="">
-                  </a>
-                </li>
-              {% endif %}
-
-              {% if images %}
+          {% if images|length > 1 %}
+            <div class="slider__nav">
+              <ul class="slider__nav-list">
                 {% for image in images %}
                   <li class="slider__nav-item">
                     <a class="slider__nav-link" href="#slider__item-{{ loop.index }}" aria-label="Перейти к изображению {{ loop.index + 1 }}">
@@ -128,9 +111,9 @@
                     </a>
                   </li>
                 {% endfor %}
-              {% endif %}
-            </ul>
-          </div>
+              </ul>
+            </div>
+          {% endif %}
 
         </div>
 

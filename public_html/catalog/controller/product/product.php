@@ -268,39 +268,25 @@ class ControllerProductProduct extends Controller {
 
 			$this->load->model('tool/image');
 
-			// if ($product_info['image']) {
-			// 	$data['popup'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height'));
-			// } else {
-			// 	$data['popup'] = '';
-			// }
+      $data['images'] = array();
 
-			if ($product_info['image']) {
-				// $data['thumb'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_height'));
-        $data['thumb']      = 'image/' . $product_info['image'];
-        $data['thumb96w']  = $this->model_tool_image->resize($product_info['image'], 96, 96);
-        $data['thumb444w']  = $this->model_tool_image->resize($product_info['image'], 444, 444);
-        $data['thumb640w']  = $this->model_tool_image->resize($product_info['image'], 640, 640);
-        $data['thumb920w']  = $this->model_tool_image->resize($product_info['image'], 920, 920);
-        $data['thumb1220w'] = $this->model_tool_image->resize($product_info['image'], 1220, 1220);
-			} else {
-				$data['thumb'] = '';
-        $data['thumb96w']  = NULL;
-        $data['thumb444w'] = NULL;
-        $data['thumb640w'] = NULL;
-        $data['thumb920w'] = NULL;
-        $data['thumb1220w'] = NULL;
-			}
-
-			$data['images'] = array();
+      if ($product_info['image']) {
+        $data['images'][] = array (
+          'thumb'      => 'image/' . $product_info['image'],
+          'thumb96w'   => $this->model_tool_image->resize($product_info['image'], 96, 96),
+          'thumb444w'  => $this->model_tool_image->resize($product_info['image'], 444, 444),
+          'thumb640w'  => $this->model_tool_image->resize($product_info['image'], 640, 640),
+          'thumb920w'  => $this->model_tool_image->resize($product_info['image'], 920, 920),
+          'thumb1220w' => $this->model_tool_image->resize($product_info['image'], 1220, 1220)
+        );
+      }
 
 			$results = $this->model_catalog_product->getProductImages($this->request->get['product_id']);
 
 			foreach ($results as $result) {
 				$data['images'][] = array(
-					// 'popup' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height')),
-					// 'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'))
 					'thumb'      => 'image/' . $result['image'],
-					'thumb96w'  => $this->model_tool_image->resize($result['image'], 96, 96),
+					'thumb96w'   => $this->model_tool_image->resize($result['image'], 96, 96),
 					'thumb444w'  => $this->model_tool_image->resize($result['image'], 444, 444),
 					'thumb640w'  => $this->model_tool_image->resize($result['image'], 640, 640),
 					'thumb920w'  => $this->model_tool_image->resize($result['image'], 920, 920),
@@ -461,11 +447,6 @@ class ControllerProductProduct extends Controller {
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
-					'thumb96w'    => $image96w,
-					'thumb444w'   => $image444w,
-					'thumb640w'   => $image640w,
-					'thumb920w'   => $image920w,
-					'thumb1220w'  => $image1220w,
 					'name'        => $result['name'],
 					'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
