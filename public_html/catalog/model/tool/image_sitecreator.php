@@ -664,7 +664,21 @@ class ModelToolImageBySitecreator extends Model {
           // никакой сторонний код, требующий специального разрешения на использование, не применен
           $width = round($width_orig * $height/$height_orig, 2);
         }
-        $image->resize($width, $height, $crop_type, $extra_parameters); // $type - тип обрезки: w h auto
+
+        // ! yulms edit. Блокируем увеличение изображения
+        $scale_w = $width / $width_orig;
+        $scale_h = $height / $height_orig;
+        $scale = min($scale_w, $scale_h);
+
+        // оригинал меньше запрашиваемого размера?
+        if ($scale > 1) {
+          // оставляем размер оригинала
+          $image->resize($width_orig, $height_orig, $crop_type, $extra_parameters);
+        } else {
+          // ресайзим в меньшую сторону
+          $image->resize($width, $height, $crop_type, $extra_parameters); // $type - тип обрезки: w h auto
+        }
+        // ! end of yulms edit
       }
       else {
         // не обрабатываем изображения если МАРКЕТ
@@ -889,5 +903,3 @@ else {
 
   }
 }
-
-
