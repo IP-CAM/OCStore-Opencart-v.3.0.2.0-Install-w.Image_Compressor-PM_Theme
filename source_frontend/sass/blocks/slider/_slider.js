@@ -60,7 +60,7 @@ class Slider {
     this.itemsMargin = +itemsMarginWithPx.slice(0, itemsMarginWithPx.length - 2);
 
     // если один слайд - удаляем навигационную панель и выходим
-    if (this.maxIndex === 0) {
+    if (this.maxIndex === 0 && this.mainNavElement) {
       this.mainNavElement.remove();
       return;
     }
