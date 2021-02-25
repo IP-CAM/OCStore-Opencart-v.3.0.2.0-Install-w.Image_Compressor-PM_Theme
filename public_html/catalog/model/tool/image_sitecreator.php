@@ -665,7 +665,7 @@ class ModelToolImageBySitecreator extends Model {
           $width = round($width_orig * $height/$height_orig, 2);
         }
 
-        // ! yulms edit. Блокируем увеличение изображения
+        // ! my add - блокировка увеличения изображения и сохранение пропорций оригинала
         $scale_w = $width / $width_orig;
         $scale_h = $height / $height_orig;
         $scale = min($scale_w, $scale_h);
@@ -673,12 +673,17 @@ class ModelToolImageBySitecreator extends Model {
         // оригинал меньше запрашиваемого размера?
         if ($scale > 1) {
           // оставляем размер оригинала
-          $image->resize($width_orig, $height_orig, $crop_type, $extra_parameters);
+          $new_width = $width_orig;
+		      $new_height = $height_orig;
         } else {
           // ресайзим в меньшую сторону
-          $image->resize($width, $height, $crop_type, $extra_parameters); // $type - тип обрезки: w h auto
+          $new_width = (int)($width_orig * $scale);
+		      $new_height = (int)($height_orig * $scale);
         }
-        // ! end of yulms edit
+        // echo 'Вызов $image->resize(width: ' . $new_width . ', height: ' . $new_height. ')<br>';
+        $image->resize($new_width, $new_height, $crop_type, $extra_parameters);
+        // ! End of add
+        // $image->resize($width, $height, $crop_type, $extra_parameters); // $type - тип обрезки: w h auto
       }
       else {
         // не обрабатываем изображения если МАРКЕТ

@@ -33,7 +33,6 @@
 
 
 function funWebpOrNot2(tag, n) {
-  console.log('sitecreator funWebpOrNot2 launched');
   if(typeof n == "undefined" || n === null) return;
   var me = document.getElementById('scwebp' + n);
   if (me === null) return;
@@ -53,14 +52,12 @@ function funWebpOrNot2(tag, n) {
 }
 
 function funWebpOrNot22(v) {
-  console.log('sitecreator funWebpOrNot22 launched');
   if(typeof v === 'object') {
     funWebpOrNot2(v[0], v[1]);
   }
 }
 
 function funWebpOrNot3(tag, n) {
-  console.log('sitecreator funWebpOrNot3 launched');
   if(typeof n == "undefined" || n === null) return;
   var me = document.getElementById('scwebp' + n);
   var ns = document.getElementById('nswebp' + n);
@@ -73,7 +70,6 @@ function funWebpOrNot3(tag, n) {
 }
 
 function funWebpOrNot33(v) {
-  console.log('sitecreator funWebpOrNot33 launched');
   if(typeof v === 'object') {
     funWebpOrNot2(v[0], v[1]);
   }
