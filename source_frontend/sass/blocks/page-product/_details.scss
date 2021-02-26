@@ -15,8 +15,33 @@
 }
 
 
-.details__table {
+.details__group-header {
+  margin: 0 0 $space*0.5 0;
+}
+
+
+.details__attribute-list {
+  margin: 0;
+  background-color: $color__primary-light;
+  border-bottom: 1px solid $color__additional-2;
+
   &:not(:last-child) {
     margin-bottom: $space;
   }
+}
+
+
+.details__attribute-name {
+  float: left;
+  width: 50%;
+  padding: $space*0.5;
+  border-top: 1px solid $color__additional-2;
+}
+
+
+.details__attribute-description {
+  margin-left: 50%;
+  padding: $space*0.5;
+  background-color: #ffffff;
+  border-top: 1px solid $color__additional-2;
 }

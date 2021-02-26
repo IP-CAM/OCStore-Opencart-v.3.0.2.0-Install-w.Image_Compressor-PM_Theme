@@ -7,6 +7,10 @@
   border: none;
 }
 
+.chip-set--wrap {
+  flex-wrap: wrap;
+}
+
 
 .chip-set__label {
   color: $color-font__secondary;
