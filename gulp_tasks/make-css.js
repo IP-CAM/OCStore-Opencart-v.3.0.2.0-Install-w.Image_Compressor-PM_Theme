@@ -16,7 +16,7 @@ function makeCSS (server, TEMPLATE_PATH) {
     .pipe(csso())
     .pipe(rename({ suffix: '.min' }))
     // .pipe(sourcemap.write('.'))
-    .pipe(gulp.dest(TEMPLATE_PATH + '/css'))
+    .pipe(gulp.dest(TEMPLATE_PATH + '/stylesheet'))
     .pipe(server.stream());
 }
 
