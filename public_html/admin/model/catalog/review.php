@@ -4,9 +4,36 @@
 
 class ModelCatalogReview extends Model {
 	public function addReview($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'");
+    // ! my add
+    // * original query
+		// $this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'");
+
+		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "',
+    advantages = '" . $this->db->escape($data['advantages']) . "',
+    disadvantages = '" . $this->db->escape($data['disadvantages']) . "',
+    `like` = '" . (int)$data['like'] . "',
+    `dislike` = '" . (int)$data['dislike'] . "',
+    rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'");
 
 		$review_id = $this->db->getLastId();
+
+
+    // if (isset($data['advantages'])) {
+    //   $this->db->query("UPDATE " . DB_PREFIX . "review SET advantages = '" . $this->db->escape($data['advantages']) . "' WHERE review_id = '" . (int)$review_id . "'");
+    // }
+
+    // if (isset($data['disadvantages'])) {
+    //   $this->db->query("UPDATE " . DB_PREFIX . "review SET disadvantages = '" . $this->db->escape($data['disadvantages']) . "' WHERE review_id = '" . (int)$review_id . "'");
+    // }
+
+    // if (isset($data['like'])) {
+    //   $this->db->query("UPDATE " . DB_PREFIX . "review SET `like` = '" . (int)$data['like'] . "' WHERE review_id = '" . (int)$review_id . "'");
+    // }
+
+    // if (isset($data['dislike'])) {
+    //   $this->db->query("UPDATE " . DB_PREFIX . "review SET `dislike` = '" . (int)$data['dislike'] . "' WHERE review_id = '" . (int)$review_id . "'");
+    // }
+    // ! eof my add
 
 		$this->cache->delete('product');
 
@@ -14,7 +41,17 @@ class ModelCatalogReview extends Model {
 	}
 
 	public function editReview($review_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
+    // ! my add
+    // * original query
+		// $this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
+
+		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "',
+    advantages = '" . $this->db->escape($data['advantages']) . "',
+    disadvantages = '" . $this->db->escape($data['disadvantages']) . "',
+    `like` = '" . (int)$data['like'] . "',
+    `dislike` = '" . (int)$data['dislike'] . "',
+    rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
+    // ! eof my add
 
 		$this->cache->delete('product');
 	}

@@ -396,11 +396,65 @@ class ControllerProductProduct extends Controller {
 				$data['customer_name'] = '';
 			}
 
-      $reviews_count = (int)$product_info['reviews'];
-      $reviews_posttext = ' отзыв' . $this->custom->convertEnding($reviews_count);
-      $data['reviews'] = $reviews_count . $reviews_posttext;
+      $review_count = (int)$product_info['reviews'];
+      $review_count_posttext = ' отзыв' . $this->custom->convertEnding($review_count);
+      $data['review_count_with_posttext'] = $review_count . $review_count_posttext;
 			$data['rating'] = $product_info['rating'];
 			$data['rating_percent'] = (100 * $data['rating'] / 5) .'%';
+
+
+      // ! review no AJAX
+			$data['text_no_reviews'] = $this->language->get('text_no_reviews'); // ??????
+
+			if (isset($this->request->get['page'])) {
+				$page = $this->request->get['page'];
+			} else {
+				$page = 1;
+			}
+
+			$data['reviews'] = array();
+
+			$results = $this->model_catalog_review->getReviewsByProductId($product_id, ($page - 1) * 5, 5);
+
+      $rating_descriptions = array(
+        1 => 'Ужасно',
+        2 => 'Сносно',
+        3 => 'Нормально',
+        4 => 'Хорошо',
+        5 => 'Отлично'
+      );
+
+      foreach ($results as $result) {
+        $rating_value = (int)$result['rating'];
+        if ($this->custom->validateDate($result['date_added'])) {
+          $rating_date_added = date($this->language->get('date_format_short'), strtotime($result['date_added']));
+        } else {
+          $rating_date_added = NULL;
+        }
+				$data['reviews'][] = array(
+					'author'             => $result['author'],
+					'text'               => nl2br($result['text']),
+					'advantages'         => nl2br($result['advantages']),
+					'disadvantages'      => nl2br($result['disadvantages']),
+					'like_count'         => (int)$result['like'],
+					'dislike_count'      => (int)$result['dislike'],
+					'review_id'          => (int)$result['review_id'],
+					'rating'             => $rating_value,
+					'rating_description' => $rating_descriptions[$rating_value],
+					'rating_percent'     => (100 * $rating_value / 5) .'%',
+					'date_added'         => $rating_date_added
+				);
+			}
+
+			// $pagination = new Pagination();
+			// $pagination->total = $review_count;
+			// $pagination->page = $page;
+			// $pagination->limit = 5;
+			// $pagination->url = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
+
+			// $data['review_pagination'] = $pagination->render();
+      // ! review no AJAX
+
 
 			// Captcha
 			if ($this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('review', (array)$this->config->get('config_captcha_page'))) {
@@ -559,6 +613,23 @@ class ControllerProductProduct extends Controller {
 			$this->response->setOutput($this->load->view('error/not_found', $data));
 		}
 	}
+
+  public function voteReview() {
+    $json = array();
+
+    if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+        $review_id = $this->request->post['review_id'];
+        $vote = $this->request->post['vote'];
+        $json['success'] = true;
+        $json['vote'] = $vote;
+
+        $this->load->model('catalog/review');
+        $this->model_catalog_review->voteReview($review_id, $vote);
+    }
+
+    $this->response->addHeader('Content-Type: application/json');
+    $this->response->setOutput(json_encode($json));
+  }
 
 	public function review() {
 		$this->load->language('product/product');

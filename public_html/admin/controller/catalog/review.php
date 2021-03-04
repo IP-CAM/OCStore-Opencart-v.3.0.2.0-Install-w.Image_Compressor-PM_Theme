@@ -269,13 +269,18 @@ class ControllerCatalogReview extends Controller {
 		$results = $this->model_catalog_review->getReviews($filter_data);
 
 		foreach ($results as $result) {
+      if ($this->custom->validateDate($result['date_added'])) {
+        $review_date_added = date($this->language->get('date_format_short'), strtotime($result['date_added']));
+      } else {
+        $review_date_added = NULL;
+      }
 			$data['reviews'][] = array(
 				'review_id'  => $result['review_id'],
 				'name'       => $result['name'],
 				'author'     => $result['author'],
 				'rating'     => $result['rating'],
 				'status'     => ($result['status']) ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
-				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'date_added' => $review_date_added,
 				'edit'       => $this->url->link('catalog/review/edit', 'user_token=' . $this->session->data['user_token'] . '&review_id=' . $result['review_id'] . $url, true)
 			);
 		}
@@ -475,7 +480,7 @@ class ControllerCatalogReview extends Controller {
 		}
 
 		$data['user_token'] = $this->session->data['user_token'];
-		
+
 		$this->load->model('catalog/product');
 
 		if (isset($this->request->post['product_id'])) {
@@ -510,21 +515,70 @@ class ControllerCatalogReview extends Controller {
 			$data['text'] = '';
 		}
 
+    // ! my add
+    if (isset($this->request->post['advantages'])) {
+      $data['advantages'] = $this->request->post['advantages'];
+    } elseif (!empty($review_info)) {
+      $data['advantages'] = $review_info['advantages'];
+    } else {
+      $data['advantages'] = '';
+    }
+
+    if (isset($this->request->post['disadvantages'])) {
+      $data['disadvantages'] = $this->request->post['disadvantages'];
+    } elseif (!empty($review_info)) {
+      $data['disadvantages'] = $review_info['disadvantages'];
+    } else {
+      $data['disadvantages'] = '';
+    }
+
+    if (isset($this->request->post['like'])) {
+      $data['like'] = $this->request->post['like'];
+    } elseif (!empty($review_info)) {
+      $data['like'] = $review_info['like'];
+    } else {
+      $data['like'] = '';
+    }
+
+    if (isset($this->request->post['dislike'])) {
+      $data['dislike'] = $this->request->post['dislike'];
+    } elseif (!empty($review_info)) {
+      $data['dislike'] = $review_info['dislike'];
+    } else {
+      $data['dislike'] = '';
+    }
+    // ! eof my add
+
 		if (isset($this->request->post['rating'])) {
 			$data['rating'] = $this->request->post['rating'];
 		} elseif (!empty($review_info)) {
 			$data['rating'] = $review_info['rating'];
 		} else {
-			$data['rating'] = '';
+			$data['rating'] = '5';
 		}
 
-		if (isset($this->request->post['date_added'])) {
+    // ! my add
+		// if (isset($this->request->post['date_added'])) {
+		// 	$data['date_added'] = $this->request->post['date_added'];
+		// } elseif (!empty($review_info)) {
+		// 	$data['date_added'] = ($review_info['date_added'] != '0000-00-00 00:00' ? $review_info['date_added'] : '');
+		// } else {
+		// 	$data['date_added'] = '';
+		// }
+    if (isset($this->request->post['date_added'])) {
 			$data['date_added'] = $this->request->post['date_added'];
 		} elseif (!empty($review_info)) {
-			$data['date_added'] = ($review_info['date_added'] != '0000-00-00 00:00' ? $review_info['date_added'] : '');
+      if ($this->custom->validateDate($review_info['date_added'])) {
+        $data['date_added'] = date('Y-m-d\TH:i', strtotime($review_info['date_added']));
+      } else {
+        $data['date_added'] = '';
+        echo 'ветка';
+      }
 		} else {
-			$data['date_added'] = '';
+      // now
+			$data['date_added'] = date('Y-m-d\TH:i');
 		}
+    // ! eof my add
 
 		if (isset($this->request->post['status'])) {
 			$data['status'] = $this->request->post['status'];
@@ -564,7 +618,7 @@ class ControllerCatalogReview extends Controller {
 
 		return !$this->error;
 	}
-	
+
 		public function enable() {
         $this->load->language('catalog/review');
         $this->document->setTitle($this->language->get('heading_title'));
@@ -623,7 +677,7 @@ class ControllerCatalogReview extends Controller {
         }
         $this->getList();
     }
-	
+
 	protected function validateEnable() {
 		if (!$this->user->hasPermission('modify', 'catalog/review')) {
 			$this->error['warning'] = $this->language->get('error_permission');
@@ -631,7 +685,7 @@ class ControllerCatalogReview extends Controller {
 
 		return !$this->error;
 	}
-	
+
 	protected function validateDisable() {
 		if (!$this->user->hasPermission('modify', 'catalog/review')) {
 			$this->error['warning'] = $this->language->get('error_permission');

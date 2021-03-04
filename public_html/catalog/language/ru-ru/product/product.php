@@ -41,14 +41,14 @@ $_['text_benefits']     = 'Преимущества:';
 $_['entry_qty']                = 'Кол-во';
 $_['entry_name']               = 'Ваше имя';
 $_['entry_review']             = 'Ваш отзыв';
-$_['entry_rating']             = 'Рейтинг';
+$_['entry_rating']             = 'Ваша оценка:';
 $_['entry_good']               = 'Хорошо';
 $_['entry_bad']                = 'Плохо';
 
 // Tabs
 $_['tab_description']          = 'Описание';
 $_['tab_attribute']            = 'Характеристики';
-$_['tab_review']               = 'Отзывов (%s)';
+$_['tab_review']               = 'Отзывы (%s)';
 
 // Error
 $_['error_name']               = 'Имя должно содержать от 3 до 25 символов!';
