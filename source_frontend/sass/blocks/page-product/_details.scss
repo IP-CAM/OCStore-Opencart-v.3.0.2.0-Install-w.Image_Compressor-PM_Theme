@@ -9,6 +9,10 @@
   }
 }
 
+.details__section > :last-child {
+  margin-bottom: $space*4;
+}
+
 
 .details__section-title {
   margin: 0 0 $space 0;

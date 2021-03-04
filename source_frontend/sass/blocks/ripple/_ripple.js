@@ -155,7 +155,7 @@ function initRipple() {
   const rippleConfig = {
     selectors: [
       'a[href]',
-      'button:not(.button--modal-close)',
+      'button:not(.button--modal-close):not(:disabled)',
       '.chip-set__box',
       '.radio-tabs__label'
     ]

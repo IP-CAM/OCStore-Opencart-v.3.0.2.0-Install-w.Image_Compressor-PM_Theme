@@ -75,7 +75,7 @@
 }
 
 .reviews__one-review-stars {
-  margin-bottom: $space*0;
+  margin-bottom: $space;
 }
 
 .reviews__text {
@@ -84,22 +84,38 @@
   }
 }
 
-.reviews__button-usefull {
-  padding: $space*0.5 $space*1.5;
+.reviews__vote-button {
+  padding: calc(#{$space} - 1px) $space*1.5;
   white-space: nowrap;
   color: $color-font__button;
   background-color: transparent;
   border-radius: $space*2;
-  box-shadow: inset 0 0 0 1px $color__additional-2;
+  border: 1px solid $color__additional-2;
 
-  &:hover,
-  &:focus {
+  &:hover:not(.reviews__vote-button--liked),
+  &:focus:not(.reviews__vote-button--liked) {
     background-color: $color__additional-1-1;
   }
 }
 
-.reviews__button-icon {
-  width: 18px;
-  height: 18px;
+.reviews__vote-button--liked {
+  color: #ffffff;
+  background-color: $color__primary;
+  border-color: $color__primary;
+}
+
+.reviews__vote-button-icon {
+  width: 24px;
+  height: 24px;
   fill: currentColor;
+}
+
+.reviews__vote-count {
+  &::before {
+    content: "(";
+  }
+
+  &::after {
+    content: ")";
+  }
 }
