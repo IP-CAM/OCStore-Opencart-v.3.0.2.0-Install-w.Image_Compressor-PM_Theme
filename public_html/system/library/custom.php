@@ -14,4 +14,10 @@ class Custom {
 		return $status[($value % 100 > 4 && $value % 100 < 20)? 2 : $array[($value % 10 < 5) ? $value % 10 : 5]];
   }
 
+
+  public function validateDate($date, $format = 'Y-m-d H:i:s') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+  }
+
 }
