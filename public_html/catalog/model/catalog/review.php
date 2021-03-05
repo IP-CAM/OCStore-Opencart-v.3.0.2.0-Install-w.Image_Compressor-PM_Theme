@@ -11,6 +11,7 @@ class ModelCatalogReview extends Model {
     text = '" . $this->db->escape($data['text']) . "',
     advantages = '" . $this->db->escape($data['advantages']) . "',
     disadvantages = '" . $this->db->escape($data['disadvantages']) . "',
+    city = '" . $this->db->escape($data['city']) . "',
     rating = '" . (int)$data['rating'] . "',
     date_added = NOW()");
 
@@ -79,7 +80,7 @@ class ModelCatalogReview extends Model {
     // ! my add
 		// $query = $this->db->query("SELECT r.review_id, r.author, r.rating, r.text, p.product_id, pd.name, p.price, p.image, r.date_added FROM " . DB_PREFIX . "review r LEFT JOIN " . DB_PREFIX . "product p ON (r.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE p.product_id = '" . (int)$product_id . "' AND p.date_available <= NOW() AND p.status = '1' AND r.status = '1' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY r.date_added DESC LIMIT " . (int)$start . "," . (int)$limit);
 
-    $query = $this->db->query("SELECT r.review_id, r.author, r.rating, r.text,  r.advantages, r.disadvantages, r.like, r.dislike, p.product_id, pd.name, p.price, p.image, r.date_added FROM " . DB_PREFIX . "review r LEFT JOIN " . DB_PREFIX . "product p ON (r.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE p.product_id = '" . (int)$product_id . "' AND p.date_available <= NOW() AND p.status = '1' AND r.status = '1' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY r.date_added DESC LIMIT " . (int)$start . "," . (int)$limit);
+    $query = $this->db->query("SELECT r.review_id, r.author, r.city, r.rating, r.text,  r.advantages, r.disadvantages, r.like, r.dislike, p.product_id, pd.name, p.price, p.image, r.date_added FROM " . DB_PREFIX . "review r LEFT JOIN " . DB_PREFIX . "product p ON (r.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE p.product_id = '" . (int)$product_id . "' AND p.date_available <= NOW() AND p.status = '1' AND r.status = '1' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY r.date_added DESC LIMIT " . (int)$start . "," . (int)$limit);
     // ! eof my add
 
 		return $query->rows;

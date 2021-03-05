@@ -8,7 +8,11 @@ class ModelCatalogReview extends Model {
     // * original query
 		// $this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'");
 
-		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "',
+		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET
+    author = '" . $this->db->escape($data['author']) . "',
+    city = '" . $this->db->escape($data['city']) . "',
+    product_id = '" . (int)$data['product_id'] . "',
+    text = '" . $this->db->escape(strip_tags($data['text'])) . "',
     advantages = '" . $this->db->escape($data['advantages']) . "',
     disadvantages = '" . $this->db->escape($data['disadvantages']) . "',
     `like` = '" . (int)$data['like'] . "',
@@ -45,7 +49,11 @@ class ModelCatalogReview extends Model {
     // * original query
 		// $this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
 
-		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "',
+		$this->db->query("UPDATE " . DB_PREFIX . "review SET
+    author = '" . $this->db->escape($data['author']) . "',
+    city = '" . $this->db->escape($data['city']) . "',
+    product_id = '" . (int)$data['product_id'] . "',
+    text = '" . $this->db->escape(strip_tags($data['text'])) . "',
     advantages = '" . $this->db->escape($data['advantages']) . "',
     disadvantages = '" . $this->db->escape($data['disadvantages']) . "',
     `like` = '" . (int)$data['like'] . "',

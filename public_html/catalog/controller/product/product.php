@@ -684,6 +684,14 @@ class ControllerProductProduct extends Controller {
 				$json['error'] = $this->language->get('error_text');
 			}
 
+			if ((utf8_strlen($this->request->post['advantages']) > 500) || (utf8_strlen($this->request->post['disadvantages']) > 500)) {
+				$json['error'] = 'Описание преимуществ и недостатков должно содержать до 500 символов';
+			}
+
+			if (utf8_strlen($this->request->post['city']) > 60) {
+				$json['error'] = 'Поле вашего населенного пункта должно содержать до 60 символов';
+			}
+
 			if (empty($this->request->post['rating']) || $this->request->post['rating'] < 0 || $this->request->post['rating'] > 5) {
 				$json['error'] = $this->language->get('error_rating');
 			}

@@ -516,6 +516,14 @@ class ControllerCatalogReview extends Controller {
 		}
 
     // ! my add
+    if (isset($this->request->post['city'])) {
+      $data['city'] = $this->request->post['city'];
+    } elseif (!empty($review_info)) {
+      $data['city'] = $review_info['city'];
+    } else {
+      $data['city'] = '';
+    }
+
     if (isset($this->request->post['advantages'])) {
       $data['advantages'] = $this->request->post['advantages'];
     } elseif (!empty($review_info)) {
@@ -572,7 +580,6 @@ class ControllerCatalogReview extends Controller {
         $data['date_added'] = date('Y-m-d\TH:i', strtotime($review_info['date_added']));
       } else {
         $data['date_added'] = '';
-        echo 'ветка';
       }
 		} else {
       // now
