@@ -45,15 +45,15 @@
             <div class="quantity-input cart-list__quantity-input">
               <span class="visually-hidden">Управление количеством</span>
               <div class="quantity-input__container">
-                <button class="quantity-input__button quantity-input__button--less" type="button" onclick="window.newcart.add('{{ product.product_id }}', -1);">
+                <button class="quantity-input__button quantity-input__button--less" type="button" onclick="window.cart.add('{{ product.product_id }}', -1);">
                   <span class="visually-hidden">Уменьшить</span>
                   <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
                     <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
                   </svg>
                 </button>
                 <input class="quantity-input__input-field" type="number" name="quantity" value="{{ product.quantity }}"
-                  data-product-quantity="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" onChange="window.newcart.change('{{ product.product_id }}', this.dataset.productQuantity, this.value);">
-                <button class="quantity-input__button quantity-input__button--more" type="button"  onclick="window.newcart.add('{{ product.product_id }}', 1);">
+                  data-product-quantity="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" onChange="window.cart.change('{{ product.product_id }}', this.dataset.productQuantity, this.value);">
+                <button class="quantity-input__button quantity-input__button--more" type="button"  onclick="window.cart.add('{{ product.product_id }}', 1);">
                   <span class="visually-hidden">Увеличить</span>
                   <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
                     <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
@@ -78,8 +78,8 @@
             </div>
 
             <div class="cart-list__item-manage">
-              <button class="button cart-list__manage-item-button" type="button" onclick="window.newcart.remove('{{ product.cart_id }}');">Удалить</button>
-              <button class="button cart-list__manage-item-button" type="button" onclick="window.newwishlist.add('{{ product.product_id }}');">Сохранить</button>
+              <button class="button cart-list__manage-item-button" type="button" onclick="window.cart.remove('{{ product.cart_id }}');">Удалить</button>
+              <button class="button cart-list__manage-item-button" type="button" onclick="window.wishlist.add('{{ product.product_id }}');">Сохранить</button>
             </div>
           </li>
 

@@ -582,5 +582,4 @@ class Filter {
 
 }
 
-
-export default Filter;
+window.yulmsOcfilter = new Filter();

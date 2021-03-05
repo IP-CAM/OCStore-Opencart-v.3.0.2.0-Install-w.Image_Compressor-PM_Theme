@@ -16,10 +16,9 @@ import initStars from '../sass/blocks/stars/_stars.js';
 import initRadios from '../sass/blocks/radiocheck/_radio.js';
 import initPickup from '../sass/blocks/pickup/_pickup.js';
 import './common-next.js';
-import Filter from './yulms-ocfilter.js';
 
 
-const projectObjects = { // eslint-disable-line
+const projectObjects = {
   lazyLoad: initLazyload(),
   scrollOnLoad: initScrollOnLoad(),
   switchView: initSwitchView(),
@@ -36,10 +35,9 @@ const projectObjects = { // eslint-disable-line
   showMores: initShowmores(),
   stars: initStars(),
   radios: initRadios(),
-  pickup: initPickup(),
-  filter: new Filter()
+  pickup: initPickup()
 };
 
-console.log(projectObjects);
-
 window.projectObjects = projectObjects;
+
+console.log(projectObjects);
