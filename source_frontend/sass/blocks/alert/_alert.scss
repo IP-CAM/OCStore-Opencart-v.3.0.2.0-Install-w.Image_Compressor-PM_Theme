@@ -1,9 +1,50 @@
 .alert {
+  position: relative;
   padding: $space;
   background-color: $color__additional-1-1;
+  border-top-right-radius: $controls__border-radius;
+  border-bottom-right-radius: $controls__border-radius;
 }
 
+.alert--dissmisible {
+  padding-right: $space*4;
+}
+
+.alert__close-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $space * 3.5;
+  height: $space * 3.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  color: $color__additional-4;
+  border-radius: $controls__border-radius;
+
+  &:hover,
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
 
 .alert--info {
-  border-left: $space*0.5 solid $color__secondary;
+  border-left: $space*0.5 solid $color__primary;
+}
+
+.alert--success {
+  border-left: $space*0.5 solid $color__secondary-bright;
+}
+
+.alert--warning {
+  border-left: $space*0.5 solid $color__danger;
+}
+
+.alert--danger {
+  border-left: $space*0.5 solid $color__error;
 }
