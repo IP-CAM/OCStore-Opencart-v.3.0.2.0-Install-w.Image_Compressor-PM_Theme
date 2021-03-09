@@ -10,6 +10,7 @@
 // Компоненты
 @import "blocks/title/title";
 @import "blocks/button/button";
+@import "blocks/circular-progress/circular-progress";
 @import "blocks/icon/icon";
 @import "blocks/image-container/image-container";
 @import "blocks/link/link";
@@ -68,5 +69,5 @@
 @import "blocks/page-cart/page-cart";
 @import "blocks/pickup/pickup";
 
-// стили для переопределения остальных
+// переопределяющие стили
 @import "blocks/ripple/ripple";
