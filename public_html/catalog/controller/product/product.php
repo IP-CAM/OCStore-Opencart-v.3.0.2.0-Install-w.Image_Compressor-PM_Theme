@@ -676,16 +676,16 @@ class ControllerProductProduct extends Controller {
 		$json = array();
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-			if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 25)) {
-				$json['error'] = $this->language->get('error_name');
-			}
-
-			if ((utf8_strlen($this->request->post['text']) < 25) || (utf8_strlen($this->request->post['text']) > 1000)) {
+      if ((utf8_strlen($this->request->post['text']) < 25) || (utf8_strlen($this->request->post['text']) > 1000)) {
 				$json['error'] = $this->language->get('error_text');
 			}
 
-			if ((utf8_strlen($this->request->post['advantages']) > 500) || (utf8_strlen($this->request->post['disadvantages']) > 500)) {
+      if ((utf8_strlen($this->request->post['advantages']) > 500) || (utf8_strlen($this->request->post['disadvantages']) > 500)) {
 				$json['error'] = 'Описание преимуществ и недостатков должно содержать до 500 символов';
+			}
+
+			if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 25)) {
+				$json['error'] = $this->language->get('error_name');
 			}
 
 			if (utf8_strlen($this->request->post['city']) > 60) {
@@ -698,7 +698,8 @@ class ControllerProductProduct extends Controller {
 
 			// Captcha
 			if ($this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('review', (array)$this->config->get('config_captcha_page'))) {
-				$captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate');
+        $validate_action = 'submit_product_review';
+				$captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate', array('action' => $validate_action));
 
 				if ($captcha) {
 					$json['error'] = $captcha;

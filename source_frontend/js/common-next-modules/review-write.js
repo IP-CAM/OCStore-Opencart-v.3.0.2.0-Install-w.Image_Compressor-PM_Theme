@@ -1,52 +1,68 @@
 import Alert from '../../sass/blocks/alert/_alert.js';
-
+import ReCaptcha from './recaptcha-v3.js';
+import CircularProgress from '../../sass/blocks/circular-progress/_circular-progress';
 
 class WriteReview {
   constructor(formElement) {
     this.formSelector = '.review-write__form';
     this.productId = formElement.dataset.productId;
+    this.recaptchaAtion = 'submit_product_review';
     this.url = 'index.php?route=product/product/write&product_id=' + this.productId;
+    this.submitButtonSelector = `${this.formSelector} button[type="submit"]`;
 
 
     this.formElement = document.querySelector(this.formSelector);
+
+    this.reCaptcha = new ReCaptcha();
+
+    this.formElement.addEventListener('focusin', () => this.reCaptcha.loadScript(), {once: true});
+
     this.formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
 
-      const formData = new FormData (this.formElement);
-      this._sendRequest(formData)
-        .then(parsedData => {
-          const alertOptions = {
-            targetSelector: this.formSelector + ' .stars',
-            position: 'after',
-            extraCssClass: 'review-write__elem'
-          };
+      const loadingIndicator = new CircularProgress(this.submitButtonSelector);
+      loadingIndicator.on();
 
-          if (parsedData.success) {
-            alertOptions.html = parsedData.success;
-            alertOptions.type = 'success';
-            this.formElement.reset();
-          } else {
-            alertOptions.html = parsedData.error;
-            alertOptions.type = 'warning';
+      // * reCAPTCHA
+      this.reCaptcha.execute(this.recaptchaAtion)
+        .then(() => {
+          return fetch(this.url, {
+            method: 'POST',
+            body: new FormData (this.formElement)
+          });
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
           }
-
-          new Alert(alertOptions);
-        });
+          return response.json();
+        })
+        .then(json => {
+          this._showAlert(json);
+          if (json.success) this.formElement.reset();
+        })
+        .finally(() => loadingIndicator.off())
+        .catch(console.error);
     });
   }
 
 
-  _sendRequest(formData) {
-    return fetch(this.url, {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw Error(`${response.status} ${response.statusText}`);
-        }
-        return response.json();
-      });
+  _showAlert(json) {
+    const alertOptions = {
+      targetSelector: this.formSelector + ' .stars',
+      position: 'after',
+      extraCssClass: 'review-write__elem'
+    };
+
+    if (json.success) {
+      alertOptions.html = json.success;
+      alertOptions.type = 'success';
+    } else {
+      alertOptions.html = json.error;
+      alertOptions.type = 'warning';
+    }
+
+    new Alert(alertOptions);
   }
 
 }

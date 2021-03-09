@@ -9,4 +9,5 @@ $_['text_captcha']  = 'Капча';
 $_['entry_captcha'] = 'Введите код в поле ниже';
 
 // Error
-$_['error_captcha'] = 'Неверно введен код с картинки!';
+// $_['error_captcha'] = 'Неверно введен код с картинки!';
+$_['error_captcha'] = 'Не пройдена проверка Google reCAPTCHA';
