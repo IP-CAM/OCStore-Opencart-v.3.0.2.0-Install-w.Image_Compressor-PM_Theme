@@ -13,7 +13,7 @@
   border-top: 1px solid $color__additional-2;
   // перекрытие border-bottom в нижем ряду items
   padding-bottom: calc((var(--row-gap) / 2) - 1px);
-  border-bottom: 1px solid $color__background;
+  border-bottom: 1px solid $color__additional-2;
 }
 
 
