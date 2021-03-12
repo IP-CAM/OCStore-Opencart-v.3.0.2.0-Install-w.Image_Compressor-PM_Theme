@@ -481,25 +481,17 @@
         </section>
       {% endif %}
 
-      <section class="details__section">
-        <h3 class="title title--3 accordion details__section-title">Прочая информация</h3>
-        <div class="admin-content">
-          <table class="table details__table">
-            <tr>
-              <th class="table__cell table__cell--th">Испортер</th>
-              <td class="table__cell">Бергофф ООО</td>
-            </tr>
-            <tr>
-              <th class="table__cell table__cell--th">Страна производства</th>
-              <td class="table__cell">Китай</td>
-            </tr>
-            <tr>
-              <th class="table__cell table__cell--th">Производитель</th>
-              <td class="table__cell">Гудбэби Чайлд Продактс Коу, Лтд № 28 Луфын Ист Роуд, Люджа Таун, Куншан Сити, Джангсу Пров. CN 215331, Китай</td>
-            </tr>
-          </table>
-        </div>
-      </section>
+      {% if importer or manufacturer_address %}
+        <section class="details__section">
+          <h3 class="title title--3 accordion details__section-title">Прочая информация</h3>
+          <dl class="details__attribute-list">
+            <dt class="details__attribute-name">Импортер</dt>
+            <dd class="details__attribute-description">{{ importer }}</dd>
+            <dt class="details__attribute-name">Производитель</dt>
+            <dd class="details__attribute-description">{{ manufacturer_address }}</dd>
+          </dl>
+        </section>
+      {% endif %}
 
     </section>
 
