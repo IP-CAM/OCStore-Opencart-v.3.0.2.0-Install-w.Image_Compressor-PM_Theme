@@ -29,10 +29,10 @@
               <div class="stars__scale"></div>
             </div>
           </div>
-          <span class="stars__elem stars__average-rating">{{rating}}</span>
+          <span class="stars__elem stars__average-rating">{{ rating }}</span>
           <a class="stars__elem stars__review-link link" href="#">
             <span class="visually-hidden">Количество отзывов:</span>
-            <span>{{reviews}}</span>
+            <span>{{ review_count_with_posttext }}</span>
           </a>
         </div>
       {% endif %}
@@ -45,13 +45,10 @@
     </header>
 
 
-
     {% if images %}
       <section class="page-product__gallery">
         <h2 class="visually-hidden">Изображения товара</h2>
-
         <div class="slider slider--snapped-items slider--holy-albatros">
-
           {# * Слайдер #}
           <div class="slider__list-container">
             {% if xdstickers is not empty %}
@@ -61,15 +58,12 @@
                 {% endfor %}
               </div>
             {% endif %}
-
             <ul class="slider__list">
               {% for image in images %}
                 <li class="slider__item" id="slider__item-{{ loop.index }}">
                   <div class="slider__image-container">
-                    {# ! первое изображение #}
                     {% if loop.index == 1  %}
                       <img class="slider__image"
-                        {# для одного изображения и нескольких разный sizes #}
                         {% if images|length > 1 %}
                           sizes="(min-width: 1456px) 444px,
                             (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
@@ -82,7 +76,6 @@
                         srcset="{{ image.thumb444w }} 444w, {{ image.thumb640w }} 640w, {{ image.thumb920w }} 920w, {{ image.thumb1220w }} 1220w"
                         src="{{ image.thumb }}" width="360" height="360" alt="{{ heading_title }}">
                     {% else %}
-                      {# ! второе и более изображение #}
                       <img class="slider__image"
                         sizes="(min-width: 1456px) 444px,
                           (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
@@ -96,7 +89,6 @@
               {% endfor %}
             </ul>
           </div>
-
           {# * превью изображений #}
           {% if images|length > 1 %}
             <div class="slider__nav">
@@ -114,18 +106,13 @@
               </ul>
             </div>
           {% endif %}
-
         </div>
-
-
-
       </section>
     {% endif %}
 
 
-
     <section class="offer page-product__offer">
-      <h2 class="visually-hidden">Уловия продажи</h2>
+      <h2 class="visually-hidden">Информация о предложении и покупка</h2>
 
       {% if price %}
         <p class="price offer__price">
@@ -154,28 +141,31 @@
         </div>
       </div>
 
+
       {# * рекламный блок #}
-      {# <div class="alert alert--info offer__alert">
+      <section class="alert alert--info offer__alert">
+        <h3 class="visually-hidden">Специальное предложение</h3>
         Этот товар можно купить с дополнительной скидкой 10% после регистрации.
         <br>
         <a class="link" href="#">Зарегистрироваться</a>
         или
         <a class="link" href="#">Войти</a>
-      </div> #}
+      </section>
+
 
       {# * инфо о доставке #}
-      {# <section class="delivery-info offer__delivery-info">
-        <h3 class="visually-hidden">Выбор населенного пункта</h3>
+      <section class="delivery-info offer__delivery-info">
+        <h3 class="visually-hidden">Выбор населенного пункта для доставки</h3>
         <div class="city-choose delivery-info__city-choose">
           <span class="city-choose__caption">Доставка в город: </span>
           <button class="link city-choose__button" data-modal="#modalCity">
             <svg class="icon icon--2x icon--stroked city-choose__pin-icon" width="24" height="24">
-              <use href="img/svg/_sprite.svg#icon-place"></use>
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-place"></use>
             </svg>
             <span class="visually-hidden">Текущий выбор: </span>
             <span class="city-choose__current-city">г.&nbsp;Минск</span>
             <svg class="icon icon--stroked" width="24" height="24">
-              <use href="img/svg/_sprite.svg#icon-arrow"></use>
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-arrow"></use>
             </svg>
           </button>
         </div>
@@ -213,15 +203,35 @@
             </li>
           </ul>
         </div>
-      </section> #}
+      </section>
 
-      {# * опции #}
-      {# <div class="offer__options chip-set">
-        @@include("./chip-set/_chip-set.html", {"type": "productOptions"})
-      </div> #}
 
-      {# <div class="offer__buy">
+      {% if options %}
+        <section class="offer__options">
+          <h3 class="visually-hidden">{{ text_option }}</h3>
+          {% for option in options %}
+            {% if option.type == 'radio' %}
+              <fieldset class="chip-set chip-set--wrap offer__chip-set" aria-labelledby="input-option{{ option.product_option_id }}">
+                <span class="chip-set__element chip-set__label" id="input-option{{ option.product_option_id }}">{{ option.name }}:</span>
+                {% for option_value in option.product_option_value %}
+                  <label class="chip-set__element chip-set__chip">
+                    <input class="chip-set__input visually-hidden" type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}">
+                    <span class="chip-set__box chip-set__box--base chip-set__box--big">
+                      {{ option_value.name }}
+                      {% if option_value.price %}
+                        ({{ option_value.price_prefix }}{{ option_value.price }})
+                      {% endif %}
+                    </span>
+                  </label>
+                {% endfor %}
+              </fieldset>
+            {% endif %}
+          {% endfor %}
+        </section>
+      {% endif %}
 
+      {# * Выбор количества, кнопка избранное и купить #}
+      <div class="offer__buy">
         <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select">
           <div class="visually-hidden" aria-live="polite"></div>
           <label class="textfield__input-container">
@@ -246,45 +256,44 @@
             <li class="custom-select__item">
               <strong class="custom-select__item-title">5</strong>
             </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">6</strong>
-            </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">7</strong>
-            </li>
           </ul>
-
         </div>
 
         <button class="offer__buy-elem offer__buy-elem--love button button--action-secondary offer__button-love" type="button">
           <svg class="button__icon button__icon--love" width="24" height="24">
-            <use href="img/svg/_sprite.svg#icon-love"></use>
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
           </svg>
           <span class="button__caption">Сохранить</span>
           <span class="visually-hidden">в избранное</span>
         </button>
 
         <button class="offer__buy-elem offer__buy-elem--buy button button--action-primary" type="button">Купить</button>
-
-      </div> #}
+      </div>
 
       {# * уведомление о снижении цены #}
-      {# <div class="offer__price-notification">
-        <b>Слишком дорого?</b> Мы можем уведомить вас, когда цена на товар снизится.
-        <button class="link">Следить за ценой</button>
-      </div> #}
+      {% if price %}
+        <div class="offer__price-notification">
+          <b>Слишком дорого?</b> Мы можем уведомить вас, когда цена на товар снизится.
+          <button class="link">Следить за ценой</button>
+        </div>
+      {% endif %}
 
       {# * инфо о гарантии и возврате #}
-      {# <dl class="offer__refund">
-        <dt class="offer__refund-dt">Гарантия:</dt>
-        <dd class="offer__refund-dd">12 месяцев</dd>
-
-        <dt class="offer__refund-dt">Возврат товара:</dt>
-        <dd class="offer__refund-dd">в течение 14 дней</dd>
-      </dl> #}
+      {% if guarantee or refund %}
+        <dl class="offer__refund">
+          {% if guarantee %}
+            <dt class="offer__refund-dt">Гарантия:</dt>
+            <dd class="offer__refund-dd">{{ guarantee }} месяцев</dd>
+          {% endif %}
+          {% if refund %}
+            <dt class="offer__refund-dt">Возврат товара:</dt>
+            <dd class="offer__refund-dd">в течение {{ refund }} дней</dd>
+          {% endif %}
+        </dl>
+      {% endif %}
 
       {# * поделиться #}
-      {# <aside class="offer__share">
+      <aside class="offer__share">
         <h3 class="offer__share-caption">Рассказать друзьям</h3>
 
         <ul class="offer__share-list">
@@ -333,9 +342,168 @@
             </a>
           </li>
         </ul>
-      </aside> #}
+      </aside>
 
     </section>
+
+
+    <section class="page-product__details details">
+      <h2 class="title title--2 details__title">Сведения о товаре</h2>
+
+      {# * Описание #}
+      {% if description %}
+        <section class="details__section">
+          <h3 class="title title--3 accordion details__section-title" data-accordion-open>{{ tab_description }}</h3>
+          <div class="admin-content">{{ description }}</div>
+        </section>
+      {% endif %}
+
+      {# * Характеристики #}
+      {% if attribute_groups %}
+        <section class="details__section">
+          <h3 class="title title--3 accordion details__section-title" data-accordion-open>{{ tab_attribute }}</h3>
+          {% for attribute_group in attribute_groups %}
+            <h4 class="title title--6 details__group-header">{{ attribute_group.name }}</h4>
+            <dl class="details__attribute-list">
+              {% for attribute in attribute_group.attribute %}
+                <dt class="details__attribute-name">{{ attribute.name }}</dt>
+                <dd class="details__attribute-description">{{ attribute.text }}</dd>
+              {% endfor %}
+            </dl>
+          {% endfor %}
+        </section>
+      {% endif %}
+
+
+      {# * отзывы #}
+      {% if review_status and reviews %}
+        <section class="details__section reviews">
+          <h3 class="title title--3 accordion details__section-title" id="reviews-title" data-accordion-open>{{ tab_review }}</h3>
+          <div class="reviews__subheader">
+            {# звезды и количество отзывов #}
+            <div class="reviews__stars">
+              <div class="stars stars--product-header">
+                <span class="stars__elem stars__average-rating-caption">Средняя оценка:</span>
+                <div class="stars__group stars__elem">
+                  <div class="stars__rating" style="width: {{ rating_percent }}">
+                    <div class="stars__scale"></div>
+                  </div>
+                </div>
+                <span class="stars__elem stars__average-rating">{{ rating }}</span>
+                <div class="stars__elem stars__review-link">
+                  <span class="visually-hidden">Количество отзывов:</span>
+                  <span>{{ review_count_with_posttext }}</span>
+                </div>
+              </div>
+            </div>
+            <button class="link reviews__write-button" onclick="window.yulms.accordion.open('.review-write .accordion__button');document.querySelector('.review-write').scrollIntoView({behavior: 'smooth'});">Написать свой отзыв</button>
+          </div>
+          {% include 'pm/template/product/review.twig' %}
+        </section>
+      {% endif %}
+
+      {# * написать отзыв #}
+      {% if review_status %}
+        <section class="details__section review-write">
+          <h3 class="title title--3 review-write__title accordion" id="write-review-title" data-accordion-class="review-write__extra-space">{{ text_write }}</h3>
+
+          {% if review_guest %}
+            {# атрибут action можно удалить - с включенным js будет работать #}
+            <form class="review-write__form" action="index.php?route=product/product/write&product_id={{ product_id }}" method="post" data-product-id="{{ product_id }}">
+              {# * звезды #}
+              <div class="stars review-write__elem">
+                <strong class="stars__elem stars__fieldset-caption" id="stars__fieldset-caption">{{ entry_rating }}</strong>
+                <div class="stars__elem">
+                  <fieldset class="stars__fieldset" aria-labelledby="stars__fieldset-caption">
+                    <div class="stars__input-group">
+                      <input class="stars__input" type="radio" name="rating" value="1" aria-label="ужасно">
+                      <input class="stars__input" type="radio" name="rating" value="2" aria-label="сносно">
+                      <input class="stars__input" type="radio" name="rating" value="3" aria-label="нормально">
+                      <input class="stars__input" type="radio" name="rating" value="4" aria-label="хорошо" checked>
+                      <input class="stars__input" type="radio" name="rating" value="5" aria-label="отлично">
+                    </div>
+                    <span class="stars__selected-input" aria-hidden="true"></span>
+                  </fieldset>
+                </div>
+              </div>
+
+              {# * отзыв #}
+              <div class="textfield review-write__elem">
+                <label class="textfield__input-container">
+                  <textarea class="textfield__input" name="text" rows="6" cols="60" required autocomplete="off"></textarea>
+                  <span class="textfield__label">{{ entry_review }}</span>
+                </label>
+                <div class="textfield__help">Опишите свой опыт использования товара</div>
+              </div>
+
+              {# * достоинства #}
+              <div class="textfield review-write__elem">
+                <label class="textfield__input-container">
+                  <textarea class="textfield__input" name="advantages" rows="3" cols="60" autocomplete="off"></textarea>
+                  <span class="textfield__label">Достоинства</span>
+                </label>
+                <div class="textfield__help">Коротко опишите, что понравилось в товаре</div>
+              </div>
+
+              {# * недостатки #}
+              <div class="textfield review-write__elem">
+                <label class="textfield__input-container">
+                  <textarea class="textfield__input" name="disadvantages" rows="3" cols="60" autocomplete="off"></textarea>
+                  <span class="textfield__label">Недостатки</span>
+                </label>
+                <div class="textfield__help">Что не понравилось?</div>
+              </div>
+
+              {# * имя #}
+              <div class="textfield review-write__elem review-write__elem--half">
+                <label class="textfield__input-container">
+                  <input class="textfield__input" type="text" name="name" value="{{ customer_name }}" autocomplete="off" required>
+                  <span class="textfield__label">{{ entry_name }}</span>
+                </label>
+              </div>
+
+              {# * город #}
+              <div class="textfield review-write__elem review-write__elem--half">
+                <label class="textfield__input-container">
+                  <input class="textfield__input" type="text" name="city" autocomplete="off">
+                  <span class="textfield__label">Откуда вы?</span>
+                </label>
+              </div>
+
+              {{ captcha }}
+
+              <button class="button button--options-primary review-write__submit-button" type="submit">Оставить отзыв</button>
+            </form>
+          {% else %}
+            {{ text_login }}
+          {% endif %}
+
+        </section>
+      {% endif %}
+
+      <section class="details__section">
+        <h3 class="title title--3 accordion details__section-title">Прочая информация</h3>
+        <div class="admin-content">
+          <table class="table details__table">
+            <tr>
+              <th class="table__cell table__cell--th">Испортер</th>
+              <td class="table__cell">Бергофф ООО</td>
+            </tr>
+            <tr>
+              <th class="table__cell table__cell--th">Страна производства</th>
+              <td class="table__cell">Китай</td>
+            </tr>
+            <tr>
+              <th class="table__cell table__cell--th">Производитель</th>
+              <td class="table__cell">Гудбэби Чайлд Продактс Коу, Лтд № 28 Луфын Ист Роуд, Люджа Таун, Куншан Сити, Джангсу Пров. CN 215331, Китай</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+    </section>
+
+
   </main>
 </div>
 

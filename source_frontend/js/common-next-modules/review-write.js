@@ -2,7 +2,7 @@ import Alert from '../../sass/blocks/alert/_alert.js';
 import ReCaptcha from './recaptcha-v3.js';
 import CircularProgress from '../../sass/blocks/circular-progress/_circular-progress';
 
-class WriteReview {
+class ReviewWrite {
   constructor(formElement) {
     this.formSelector = '.review-write__form';
     this.productId = formElement.dataset.productId;
@@ -68,12 +68,9 @@ class WriteReview {
 }
 
 
-const formSelector = '.review-write__form';
-const formElement = document.querySelector(formSelector);
-if (formElement) new WriteReview(formElement);
 
-
-
-// TODO
-// 1. Встроить рекапчу
-// 2. Добавить пагинацию
+export default function initReviewWrite() {
+  const formSelector = '.review-write__form';
+  const formElement = document.querySelector(formSelector);
+  if (formElement) return new ReviewWrite(formElement);
+}

@@ -1,0 +1,76 @@
+{% set reviews__list %}
+  <ul class="reviews__list">
+    {% for review in reviews %}
+      <li class="reviews__item">
+        <blockquote class="reviews__one-review">
+          <cite class="reviews__author">
+            <svg class="reviews__user-icon" width="24" height="24">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-user"></use>
+            </svg>
+            <span class="reviews__author-name">
+              {{ review.author }}
+              {% if review.city %}
+                , {{ review.city }}
+              {% endif %}
+            </span>
+            <span class="reviews__review-date">{{ review.date_added }}</span>
+          </cite>
+
+          <div class="stars reviews__one-review-stars">
+            <strong class="stars__elem">Оценка:</strong>
+            <div class="stars__group stars__elem">
+              <div class="stars__rating" style="width: {{ review.rating_percent }}">
+                <div class="stars__scale"></div>
+              </div>
+            </div>
+            <span class="stars__elem">{{ review.rating_description }}</span>
+          </div>
+
+          <div class="reviews__text">
+            {{ review.text }}
+          </div>
+
+          {% if review.advantages %}
+            <div class="reviews__text">
+              <strong>Достоинства:</strong>
+              <div>{{ review.advantages }}</div>
+            </div>
+          {% endif %}
+
+          {% if review.disadvantages %}
+            <div class="reviews__text">
+              <strong>Недостатки:</strong>
+              <div>{{ review.disadvantages }}</div>
+            </div>
+          {% endif %}
+
+        </blockquote>
+
+        <button class="button reviews__vote-button" data-review-like data-review-id="{{ review.review_id }}">
+          <svg class="button__icon reviews__vote-button-icon" width="24" height="24">
+            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-like"></use>
+          </svg>
+          <span class="button__caption">
+            Полезный отзыв
+            <span class="reviews__vote-count" aria-label="Уже проголосовало:">{{ review.like_count }}</span>
+          </span>
+        </button>
+
+      </li>
+    {% endfor %}
+  </ul>
+{% endset %}
+
+
+{% if review_pagination %}
+  <div data-reviews-container>
+    {{ reviews__list }}
+    {{ review_pagination }}
+    <script>
+      document.addEventListener('DOMContentLoaded', () =>
+        window.yulms.reviewPagination.init(document.querySelector('[data-reviews-container]')), { once: true});
+    </script>
+  </div>
+{% else %}
+  {{ reviews__list }}
+{% endif %}

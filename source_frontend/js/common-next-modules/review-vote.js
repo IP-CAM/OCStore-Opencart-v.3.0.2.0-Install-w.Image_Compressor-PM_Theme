@@ -1,9 +1,7 @@
-'use strict';
-
-
-class VoteReview {
+class ReviewVote {
   constructor() {
     this.selector = '[data-review-like]';
+    this.reviewsSelector = '.reviews';
     this.dataAttrReviewId = 'reviewId';
     this.reviewIdSelector = '[data-review-id]';
     this.likedClass = 'reviews__vote-button--liked';
@@ -18,7 +16,10 @@ class VoteReview {
 
     this.checkVotedButtons();
 
-    document.addEventListener('click', (evt) => {
+    const clickCatcherElement = document.querySelector(this.reviewsSelector);
+    if (!clickCatcherElement) return;
+
+    clickCatcherElement.addEventListener('click', (evt) => {
       const buttonElement = evt.target.closest(this.selector);
       if (!buttonElement) return;
 
@@ -94,7 +95,8 @@ class VoteReview {
         } else {
           this._updateLocalStorage(reviewId, voteType);
         }
-      });
+      })
+      .catch(console.error);
   }
 
 
@@ -119,4 +121,7 @@ class VoteReview {
   }
 }
 
-new VoteReview;
+
+export default function initReviewVote() {
+  return new ReviewVote();
+}

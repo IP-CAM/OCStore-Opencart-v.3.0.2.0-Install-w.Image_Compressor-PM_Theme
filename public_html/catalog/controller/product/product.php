@@ -433,6 +433,7 @@ class ControllerProductProduct extends Controller {
         }
 				$data['reviews'][] = array(
 					'author'             => $result['author'],
+					'city'               => $result['city'],
 					'text'               => nl2br($result['text']),
 					'advantages'         => nl2br($result['advantages']),
 					'disadvantages'      => nl2br($result['disadvantages']),
@@ -446,13 +447,15 @@ class ControllerProductProduct extends Controller {
 				);
 			}
 
-			// $pagination = new Pagination();
-			// $pagination->total = $review_count;
-			// $pagination->page = $page;
-			// $pagination->limit = 5;
-			// $pagination->url = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
+      if ($review_count > 5) {
+        $pagination =  new Pagination();
+        $pagination -> total = $review_count;
+        $pagination -> page  = $page;
+        $pagination -> limit = 5;
+        $pagination -> url   = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
 
-			// $data['review_pagination'] = $pagination->render();
+        $data['review_pagination'] = $pagination->render();
+      }
       // ! review no AJAX
 
 
@@ -631,44 +634,108 @@ class ControllerProductProduct extends Controller {
     $this->response->setOutput(json_encode($json));
   }
 
+
 	public function review() {
 		$this->load->language('product/product');
 
 		$this->load->model('catalog/review');
 
-		if (isset($this->request->get['page'])) {
-			$page = $this->request->get['page'];
-		} else {
-			$page = 1;
-		}
+    if (isset($this->request->get['page'])) {
+      $page = $this->request->get['page'];
+    } else {
+      $page = 1;
+    }
 
-		$data['reviews'] = array();
+    $data['reviews'] = array();
 
-		$review_total = $this->model_catalog_review->getTotalReviewsByProductId($this->request->get['product_id']);
+    $review_total = $this->model_catalog_review->getTotalReviewsByProductId($this->request->get['product_id']);
 
-		$results = $this->model_catalog_review->getReviewsByProductId($this->request->get['product_id'], ($page - 1) * 5, 5);
+    $results = $this->model_catalog_review->getReviewsByProductId($this->request->get['product_id'], ($page - 1) * 5, 5);
 
-		foreach ($results as $result) {
-			$data['reviews'][] = array(
-				'author'     => $result['author'],
-				'text'       => nl2br($result['text']),
-				'rating'     => (int)$result['rating'],
-				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added']))
-			);
-		}
+    $rating_descriptions = array(
+      1 => 'Ужасно',
+      2 => 'Сносно',
+      3 => 'Нормально',
+      4 => 'Хорошо',
+      5 => 'Отлично'
+    );
 
-		$pagination = new Pagination();
-		$pagination->total = $review_total;
-		$pagination->page = $page;
-		$pagination->limit = 5;
-		$pagination->url = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
+    foreach ($results as $result) {
+      $rating_value = (int)$result['rating'];
+      if ($this->custom->validateDate($result['date_added'])) {
+        $rating_date_added = date($this->language->get('date_format_short'), strtotime($result['date_added']));
+      } else {
+        $rating_date_added = NULL;
+      }
+      $data['reviews'][] = array(
+        'author'             => $result['author'],
+        'city'               => $result['city'],
+        'text'               => nl2br($result['text']),
+        'advantages'         => nl2br($result['advantages']),
+        'disadvantages'      => nl2br($result['disadvantages']),
+        'like_count'         => (int)$result['like'],
+        'dislike_count'      => (int)$result['dislike'],
+        'review_id'          => (int)$result['review_id'],
+        'rating'             => $rating_value,
+        'rating_description' => $rating_descriptions[$rating_value],
+        'rating_percent'     => (100 * $rating_value / 5) .'%',
+        'date_added'         => $rating_date_added
+      );
+    }
 
-		$data['pagination'] = $pagination->render();
+    $pagination =  new Pagination();
+    $pagination -> total = $review_total;
+    $pagination -> page  = $page;
+    $pagination -> limit = 5;
+    $pagination -> url   = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
+
+    $data['review_pagination'] = $pagination->render();
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($review_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($review_total - 5)) ? $review_total : ((($page - 1) * 5) + 5), $review_total, ceil($review_total / 5));
 
 		$this->response->setOutput($this->load->view('product/review', $data));
 	}
+
+  // * ORIGINAL CODE
+	// public function review() {
+	// 	$this->load->language('product/product');
+
+	// 	$this->load->model('catalog/review');
+
+	// 	if (isset($this->request->get['page'])) {
+	// 		$page = $this->request->get['page'];
+	// 	} else {
+	// 		$page = 1;
+	// 	}
+
+	// 	$data['reviews'] = array();
+
+	// 	$review_total = $this->model_catalog_review->getTotalReviewsByProductId($this->request->get['product_id']);
+
+	// 	$results = $this->model_catalog_review->getReviewsByProductId($this->request->get['product_id'], ($page - 1) * 5, 5);
+
+	// 	foreach ($results as $result) {
+	// 		$data['reviews'][] = array(
+	// 			'author'     => $result['author'],
+	// 			'text'       => nl2br($result['text']),
+	// 			'rating'     => (int)$result['rating'],
+	// 			'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added']))
+	// 		);
+	// 	}
+
+	// 	$pagination = new Pagination();
+	// 	$pagination->total = $review_total;
+	// 	$pagination->page = $page;
+	// 	$pagination->limit = 5;
+	// 	$pagination->url = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
+
+	// 	$data['pagination'] = $pagination->render();
+
+	// 	$data['results'] = sprintf($this->language->get('text_pagination'), ($review_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($review_total - 5)) ? $review_total : ((($page - 1) * 5) + 5), $review_total, ceil($review_total / 5));
+
+	// 	$this->response->setOutput($this->load->view('product/review', $data));
+	// }
+
 
 	public function write() {
 		$this->load->language('product/product');
