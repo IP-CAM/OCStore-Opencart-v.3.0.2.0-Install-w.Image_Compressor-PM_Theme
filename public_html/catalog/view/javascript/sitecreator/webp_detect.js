@@ -8,7 +8,7 @@
     var ver = s[2];
     if((br === "chrome" &&   ver >= 32) || br === "firefox" && ver >= 65) {
       window.sitecreator_hasWebP.val = true;
-      console.log('webp on start= ok');
+      // console.log('webp on start= ok');
     }
   }
 
@@ -25,7 +25,7 @@
     if (img.width === 2 && img.height === 1) {
       document.cookie = "sitecreator_hasWebP=1; path=/";
       window.sitecreator_hasWebP.val = true;
-      console.log('webp = ok');
+      // console.log('webp = ok');
     }};
   img.src = "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACyAgCdASoCAAEALmk0mk0iIiIiIgBoSygABc6zbAAA/v56QAAAAA==";
 })();

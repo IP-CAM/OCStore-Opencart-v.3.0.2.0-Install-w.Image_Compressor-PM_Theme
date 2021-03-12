@@ -1,5 +1,3 @@
-'use script';
-
 // https://web.dev/browser-level-image-lazy-loading/
 
 

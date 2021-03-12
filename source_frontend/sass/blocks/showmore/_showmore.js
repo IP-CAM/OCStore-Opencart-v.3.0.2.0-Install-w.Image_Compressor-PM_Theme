@@ -1,5 +1,5 @@
-'use strict';
 import { scrollLock } from '../../../js/util.js';
+
 
 const SHOW_TEXT_DATA_ATTR = 'showmoreShowtext';
 const HIDE_TEXT_DATA_ATTR = 'showmoreHidetext';
@@ -11,7 +11,6 @@ const BUTTON_HTML = `<button class="showmore__button link" aria-expanded="false"
                         <path fill="none" vector-effect="non-scaling-stroke" d="M7 11l5 4 5-4"/>
                       </svg>
                     </button>`;
-
 
 
 class ShowmoreButton {

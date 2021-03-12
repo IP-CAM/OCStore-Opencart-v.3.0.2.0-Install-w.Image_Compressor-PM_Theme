@@ -576,10 +576,13 @@ class Filter {
         })
         .catch(err => console.log('Ошибка скрипта фильтра', err));
     });
-
   }
-
 
 }
 
-window.yulmsOcfilter = new Filter();
+
+const initFilter = () => {
+  return new Filter();
+};
+
+export default initFilter;

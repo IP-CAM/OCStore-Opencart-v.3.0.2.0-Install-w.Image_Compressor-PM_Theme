@@ -1,9 +1,6 @@
-'use strict';
-
 // Скрипт выполняет скролл до элемента с data-атрибутом DATA_ATTR_SELECTOR при наступлении события DOMContentLoaded
 // Значения Data атрибутов data-scroll-minvw и data-scroll-maxvw определяет промежуток viewport,
 // в котором будет выполняться скрипт
-
 
 
 const DATA_ATTR_SELECTOR = '[data-scroll-on-load]';

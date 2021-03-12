@@ -1,7 +1,3 @@
-'use strict';
-
-
-
 class Accordion {
   constructor(overrides) {
     const defaults = {
@@ -56,46 +52,56 @@ class Accordion {
       let buttonElement = evt.target.closest(this.buttonSelector);
       if (!buttonElement) return;
 
-      let isExpanded = buttonElement.getAttribute('aria-expanded') === 'true' || false;
-      buttonElement.setAttribute('aria-expanded', !isExpanded);
-
-      // let parent = buttonElement.parentNode;
-      let wrapper = buttonElement.parentNode.nextElementSibling;
-
-      let targetStateIsOpen = !isExpanded;
-
-      if (targetStateIsOpen) {
-        // поведение при открытии
-        wrapper.addEventListener('transitionend', () => {
-          wrapper.style.height = 'auto';
-          wrapper.style.overflow = '';
-        }, {once: true});
-
-        wrapper.style.height = 0;
-        wrapper.style.overflow = 'hidden';
-        wrapper.hidden = false;
-        let fullHeight =  wrapper.scrollHeight;
-        wrapper.style.height = fullHeight + 'px';
-      } else {
-        // закрытие
-        let fullHeight =  wrapper.scrollHeight;
-        wrapper.style.height = fullHeight + 'px';
-        wrapper.addEventListener('transitionend', () => {
-          wrapper.style.height = 'auto';
-          wrapper.style.overflow = '';
-          wrapper.hidden = true;
-          wrapper.style.transitionDuration = '';
-        }, {once: true});
-
-        setTimeout(() => {
-          wrapper.style.transitionDuration = '75ms';
-          wrapper.style.overflow = 'hidden';
-          wrapper.style.height = 0;
-        }, 0);
-      }
+      const currentStateIsOpened = buttonElement.getAttribute('aria-expanded') === 'true';
+      currentStateIsOpened ? this.close(buttonElement) : this.open(buttonElement);
     });
 
   }
+
+
+  open(buttonElementOrSelector) {
+    const buttonElement = (typeof buttonElementOrSelector === 'object') ?
+      buttonElementOrSelector : document.querySelector(buttonElementOrSelector);
+
+    const wrapper = buttonElement.parentNode.nextElementSibling;
+    wrapper.addEventListener('transitionend', () => {
+      wrapper.style.height = 'auto';
+      wrapper.style.overflow = '';
+    }, {once: true});
+
+    wrapper.style.height = 0;
+    wrapper.style.overflow = 'hidden';
+    wrapper.hidden = false;
+    const fullHeight =  wrapper.scrollHeight;
+    wrapper.style.height = fullHeight + 'px';
+
+    buttonElement.setAttribute('aria-expanded', true);
+  }
+
+
+  close(buttonElementOrSelector) {
+    const buttonElement = (typeof buttonElementOrSelector === 'object') ?
+      buttonElementOrSelector : document.querySelector(buttonElementOrSelector);
+
+    const wrapper = buttonElement.parentNode.nextElementSibling;
+    const fullHeight =  wrapper.scrollHeight;
+    wrapper.style.height = fullHeight + 'px';
+    wrapper.addEventListener('transitionend', () => {
+      wrapper.style.height = 'auto';
+      wrapper.style.overflow = '';
+      wrapper.hidden = true;
+      wrapper.style.transitionDuration = '';
+    }, {once: true});
+
+    setTimeout(() => {
+      wrapper.style.transitionDuration = '75ms';
+      wrapper.style.overflow = 'hidden';
+      wrapper.style.height = 0;
+    }, 0);
+
+    buttonElement.setAttribute('aria-expanded', false);
+  }
+
 
   _getInitState(heading) {
     let initStateIsOpened;
@@ -144,7 +150,6 @@ class Accordion {
 
     return elems;
   }
-
 
 }
 

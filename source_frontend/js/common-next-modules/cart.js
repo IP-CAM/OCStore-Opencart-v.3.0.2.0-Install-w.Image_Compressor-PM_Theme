@@ -1,6 +1,3 @@
-'use strict';
-
-
 import { ajaxRequest } from '../util.js';
 import { getURLVar } from './util.js';
 
@@ -118,4 +115,7 @@ class Cart {
   }
 }
 
-window.cart = new Cart();
+
+export default function initCart() {
+  return new Cart();
+}

@@ -1,6 +1,3 @@
-'use strict';
-
-
 const RIPPLE_CLASSNAME = 'ripple';
 const RIPPLE_BEFORE_MOD_CLASSNAME = 'ripple--before';
 const RIPPLE_AFTER_MOD_CLASSNAME = 'ripple--after';

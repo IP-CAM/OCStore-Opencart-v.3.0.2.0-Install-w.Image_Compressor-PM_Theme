@@ -1,5 +1,3 @@
-'use strict';
-
 const MAIN_SELECTOR = '.pickup';
 const COORDS_ELEMENT_SELECTOR = '.radiocheck__input';
 const COORDS_DATA_ATTR_NAME = 'pickupCoords';

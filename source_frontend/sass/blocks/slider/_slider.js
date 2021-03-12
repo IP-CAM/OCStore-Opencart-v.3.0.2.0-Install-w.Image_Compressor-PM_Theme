@@ -1,4 +1,3 @@
-'use strict';
 import { isTouchDevice } from  '../../../js/util.js';
 
 

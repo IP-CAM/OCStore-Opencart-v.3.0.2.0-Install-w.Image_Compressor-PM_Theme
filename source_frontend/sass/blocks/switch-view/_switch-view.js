@@ -1,5 +1,3 @@
-'use strict';
-
 const TargetView = {
   GRID: 'grid',
   LIST: 'list'

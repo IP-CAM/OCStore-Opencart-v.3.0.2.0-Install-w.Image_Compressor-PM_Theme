@@ -1,6 +1,3 @@
-'use strict';
-
-
 // * BASE HREF
 let baseHref;
 function getBaseHref() {
@@ -15,8 +12,8 @@ function initSearch() {
   const FORM_SELECTOR = '.search-form';
   const INPUT_SELECTOR = '.search-form__input';
 
-  const formElement = document.querySelectorAll(FORM_SELECTOR);
-  formElement.forEach((elem) => {
+  const formElements = document.querySelectorAll(FORM_SELECTOR);
+  formElements.forEach((elem) => {
     elem.addEventListener('submit', (evt) => {
       evt.preventDefault();
 
@@ -28,6 +25,9 @@ function initSearch() {
       window.location = url;
     });
   });
+
+  return `inititialized ${formElements.length} formElements`;
 }
 
-initSearch();
+
+export default initSearch;

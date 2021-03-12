@@ -1,6 +1,3 @@
-'use strict';
-
-
 class Wishlist {
   constructor() {
     this.ajaxParams = {
@@ -31,4 +28,7 @@ class Wishlist {
   }
 }
 
-window.wishlist = new Wishlist();
+
+export default function initWishlist() {
+  return new Wishlist();
+}
