@@ -374,7 +374,6 @@
         </section>
       {% endif %}
 
-
       {# * отзывы #}
       {% if review_status and reviews %}
         <section class="details__section reviews">
@@ -481,6 +480,7 @@
         </section>
       {% endif %}
 
+      {# * дополнительная информация #}
       {% if importer or manufacturer_address %}
         <section class="details__section">
           <h3 class="title title--3 accordion details__section-title">Прочая информация</h3>
@@ -494,6 +494,50 @@
       {% endif %}
 
     </section>
+
+    {% if images[0] and price %}
+      <section class="page-product__buy-card buy-card">
+        <h2 class="visually-hidden">Быстрая покупка</h2>
+
+        <div class="buy-card__inner">
+
+          <div class="buy-card__image-container">
+            <img class="buy-card__image"
+                sizes="(min-width: 1456px) 444px,
+                        (min-width: 980px) calc(((100vw - 130px) / 3) - 4px),
+                        (min-width: 512px) calc(50vw - 4px),
+                        100vw"
+                srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
+                data-srcset="{{ images[0].thumb444w }} 444w, {{ images[0].thumb640w }} 640w, {{ images[0].thumb920w }} 920w, {{ images[0].thumb1220w }} 1220w"
+                src="{{ image[0].thumb }}" loading="lazy" width="360" height="360" alt="{{ heading_title }}">
+          </div>
+
+          <div class="price buy-card__price">
+            {% if not special %}
+              <span class="visually-hidden">{{ price }}</span>
+              <span class="price__current price__current--big" aria-hidden="true">{{ price_before }}<sup>{{ price_after }}</sup> р.</span>
+            {% else %}
+              <span class="visually-hidden">{{ special }}</span>
+              <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_before }}<sup>{{ special_after }}</sup> р.</span>
+              <del class="price__old">{{ price }}</del>
+              <strong class="price__discount-info">{{ special_discount_text }}</strong>
+            {% endif %}
+          </div>
+
+          <div class="buy-card__buttons-container">
+            <button class="button button--action-primary buy-card__button-buy buy-card__buttons-container-elem" type="button">Купить</button>
+            <button class="button button--action-secondary buy-card__button-love buy-card__buttons-container-elem" type="button">
+              <svg class="button__icon button__icon--love" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+              </svg>
+              <span class="button__caption">Сохранить</span>
+              <span class="visually-hidden">в избранное</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+    {% endif %}
 
 
   </main>
