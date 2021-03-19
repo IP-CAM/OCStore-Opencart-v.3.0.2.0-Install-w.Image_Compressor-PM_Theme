@@ -36,7 +36,7 @@ class Modal {
       modalSizeDataAttribute: 'modalSize',
       overlaySelector : 'overlay',
       modalOverlaySelector: 'modal__overlay',
-      closeButtonSelector : '.modal__close-button',
+      closeButtonSelector : '[data-modal-close]',
       focusElements: [
         // 'a[href]',
         // 'area[href]',
@@ -56,6 +56,7 @@ class Modal {
 
     this._modals = [];
     this._documentKeydownHandlerWasAdded = false;
+    this._stateIsClosing = false;
 
     this.handleEvent = (evt) => {
       switch(evt.type) {
@@ -101,7 +102,7 @@ class Modal {
   }
 
 
-  open({content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement}) {
+  open({content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement, focusOnOpen = true}) {
 
     const _cloneModalTemplate = () => {
       return document.querySelector(this.modalTemplateSelector)
@@ -157,8 +158,11 @@ class Modal {
       const closeHandler = () => {
         this.closeAfterAnnimationEnd();
       };
-      let closeButtonElement = currentModal._modalElement.querySelector(this.closeButtonSelector);
-      closeButtonElement.addEventListener('click', closeHandler);
+      const closeButtonElements = currentModal._modalElement.querySelectorAll(this.closeButtonSelector);
+      closeButtonElements.forEach(closeButtonElement => {
+        closeButtonElement.addEventListener('click', closeHandler);
+      });
+
       currentModal._overlayElement.addEventListener('click', closeHandler);
 
       // обработчик на закрытие по Esc - один на все открытые окна
@@ -194,11 +198,15 @@ class Modal {
       scrollLock({lock: true});
     }
 
-    this._focus(currentModal, {shouldBeInside: true});
+    if (focusOnOpen) this._focus(currentModal, {shouldBeInside: true});
+    this._stateIsClosing = false;
   }
 
 
   closeAfterAnnimationEnd () {
+    if (this._stateIsClosing) return;
+
+    this._stateIsClosing = true;
     const currentModal = this._modals[this._getLastModalIndex()];
     executeAfterAnimationEnd(
       {

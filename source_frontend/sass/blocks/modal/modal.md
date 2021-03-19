@@ -1,51 +1,65 @@
-# Усовершенствованное модальное окно
+# Модальное окно
+Обертка модального окна представлена элементом template в HTML:
 
-Существует блок, который на больших экранах отображается как обычно - в контенте или спрятан перед закрытием body.
-На определенном разрешении блок скрывается (display: none), после чего его можно открыть по нажатию на триггер.
-При этом блок получает:
-1. position: fixed
-2. кнопку закрытия (как у модального окна)
-3. анимацию открытия
-4. оверлэй
-5. функционал модального окна
-6. Для реализации необходимо:
-      склонировать содержимое из текста,
-      вставить внутрь шаблона модального окна
-      отриcовать перед закрытием body
-
-
-Модальное окно представлено элементом template в HTML,
+```html
 <template id="modal">
   <div class="modal">
-    <div class="modal__inner modal__inner--center" role="dialog" aria-modal="true">
-      <!-- сюда будем вставлять содержимое -->
-
-      <button class="button button--modal-close modal__close-button" type="button">
-        <svg class="button__close-icon" width="48" height="48">
-          <use href="img/svg/_sprite.svg#icon-close"></use>
-        </svg>
+    <div class="modal__inner" role="dialog" aria-modal="true">
+      <!-- сюда вставлять содержимое -->
+      <button class="button button--modal-close modal__close-button" data-modal-close type="button">
+        <span class="visually-hidden">Закрыть</span>
+        <svg class="button__close-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke-linecap="round" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M7 7l10 10M7 17L17 7"/></svg>
       </button>
     </div>
   </div>
 </template>
+```
 
 
-# Содержимое модальдого окна, спрятанного перед закрытием body
-<secton class="modal__content modal__content--closed" aria-hidden="true" id="modalFilter">
+## Режимы работы
+
+### 1. Содержимое модального окна заранее определено. На любых вьюпортах отображается только в модальном окне.
+В этом случае разметка содержимого прячется перед закрытием body.
+
+Содержимое модальдого окна:
+```html
+<secton class="modal__content modal__content--closed" aria-hidden="true" id="modalCity">
   здесь содержимое окна
 </secton>
-* - атрибут aria-hidden="true", не указывается, если блок используется внутри страницы,
-если блок спрятан перед закрытием body - указывается
-** - при открытии окна через js, сбросить display: none
-*** классы modal__content и modal__content--closed используются, когда окно спрятано перед закрытием body
-**** класс modal__content задает отступы. Если модальное окно используется в контенте, отступы задаются своими классами
+```
 
+*Триггер*
+должен иметь ссылку на id модального окна
+```html
+<button data-modal="#modalCity">Показать окно</button>
+```
 
-# Триггер должен иметь ссылку на id модального окна
-<button data-modal="#modalCity">Кнопка вызова</button>
-
-## Параметры окна.
+*Параметры окна*
 Задаются data атрибутами на триггере
+
+
+
+### 2. Содержимое модального окна заранее определено, но в отличие от п1, на определенных вьюпортах отображается в осномном контенте страницы, на других вьюпортах (моб устр-ва) скрывается (display: none), после чего его можно открыть в модальном окне по нажатию на триггер.
+В этом варианте отступы (padding) содержимого окна задаются текущими классами.
+*Триггер вызова и параметры аналогично п.1*
+
+
+
+### 3. Содержимое модального окна определяется динамически (например: ответ сервера).
+*Вызов*
+modal.open({...params})
+params = {
+  content - может быть DOM элементом текстовым содержимым. Если текст - модуль конвертирует его в DOM элемент.
+  modalPosition - 'center' - default, 'left'
+  modalSize - 'small', 'big'
+  callbackOnClose
+  triggerElement (используется только для установки фокуса после закрытия окна)
+  focusOnOpen (true - default, false) - поместить фокус на элемент модального окна при открытии
+}
+
+
+
+## Data атрибуты окна
 
 ### data атрибут, указывающий на позицию окна и тип анимации появления-закрытия
 1. data-modal-position="left"
@@ -63,15 +77,3 @@ modal--left
 data-modal-size="small"
 data-modal-size="big"
 Добавляется модификатор ширины
-
-
-
-# update 21.12.20
-Добавлена возможность открытия окна извне с произвольным контентом,
-за это отвечает метод open ({...params})
-Параметры:
-content - может быть DOM элементом текстовым содержимым. Если текст - модуль конвертирует его в DOM элемент.
-modalPosition - 'center' - default, 'left'
-modalSize - 'small', 'big'
-callbackOnClose
-triggerElement (используется только для установки фокуса после закрытия окна)
