@@ -206,69 +206,75 @@
       </section>
 
 
-      {% if options %}
-        <section class="offer__options">
-          <h3 class="visually-hidden">{{ text_option }}</h3>
-          {% for option in options %}
-            {% if option.type == 'radio' %}
-              <fieldset class="chip-set chip-set--wrap offer__chip-set" aria-labelledby="input-option{{ option.product_option_id }}">
-                <span class="chip-set__element chip-set__label" id="input-option{{ option.product_option_id }}">{{ option.name }}:</span>
-                {% for option_value in option.product_option_value %}
-                  <label class="chip-set__element chip-set__chip">
-                    <input class="chip-set__input visually-hidden" type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}">
-                    <span class="chip-set__box chip-set__box--base chip-set__box--big">
-                      {{ option_value.name }}
-                      {% if option_value.price %}
-                        ({{ option_value.price_prefix }}{{ option_value.price }})
-                      {% endif %}
-                    </span>
-                  </label>
-                {% endfor %}
-              </fieldset>
-            {% endif %}
-          {% endfor %}
-        </section>
-      {% endif %}
+      {# * Форма покупки (добавить опции при необходимости позже) #}
+      <form action="index.php?route=checkout/cart/add" method="POST" data-cart-event="submit" data-cart-action="add" data-cart-loading-selector="[data-offer-buy-button]" data-cart-loading-color="#fff" data-product-id="{{ product_id }}">
 
-      {# * Выбор количества, кнопка избранное и купить #}
-      <div class="offer__buy">
-        <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select">
-          <div class="visually-hidden" aria-live="polite"></div>
-          <label class="textfield__input-container">
-            <span class="textfield__trailing-icon textfield__trailing-icon--dropdown"></span>
-            <input class="textfield__input" type="text" aria-describedby="custom-select-info" autocomplete="off" value="1" readonly>
-            <span class="textfield__label">Количество</span>
-          </label>
+        {% if options %}
+          <section class="offer__options">
+            <h3 class="visually-hidden">{{ text_option }}</h3>
+            {% for option in options %}
+              {% if option.type == 'radio' %}
+                <fieldset class="chip-set chip-set--wrap offer__chip-set" aria-labelledby="input-option{{ option.product_option_id }}">
+                  <span class="chip-set__element chip-set__label" id="input-option{{ option.product_option_id }}">{{ option.name }}:</span>
+                  {% for option_value in option.product_option_value %}
+                    <label class="chip-set__element chip-set__chip">
+                      <input class="chip-set__input visually-hidden" type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" required>
+                      <span class="chip-set__box chip-set__box--base chip-set__box--big">
+                        {{ option_value.name }}
+                        {% if option_value.price %}
+                          ({{ option_value.price_prefix }}{{ option_value.price }})
+                        {% endif %}
+                      </span>
+                    </label>
+                  {% endfor %}
+                </fieldset>
+              {% endif %}
+            {% endfor %}
+          </section>
+        {% endif %}
 
-          <ul class="custom-select__list custom-select__list--closed">
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">1</strong>
-            </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">2</strong>
-            </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">3</strong>
-            </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">4</strong>
-            </li>
-            <li class="custom-select__item">
-              <strong class="custom-select__item-title">5</strong>
-            </li>
-          </ul>
+        <div class="offer__buy">
+          <input type="hidden" name="product_id" value="{{ product_id }}">
+          {# количество #}
+          <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select">
+            <div class="visually-hidden" aria-live="polite"></div>
+            <label class="textfield__input-container">
+              <span class="textfield__trailing-icon textfield__trailing-icon--dropdown"></span>
+              <input class="textfield__input" type="text" name="quantity" autocomplete="off" value="1" readonly>
+              <span class="textfield__label">Количество</span>
+            </label>
+
+            <ul class="custom-select__list custom-select__list--closed">
+              <li class="custom-select__item">
+                <strong class="custom-select__item-title">1</strong>
+              </li>
+              <li class="custom-select__item">
+                <strong class="custom-select__item-title">2</strong>
+              </li>
+              <li class="custom-select__item">
+                <strong class="custom-select__item-title">3</strong>
+              </li>
+              <li class="custom-select__item">
+                <strong class="custom-select__item-title">4</strong>
+              </li>
+              <li class="custom-select__item">
+                <strong class="custom-select__item-title">5</strong>
+              </li>
+            </ul>
+          </div>
+
+          <button class="offer__buy-elem offer__buy-elem--love button button--action-secondary" type="button">
+            <svg class="button__icon button__icon--love" width="24" height="24">
+              <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+            </svg>
+            <span class="visually-hidden">Сохранить в избранное</span>
+          </button>
+
+          <button class="offer__buy-elem offer__buy-elem--buy button button--action-primary" data-offer-buy-button type="submit">Купить</button>
         </div>
 
-        <button class="offer__buy-elem offer__buy-elem--love button button--action-secondary offer__button-love" type="button">
-          <svg class="button__icon button__icon--love" width="24" height="24">
-            <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
-          </svg>
-          <span class="button__caption">Сохранить</span>
-          <span class="visually-hidden">в избранное</span>
-        </button>
 
-        <button class="offer__buy-elem offer__buy-elem--buy button button--action-primary" type="button">Купить</button>
-      </div>
+      </form>
 
       {# * уведомление о снижении цены #}
       {% if price %}

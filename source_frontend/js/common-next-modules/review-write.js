@@ -33,7 +33,7 @@ class ReviewWrite {
         })
         .then(response => {
           if (!response.ok) {
-            throw Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
+            throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
           }
           return response.json();
         })

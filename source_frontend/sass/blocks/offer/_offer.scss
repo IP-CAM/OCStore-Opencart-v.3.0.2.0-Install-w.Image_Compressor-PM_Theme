@@ -52,20 +52,7 @@
   &-elem {
     margin-top: var(--gap);
     margin-left: var(--gap);
-  }
-
-  &-elem--quantity {
     flex-grow: 1;
-  }
-
-  &-elem--love {
-    flex-basis: 20%;
-    flex-grow: 1;
-  }
-
-  &-elem--buy {
-    flex-basis: 44%;
-    flex-grow: 3;
   }
 
   @include media-mobile-only {
@@ -74,23 +61,32 @@
     }
   }
 
-  @include media-tablet-portrait-up {
+  @include media-tablet-portrait-only {
     &-elem--quantity {
       flex-basis: 20%;
     }
   }
-}
 
-.offer__button-love {
-  white-space: nowrap;
+  @include media-tablet-landscape-up {
+    &-elem--quantity {
+      flex-basis: 50%;
+    }
+  }
 
   @include media-mobile-only {
-    & .button__caption {
-      @include visually-hidden;
+    &-elem--love {
+      flex-basis: 20%;
     }
+  }
 
-    & .button__icon {
-      padding: 0;
+  &-elem--buy {
+    flex-basis: 44%;
+    flex-grow: 3;
+  }
+
+  @include media-tablet-landscape-up {
+    &-elem--buy {
+      flex-basis: 100%;
     }
   }
 }

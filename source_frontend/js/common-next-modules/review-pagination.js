@@ -11,7 +11,7 @@ class ReviewPagination {
       fetch(linkElement.href)
         .then(response => {
           if (!response.ok) {
-            throw Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
+            throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
           }
           return response.text();
         })

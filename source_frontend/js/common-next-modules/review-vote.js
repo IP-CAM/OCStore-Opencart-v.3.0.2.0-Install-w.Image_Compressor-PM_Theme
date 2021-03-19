@@ -85,13 +85,13 @@ class ReviewVote {
     })
       .then(response => {
         if (!response.ok) {
-          throw Error(`${response.status} ${response.statusText}`);
+          throw new Error(`${response.status} ${response.statusText}`);
         }
         return response.json();
       })
       .then(parsedData => {
         if (!parsedData.success) {
-          throw Error('Ошибка сервера');
+          throw new Error('Ошибка сервера');
         } else {
           this._updateLocalStorage(reviewId, voteType);
         }

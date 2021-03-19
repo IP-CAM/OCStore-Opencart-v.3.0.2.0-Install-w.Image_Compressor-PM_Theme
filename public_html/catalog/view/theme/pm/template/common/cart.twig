@@ -5,7 +5,7 @@
         <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-cart"></use>
       </svg>
       <span class="visually-hidden">Товаров: </span>
-      <span class="header__cart-quantity js-cart-count">{{ cart_items_quantity }}</span>
+      <span class="header__cart-quantity" data-cart-count>{{ cart_items_quantity }}</span>
     </div>
     <span class="header__link-caption">Корзина</span>
   </a>
@@ -45,15 +45,14 @@
             <div class="quantity-input cart-list__quantity-input">
               <span class="visually-hidden">Управление количеством</span>
               <div class="quantity-input__container">
-                <button class="quantity-input__button quantity-input__button--less" type="button" onclick="window.cart.add('{{ product.product_id }}', -1);">
+                <button class="quantity-input__button quantity-input__button--less" type="button" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity - 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
                   <span class="visually-hidden">Уменьшить</span>
                   <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
                     <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
                   </svg>
                 </button>
-                <input class="quantity-input__input-field" type="number" name="quantity" value="{{ product.quantity }}"
-                  data-product-quantity="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" onChange="window.cart.change('{{ product.product_id }}', this.dataset.productQuantity, this.value);">
-                <button class="quantity-input__button quantity-input__button--more" type="button"  onclick="window.cart.add('{{ product.product_id }}', 1);">
+                <input class="quantity-input__input-field" type="number" name="quantity" value="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" data-cart-event="change" data-cart-action="set" data-cart-setting-count="value" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
+                <button class="quantity-input__button quantity-input__button--more" type="button" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity + 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
                   <span class="visually-hidden">Увеличить</span>
                   <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
                     <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
@@ -78,8 +77,10 @@
             </div>
 
             <div class="cart-list__item-manage">
-              <button class="button cart-list__manage-item-button" type="button" onclick="window.cart.remove('{{ product.cart_id }}');">Удалить</button>
-              <button class="button cart-list__manage-item-button" type="button" onclick="window.wishlist.add('{{ product.product_id }}');">Сохранить</button>
+              <button class="button cart-list__manage-item-button" type="button" data-cart-event="click" data-cart-action="remove" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">Удалить</button>
+              <button class="button cart-list__manage-item-button" type="button" data-wishlist="add">Сохранить</button>
+              {# <button class="button cart-list__manage-item-button" type="button" onclick="window.yulms.cart.remove('{{ product.cart_id }}');">Удалить</button>
+              <button class="button cart-list__manage-item-button" type="button" onclick="window.wishlist.add('{{ product.product_id }}');">Сохранить</button> #}
             </div>
           </li>
 
@@ -93,7 +94,7 @@
         </p>
 
         <div class="header__cart-buttons">
-          <button class="link" type="button">Купить в 1 клик</button>
+          <button class="button button--action-secondary" type="button">Купить в 1 клик</button>
           <a class="button button--action-primary header__cart-buy-button" href="{{ checkout }}">Оформить заказ</a>
         </div>
       </div>
@@ -104,57 +105,3 @@
   </div>
 
 </div>
-
-{#
-
-<div id="cart" class="btn-group btn-block">
-  <button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-cart"></i>
-  <span id="cart-total">{{ text_items }}</span>
-  </button>
-  <ul class="dropdown-menu pull-right">
-    {% if products or vouchers %}
-    <li>
-      <table class="table table-striped">
-        {% for product in products %}
-        <tr>
-
-          <td class="text-left">
-
-
-          <td class="text-right">x {{ product.quantity }}</td>
-          <td class="text-right">{{ product.total }}</td>
-          <td class="text-center">
-          <button type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
-        </tr>
-        {% endfor %}
-        {% for voucher in vouchers %}
-        <tr>
-          <td class="text-center"></td>
-          <td class="text-left">{{ voucher.description }}</td>
-          <td class="text-right">x&nbsp;1</td>
-          <td class="text-right">{{ voucher.amount }}</td>
-          <td class="text-center text-danger"><button type="button" onclick="voucher.remove('{{ voucher.key }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
-        </tr>
-        {% endfor %}
-      </table>
-    </li>
-    <li>
-      <div>
-        <table class="table table-bordered">
-          {% for total in totals %}
-          <tr>
-            <td class="text-right"><strong>{{ total.title }}</strong></td>
-            <td class="text-right">{{ total.text }}</td>
-          </tr>
-          {% endfor %}
-        </table>
-        <p class="text-right"><a href="{{ cart }}"><strong><i class="fa fa-shopping-cart"></i> {{ text_cart }}</strong></a>&nbsp;&nbsp;&nbsp;<a href="{{ checkout }}"><strong><i class="fa fa-share"></i> {{ text_checkout }}</strong></a></p>
-      </div>
-    </li>
-    {% else %}
-    <li>
-      <p class="text-center">{{ text_empty }}</p>
-    </li>
-    {% endif %}
-  </ul>
-</div> #}

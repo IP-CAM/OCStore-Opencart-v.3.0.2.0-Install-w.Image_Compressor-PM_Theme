@@ -411,6 +411,31 @@ class ControllerCheckoutCart extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
+  // ! my add
+  public function set() {
+		$this->load->language('checkout/cart');
+
+		$json = array();
+
+		// Update
+    if (isset($this->request->post['quantity']) && isset($this->request->post['key'])) {
+      $this->cart->update($this->request->post['key'], $this->request->post['quantity']);
+
+			unset($this->session->data['shipping_method']);
+			unset($this->session->data['shipping_methods']);
+			unset($this->session->data['payment_method']);
+			unset($this->session->data['payment_methods']);
+			unset($this->session->data['reward']);
+
+      $json['success'] = 'done';
+      $json['items_count'] = $this->cart->countProducts();
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+  // ! EOF my add
+
 	public function remove() {
 		$this->load->language('checkout/cart');
 
