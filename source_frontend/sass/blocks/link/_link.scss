@@ -2,12 +2,12 @@
   padding: 0;
   font: inherit;
   color: $color__primary;
-  transition: color 0.15s;
   text-decoration: underline;
   text-underline-position: under;
   text-decoration-skip-ink: none;
   border: none;
   background: 0;
+  transition: color 0.15s;
   cursor: pointer;
 
   &:hover,
@@ -28,4 +28,10 @@
   &:focus {
     text-decoration: underline;
   }
+}
+
+
+.link--center-align {
+  display: flex;
+  align-items: center;
 }

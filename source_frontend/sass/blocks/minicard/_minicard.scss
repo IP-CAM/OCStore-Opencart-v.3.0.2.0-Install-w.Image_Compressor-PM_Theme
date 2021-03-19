@@ -5,7 +5,9 @@
 
 // grid и list - модификаторы сетки товаров
 .minicard--grid {
-  grid-template-columns: minmax(0%, 1fr);
+  // нахера???
+  // grid-template-columns: minmax(0%, 1fr);
+  grid-template-columns: 100%;
   padding: $space*0.5 $space*0.5 $space;
 }
 
@@ -28,8 +30,24 @@
 }
 
 
+.minicard--wishlist {
+  grid-template-rows: repeat(5, auto) 1fr;
+  height: 100%;
+  align-items: end;
+}
+
+
 .minicard__link {
-  display: contents;
+  @supports (display: contents) {
+    display: contents;
+  }
+
+  @supports not (display: contents) {
+    grid-row: 1/-1;
+    display: flex;
+    flex-direction: column;
+  }
+
   text-decoration: none;
 }
 

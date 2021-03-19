@@ -14,7 +14,7 @@
 
   @include media-desktop-up {
     grid-template-columns: #{$space*19} 1fr;
-    column-gap: $space*2;
+    column-gap: $space*4;
     align-items: start;
     grid-auto-flow: dense;
 

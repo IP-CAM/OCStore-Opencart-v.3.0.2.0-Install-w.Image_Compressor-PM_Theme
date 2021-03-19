@@ -1,5 +1,6 @@
 .minicard-list__product-control {
-  margin-bottom: $space*1.5;
+  padding-bottom: $space*1.5;
+  border-bottom: 1px solid $color__additional-2;
 }
 
 .minicard-list__list {
@@ -10,7 +11,6 @@
   margin: 0 $space*-0.5;
   padding: $space 0 0;
   list-style: none;
-  border-top: 1px solid $color__additional-2;
   // перекрытие border-bottom в нижем ряду items
   padding-bottom: calc((var(--row-gap) / 2) - 1px);
   border-bottom: 1px solid $color__additional-2;

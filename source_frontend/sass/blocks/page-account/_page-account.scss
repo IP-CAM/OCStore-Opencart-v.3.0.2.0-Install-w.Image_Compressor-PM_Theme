@@ -1,0 +1,28 @@
+.page-account {
+  @include media-tablet-landscape-up {
+    display: grid;
+    grid-template-columns: #{$space*19} 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: $space*4;
+    align-items: start;
+    grid-auto-flow: dense;
+
+    &__title {
+      grid-column: 2;
+    }
+
+    &__wishlist-list {
+      grid-column: 2;
+    }
+
+    &__column-left {
+      grid-column: 1;
+      grid-row: span 2;
+    }
+  }
+}
+
+
+.page-account__title {
+  margin: 0 0 $space*2;
+}

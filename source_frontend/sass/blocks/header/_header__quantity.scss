@@ -1,0 +1,41 @@
+.header__quantity-positioner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 3.5rem;
+}
+
+
+.header__quantity {
+  position: absolute;
+  top: $space*0.25;
+  width: $space*1.25;
+  height: $space*1.25;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $color__third;
+  border-radius: 50%;
+  background-color: #ffffff;
+
+  @include media-mobile-only {
+    right: $space*-0.5;
+  }
+
+  @include media-tablet-portrait-up {
+    right: $space*-0.25;
+  }
+}
+
+
+[data-wishlist-count]::before {
+  content: attr(data-wishlist-count);
+}
+
+
+[data-wishlist-count="0"] {
+  display: none;
+}
