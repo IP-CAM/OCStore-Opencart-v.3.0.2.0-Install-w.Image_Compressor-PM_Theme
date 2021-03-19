@@ -2,16 +2,15 @@
   all: inherit;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  padding: $space*0.75 0;
+  padding: 0;
   border: 0;
   cursor: pointer;
 }
 
 .accordion__button-icon {
   display: block;
-  margin-left: $space*0.5;
+  margin-left: auto;
   fill: none;
   stroke: $color__primary;
   stroke-width: 2px;

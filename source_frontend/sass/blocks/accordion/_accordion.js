@@ -125,8 +125,12 @@ class Accordion {
 
 
   _addButton(heading, initStateIsOpened) {
-    heading.innerHTML = `<button class="accordion__button" aria-expanded="${initStateIsOpened}" type="button">
-                            ${heading.textContent}
+    const paddingValue = window.getComputedStyle(heading, null).getPropertyValue('padding');
+    heading.style.padding = '0';
+    const styleString = (paddingValue) ? `style="padding: ${paddingValue}"` : '';
+
+    heading.innerHTML = `<button class="accordion__button" aria-expanded="${initStateIsOpened}" type="button" ${styleString}>
+                            ${heading.innerHTML}
                             <svg viewBox="0 0 24 24" class="accordion__button-icon" width="32" height="32">
                               <path fill="none" vector-effect="non-scaling-stroke" d="M7 11l5 4 5-4"/>
                             </svg>
