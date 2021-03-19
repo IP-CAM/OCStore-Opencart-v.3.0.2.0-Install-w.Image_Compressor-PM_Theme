@@ -61,12 +61,12 @@ export function executeAfterAnimationEnd({element, animationClass, animationName
     if (evt.animationName === animationName) {
       element.classList.remove(animationClass);
       callback();
-      // if (element) {
-      //   element.removeEventListener('animationend', execute);
-      // }
+      if (element) {
+        element.removeEventListener('animationend', execute);
+      }
     }
   }
-  element.addEventListener('animationend', execute, {once: true});
+  element.addEventListener('animationend', execute);
   element.classList.add(animationClass);
 }
 
