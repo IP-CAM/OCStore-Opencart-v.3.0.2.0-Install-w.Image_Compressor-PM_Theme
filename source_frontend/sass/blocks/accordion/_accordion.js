@@ -126,7 +126,9 @@ class Accordion {
 
   _addButton(heading, initStateIsOpened) {
     const paddingValue = window.getComputedStyle(heading, null).getPropertyValue('padding');
-    heading.style.padding = '0';
+    // иногда стиль устанавливается раньше, чем сработает getComputedStyle
+    setTimeout(() => heading.style.padding = '0', 0);
+
     const styleString = (paddingValue) ? `style="padding: ${paddingValue}"` : '';
 
     heading.innerHTML = `<button class="accordion__button" aria-expanded="${initStateIsOpened}" type="button" ${styleString}>

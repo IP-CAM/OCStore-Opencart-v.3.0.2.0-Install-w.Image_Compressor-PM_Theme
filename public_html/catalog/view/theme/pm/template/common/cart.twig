@@ -1,11 +1,11 @@
 <div class="header__cart">
-  <a class="header__link header__cart-link" href="#">
-    <div class="header__cart-quantity-positioner">
+  <a class="header__link header__icon-container header__cart-link" href="#">
+    <div class="header__quantity-positioner">
       <svg class="icon icon--stroked header__icon" width="24" height="24">
         <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-cart"></use>
       </svg>
       <span class="visually-hidden">Товаров: </span>
-      <span class="header__cart-quantity" data-cart-count>{{ cart_items_quantity }}</span>
+      <span class="header__quantity" data-cart-count>{{ cart_items_quantity }}</span>
     </div>
     <span class="header__link-caption">Корзина</span>
   </a>
@@ -78,9 +78,7 @@
 
             <div class="cart-list__item-manage">
               <button class="button cart-list__manage-item-button" type="button" data-cart-event="click" data-cart-action="remove" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">Удалить</button>
-              <button class="button cart-list__manage-item-button" type="button" data-wishlist="add">Сохранить</button>
-              {# <button class="button cart-list__manage-item-button" type="button" onclick="window.yulms.cart.remove('{{ product.cart_id }}');">Удалить</button>
-              <button class="button cart-list__manage-item-button" type="button" onclick="window.wishlist.add('{{ product.product_id }}');">Сохранить</button> #}
+              <button class="button cart-list__manage-item-button" type="button" data-wishlist="add" data-product-id="{{ product.product_id }}">Сохранить</button>
             </div>
           </li>
 

@@ -1,0 +1,89 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+    <h1 class="title title--1 page-account__title">Избранные товары</h1>
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+    {% if products %}
+      <ul class="page-account__wishlist-list minicard-list__list minicard-list__list--grid">
+        {% for product in products %}
+          <li class="minicard-list__item">
+            <div class="minicard-list__item-inner">
+              <div class="minicard minicard--grid minicard--wishlist">
+                {% if product.thumb %}
+                  <a class="minicard__link" href="{{ product.href }}">
+                    <h3 class="minicard__title">{{ product.name }}</h3>
+                    <p class="image-container minicard__image-container">
+                      {# <img class="image-container__image" src="{{ product.thumb }}" alt="{{ product.name }}"> #}
+                      {% if product.thumb236w %}
+                          <img class="image-container__image"
+                            sizes="(min-width: 1456px) 236px,
+                                  (min-width: 1376px) calc((100vw - 513px) / 4),
+                                  (min-width: 1136px) calc((100vw - 488px) / 3),
+                                  (min-width: 980px) calc((100vw - 464px) / 2),
+                                  (min-width: 768px) calc(33vw - 40px),
+                                  (min-width: 608px) calc(50vw - 48px),
+                                  calc(50vw - 32px)"
+                            srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
+                            data-srcset="{{ product.thumb236w }} 236w, {{ product.thumb344w }} 344w, {{ product.thumb444w }} 444w"
+                            src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                        {% else %}
+                          <img class="image-container__image noimage"
+                              src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                        {% endif %}
+                    </p>
+                  </a>
+                {% endif %}
+                <span>Код товара: {{ product.model }}</span>
+                <span>Наличие: {{ product.stock }}</span>
+                {% if product.price %}
+                  <p class="price minicard__price">
+                    {% if not product.special %}
+                      {# без акции #}
+                      <span class="visually-hidden">{{ product.price }}</span>
+                      <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
+                    {% else %}
+                      {# акция #}
+                      <span class="visually-hidden">{{ product.special }}</span>
+                      <span class="price__current price__current--discount" aria-hiddel="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
+                      <del class="price__old" aria-label="Цена без скидки: ">{{ product.price }}</del>
+                    {% endif %}
+                  </p>
+                {% endif %}
+                <a class="link link--nounderline link--center-align" href="{{ product.remove }}">
+                  <svg width="24" height="24" fill="currentColor">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-delete"></use>
+                  </svg>
+                  Удалить
+                </a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Список избранных товаров пуст</p>
+    {% endif %}
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+  </main>
+</div>
+{{ footer }}

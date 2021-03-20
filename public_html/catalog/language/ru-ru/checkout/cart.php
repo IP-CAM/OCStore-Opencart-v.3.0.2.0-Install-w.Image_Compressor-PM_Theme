@@ -7,7 +7,7 @@ $_['heading_title']    							= 'Корзина покупок';
 
 // Text
 // $_['text_success']    							= 'Товар <a href="%s">%s</a> добавлен в <a href="%s">корзину покупок</a>!';
-$_['text_success']    							= 'Товар <a class="link link--nounderline href="%s">%s</a> добавлен в <a class="link link--nounderline" href="%s">корзину покупок!</a>';
+$_['text_success']    							= 'Товар <a class="link link--nounderline" href="%s">%s</a> добавлен в <a class="link link--nounderline" href="%s">корзину покупок!</a>';
 $_['text_remove']      							= 'Корзина покупок обновлена!';
 $_['text_login']      							= 'Необходимо <a href="%s">Войти в Личный кабинет</a> или <a href="%s">создать учетную запись</a> для просмотра цен!';
 // $_['text_items']       							= 'Товаров: %s (%s)';

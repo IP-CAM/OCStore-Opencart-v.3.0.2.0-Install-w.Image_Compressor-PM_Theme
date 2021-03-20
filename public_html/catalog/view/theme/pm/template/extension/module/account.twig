@@ -1,0 +1,36 @@
+<section class="dropdown-menu dropdown-menu--bordered">
+  <h2 class="dropdown-menu__header title title--5 accordion" data-accordion-open="980">
+    <svg class="dropdown-menu__header-svg" width="24" height="24">
+      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-user"></use>
+    </svg>
+    {{ heading_title }}
+  </h2>
+  <ul class="dropdown-menu__list dropdown-menu__list--nopaddings">
+    {% if not logged %}
+      <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ login }}">{{ text_login }}</a></li>
+      <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ register }}">{{ text_register }}</a></li>
+      <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ forgotten }}">{{ text_forgotten }}</a></li>
+    {% endif %}
+
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ account }}">{{ text_account }}</a></li>
+
+    {% if logged %}
+      <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ edit }}">{{ text_edit }}</a></li>
+      <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ password }}">{{ text_password }}</a></li>
+    {% endif %}
+
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ address }}">{{ text_address }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ order }}">{{ text_order }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ download }}">{{ text_download }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ recurring }}">{{ text_recurring }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ reward }}">{{ text_reward }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ return }}">{{ text_return }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ transaction }}">{{ text_transaction }}</a></li>
+    <li><a class="dropdown-menu__link dropdown-menu__link--bordered" href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+
+    {% if logged %}
+      <li><a class="dropdown-menu__link" href="{{ logout }}">{{ text_logout }}</a></li>
+    {% endif %}
+  </ul>
+</section>

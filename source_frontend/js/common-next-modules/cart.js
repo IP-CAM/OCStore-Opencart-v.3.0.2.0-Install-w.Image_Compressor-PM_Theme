@@ -121,7 +121,7 @@ class ControllerCart {
         if (response['redirect']) {
           location = response['redirect'];
         }
-        this._updateHeaderCartCount(response.items_count);
+        this._updateHeaderCartCount(response.item_count);
         this._showAddCartModal(response.success, response.total, response.checkout_link);
       })
       .then(() => this._updateHeaderCart())
@@ -141,7 +141,7 @@ class ControllerCart {
 
     loadingIndicator.on();
     this.modelCart.sendRequest(this.modelCart.requestUrl.set, formData)
-      .then(response => this._updateHeaderCartCount(response.items_count))
+      .then(response => this._updateHeaderCartCount(response.item_count))
       .then(() => this._changeLocationIfNeedeed())
       .then(() => this._updateHeaderCart())
       .finally(() => loadingIndicator.off())
@@ -157,7 +157,7 @@ class ControllerCart {
 
     loadingIndicator.on();
     this.modelCart.sendRequest(this.modelCart.requestUrl.remove, formData)
-      .then(response => this._updateHeaderCartCount(response.items_count))
+      .then(response => this._updateHeaderCartCount(response.item_count))
       .then(() => this._changeLocationIfNeedeed())
       .then(() => this._updateHeaderCart())
       .finally(() => loadingIndicator.off())
@@ -199,7 +199,7 @@ class ControllerCart {
                   <p class="modal__p">${message}</p>
                   <p class="modal__p">${totalMessage}</p>
                   <div style="display: flex; flex-direction: column; margin-top: 2rem;">
-                    <a class="button button--action-primary" href=${checkoutLink} style="margin-bottom: 0.5rem">Оформить заказ</a>
+                    <a class="button button--action-primary" href="${checkoutLink}" style="margin-bottom: 0.5rem">Оформить заказ</a>
                     <button class="link" style="margin-bottom: 0.5rem; padding-top: 0.5rem;">Купить в 1 клик</button>
                     <button class="link" style="padding-top: 0.5rem" data-modal-close>Продолжить покупки</button>
                   </div>`;
