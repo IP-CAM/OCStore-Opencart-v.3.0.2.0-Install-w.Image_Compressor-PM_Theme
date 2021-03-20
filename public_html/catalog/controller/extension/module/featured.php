@@ -22,12 +22,12 @@ class ControllerExtensionModuleFeatured extends Controller {
 				if ($product_info) {
 					if ($product_info['image']) {
 						// $image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
-						$image244w = $this->model_tool_image->resize($product_info['image'], 244, 244);
+						$image236w = $this->model_tool_image->resize($product_info['image'], 236, 236);
 						$image344w = $this->model_tool_image->resize($product_info['image'], 344, 344);
 						$image444w = $this->model_tool_image->resize($product_info['image'], 444, 444);
             $image = 'image/' . $product_info['image'];
 					} else {
-            $image244w = NULL;
+            $image236w = NULL;
             $image344w = NULL;
             $image444w = NULL;
 						$image = PLACEHOLDER_IMAGE;
@@ -72,7 +72,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 					$data['products'][] = array(
 						'product_id'        => $product_info['product_id'],
 						'thumb'             => $image,
-						'thumb244w'         => $image244w,
+						'thumb236w'         => $image236w,
 						'thumb344w'         => $image344w,
 						'thumb444w'         => $image444w,
 						'name'              => $product_info['name'],

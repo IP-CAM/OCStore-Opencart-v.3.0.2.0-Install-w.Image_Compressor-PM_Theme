@@ -214,13 +214,13 @@ class ControllerProductCategory extends Controller {
         // изображения товара
         if ($result['image']) {
           // $image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-          $image244w = $this->model_tool_image->resize($result['image'], 244, 244);
+          $image236w = $this->model_tool_image->resize($result['image'], 236, 236);
           $image344w = $this->model_tool_image->resize($result['image'], 344, 344);
           $image444w = $this->model_tool_image->resize($result['image'], 444, 444);
           $image     = 'image/' . $result['image'];
         } else {
           // $image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-          $image244w = NULL;
+          $image236w = NULL;
           $image344w = NULL;
           $image444w = NULL;
           $image     = PLACEHOLDER_IMAGE;
@@ -265,7 +265,7 @@ class ControllerProductCategory extends Controller {
 				$data['products'][] = array(
 					'product_id'       => $result['product_id'],
 					'thumb'            => $image,
-					'thumb244w'        => $image244w,
+					'thumb236w'        => $image236w,
 					'thumb344w'        => $image344w,
 					'thumb444w'        => $image444w,
 					'name'             => $result['name'],

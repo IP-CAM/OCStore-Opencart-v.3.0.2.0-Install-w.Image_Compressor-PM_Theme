@@ -168,22 +168,22 @@
                     <a class="minicard__link" href="{{ product.href }}">
                       <h3 class="minicard__title">{{ product.name }}</h3>
                       <p class="image-container minicard__image-container">
-                        {% if product.thumb244w %}
+                        {% if product.thumb236w %}
                           <img class="image-container__image"
-                              sizes="(min-width: 1456px) 244px,
-                                    (min-width: 1344px) calc((100vw - 480px) / 4),
-                                    (min-width: 1280px) calc((100vw - 456px) / 3),
-                                    (min-width: 1248px) calc(20vw - 48px),
-                                    (min-width: 1007px) calc(25vw - 48px),
-                                    (min-width: 768px) calc(33vw - 48px),
-                                    (min-width: 608px) calc(50vw - 48px),
-                                    calc(50vw - 32px)"
+                            sizes="(min-width: 1456px) 236px,
+                                  (min-width: 1344px) calc((100vw - 512px) / 4),
+                                  (min-width: 1280px) calc((100vw - 488px) / 3),
+                                  (min-width: 1248px) calc(20vw - 48px),
+                                  (min-width: 1007px) calc(25vw - 48px),
+                                  (min-width: 768px) calc(33vw - 48px),
+                                  (min-width: 608px) calc(50vw - 48px),
+                                  calc(50vw - 32px)"
                               srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
-                              data-srcset="{{ product.thumb244w }} 244w, {{ product.thumb344w }} 344w, {{ product.thumb444w }} 444w"
-                              src="{{ product.thumb }}" width="244" height="244" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                              data-srcset="{{ product.thumb236w }} 236w, {{ product.thumb344w }} 344w, {{ product.thumb444w }} 444w"
+                              src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
                         {% else %}
                           <img class="image-container__image noimage"
-                              src="{{ product.thumb }}" width="244" height="244" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                              src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
                         {% endif %}
                       </p>
                     </a>
@@ -196,10 +196,11 @@
                       </div>
                     {% endif %}
 
-                    <p class="minicard__brand">
+                    {# <p class="minicard__brand">
                       <span>Бренд:</span>
                       <span>{{ product.manufacturer }}</span>
-                    </p>
+                    </p> #}
+                    <p class="minicard__brand">Бренд: {{ product.manufacturer }}</p>
 
                     {% if product.attribute_groups %}
                       {% set invalid_attr_id = [8] %}
@@ -218,16 +219,16 @@
 
                     {% if product.price %}
                       <p class="price minicard__price">
-                      {% if not product.special %}
-                        {# без акции #}
+                        {% if not product.special %}
+                          {# без акции #}
                           <span class="visually-hidden">{{ product.price }}</span>
                           <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
-                      {% else %}
-                        {# акция #}
+                        {% else %}
+                          {# акция #}
                           <span class="visually-hidden">{{ product.special }}</span>
                           <span class="price__current price__current--discount" aria-hiddel="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
                           <del class="price__old" aria-label="Цена без скидки: ">{{ product.price }}</del>
-                      {% endif %}
+                        {% endif %}
                       </p>
                     {% endif %}
 
@@ -252,7 +253,7 @@
                       Доставка: сегодня после 18-00, бесплатно
                     </p>
 
-                    <button class="button minicard__love-button" type="button" onclick="window.wishlist.add('{{ product.product_id }}');">
+                    <button class="button minicard__love-button" type="button" data-wishlist="add" data-product-id="{{ product.product_id }}">
                       <span class="visually-hidden">Добавить в избранные товары</span>
                       <svg class="minicard__love-icon icon icon--stroked" width="24" height="24">
                         <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
