@@ -21,6 +21,7 @@
       {{ column_left }}
     </div>
     {% if products %}
+      <h2 class="visually-hidden">Список избранных товаров</h2>
       <ul class="page-account__wishlist-list minicard-list__list minicard-list__list--grid">
         {% for product in products %}
           <li class="minicard-list__item">
@@ -30,9 +31,8 @@
                   <a class="minicard__link" href="{{ product.href }}">
                     <h3 class="minicard__title">{{ product.name }}</h3>
                     <p class="image-container minicard__image-container">
-                      {# <img class="image-container__image" src="{{ product.thumb }}" alt="{{ product.name }}"> #}
                       {% if product.thumb236w %}
-                          <img class="image-container__image"
+                        <img class="image-container__image"
                             sizes="(min-width: 1456px) 236px,
                                   (min-width: 1376px) calc((100vw - 513px) / 4),
                                   (min-width: 1136px) calc((100vw - 488px) / 3),
@@ -43,10 +43,10 @@
                             srcset="catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
                             data-srcset="{{ product.thumb236w }} 236w, {{ product.thumb344w }} 344w, {{ product.thumb444w }} 444w"
                             src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
-                        {% else %}
-                          <img class="image-container__image noimage"
-                              src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
-                        {% endif %}
+                      {% else %}
+                        <img class="image-container__image noimage"
+                            src="{{ product.thumb }}" width="236" height="236" loading="lazy" alt="Открыть страницу покупки {{ product.name }}">
+                      {% endif %}
                     </p>
                   </a>
                 {% endif %}

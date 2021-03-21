@@ -31,8 +31,8 @@ class TextfieldOutlined extends Textfield {
 
     this.labelElement = this.element.querySelector(this.labelSelector);
 
-    if (this.inputElement.value !== '') {
-      this.labelElement.classList.add(this.labelOnTopClass);
+    if (this.inputElement.value === '') {
+      this.labelElement.classList.remove(this.labelOnTopClass);
     }
 
     appendCustomFocusEvents(this.element);
