@@ -8,6 +8,7 @@ class Registration {
     this.endOfRegisterPageHref = '?route=account/register';
     this.registerLinkSelector = `[href$="/index.php${this.endOfRegisterPageHref}"]`;
     this.formSelector = '[data-registration-form]';
+    this.subscribeFormSelector = '[data-register-for-subscribe]'; // подписка на новости открывает окно регистрации
     this.ajaxUrl = 'index.php?route=account/register/ajax';
     this.submitButtonSelector = `${this.formSelector} button[type="submit"]`;
     this.recaptchaAction = 'submit_registration';
@@ -16,30 +17,53 @@ class Registration {
     this.reCaptcha = new ReCaptcha();
 
     document.addEventListener('click', (evt) => {
-      const registerLinkElement = evt.target.closest(this.registerLinkSelector);
-      if (!registerLinkElement) return;
-      evt.preventDefault();
+      const targetElement = evt.target.closest(this.registerLinkSelector);
+      if (!targetElement) return;
 
+      evt.preventDefault();
       this._showRegistrationModal();
     });
 
+    document.addEventListener('submit', (evt) => {
+      const subscribeFormElement = evt.target.closest(this.subscribeFormSelector);
+      if (!subscribeFormElement) return;
+
+      evt.preventDefault();
+
+      const formData = new FormData(subscribeFormElement);
+      const emailValue = formData.get('email');
+      const initiatedBySubscribe = true;
+      this._showRegistrationModal(initiatedBySubscribe, emailValue);
+    });
+
+
     this._waitFocusOnForm(this.formSelector)
-      .then(formElement => this._addSubmitListener(formElement))
+      .then(() => this._addSubmitListener(this.formSelector))
       .then(() => this._loadCaptcha());
   }
 
 
-  _showRegistrationModal() {
+  _showRegistrationModal(initiatedBySubscribe, emailValue = '') {
     const loginHref = window.location.origin + '/index.php?route=account/login';
     const recapthaInputId = this.reCaptcha.getResponseInpudId();
     const recapthaInputName = this.reCaptcha.getResponseInpudName();
+
+    let subscribeHtml = '';
+    if (initiatedBySubscribe) {
+      subscribeHtml = `<label class="radiocheck registration__subscribe-check">
+                        <input class="radiocheck__input visually-hidden" type="checkbox" name="newsletter" value="1" checked>
+                        <span class="radiocheck__box radiocheck__box--check"></span>
+                        <span class="radiocheck__caption">Подписаться на рассылку</span>
+                      </label>`;
+    }
+
 
     const html = `<section class="registration">
       <h2 class="modal__header">Регистрация</h2>
       <form data-registration-form>
         <div class="textfield registration__textfield">
           <label class="textfield__input-container">
-            <input class="textfield__input" type="email" name="email" autocomplete="off" required>
+            <input class="textfield__input" type="email" name="email" value="${emailValue}" autocomplete="off" required>
             <span class="textfield__label">e-mail</span>
           </label>
         </div>
@@ -50,6 +74,7 @@ class Registration {
           </label>
           <div class="textfield__help">от 4 до 20 символов</div>
         </div>
+        ${subscribeHtml}
         <input type="hidden" name="firstname" value="">
         <input type="hidden" name="lastname" value="">
         <input type="hidden" name="telephone" value="">
@@ -73,7 +98,7 @@ class Registration {
         if (!formElement) return;
 
         document.removeEventListener('focusin', onFocusIn);
-        resolve(formElement);
+        resolve();
       };
 
       document.addEventListener('focusin', onFocusIn);
@@ -81,10 +106,12 @@ class Registration {
   }
 
 
-  _addSubmitListener(formElement) {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
+  _addSubmitListener(formSelector) {
+    document.addEventListener('submit', (evt) => {
+      const formElement = evt.target.closest(formSelector);
+      if (!formElement) return;
 
+      evt.preventDefault();
       this._submitForm(formElement);
     });
   }

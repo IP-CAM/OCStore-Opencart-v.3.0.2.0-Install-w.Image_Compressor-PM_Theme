@@ -56,11 +56,15 @@
         Подпишитесь на нашу рассылку и получайте информацию о скидках
       </p>
 
-      <form class="footer__subscribe-form">
-        <label class="visually-hidden" for="subscribe-input">
-          <span>Ваш email</span>
+      <form class="footer__subscribe-form" {% if not logged %}data-register-for-subscribe{% else %}data-subscribe-form{% endif %}>
+        <label>
+          <span class="visually-hidden">Ваш email</span>
+          {% if not logged %}
+            <input class="footer__subscribe-input" type="email" name="email" placeholder="Ваш email ..." required>
+          {% else %}
+            <input class="footer__subscribe-input" type="email" name="email" value="{{ user_email }}" placeholder="Ваш email ..." required readonly>
+          {% endif %}
         </label>
-        <input class="footer__subscribe-input" id="subscribe-input" type="email" name="email" placeholder="Ваш email ..." required>
         <button class="button button--action-primary" type="submit">Подписаться!</button>
       </form>
 

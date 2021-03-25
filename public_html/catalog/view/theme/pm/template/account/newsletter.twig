@@ -18,6 +18,11 @@
   <main class="main page-account">
     <div class="newsletter page-account__newsletter">
       <h1 class="title title--1 page-account__title">E-mail рассылка</h1>
+
+      <p class="newsletter__status">Текущий статус подписки:
+        <strong>{% if newsletter %}вы подписаны{% else %}вы не подписаны{% endif %}</strong>
+      </p>
+
       <form action="{{ action }}" method="post">
 
         <fieldset class="newsletter__fieldset">
