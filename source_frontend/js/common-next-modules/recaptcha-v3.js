@@ -2,7 +2,9 @@ export default class ReCaptcha {
   constructor() {
     this.siteKey = '6LfoznEaAAAAAEXkXA91WMS5ZglCtuIWNnms8auO';
     this.loadUrl = 'https://www.google.com/recaptcha/api.js?render=' + this.siteKey;
-    this.responseInputSelector = '#g-recaptcha-response';
+    this.responseInputId = 'g-recaptcha-response';
+    this.responseInputSelector = '#' + this.responseInputId;
+    this.responseInputName = this.responseInputId;
   }
 
 
@@ -37,6 +39,16 @@ export default class ReCaptcha {
           );
       });
     });
+  }
+
+
+  getResponseInpudId() {
+    return this.responseInputId;
+  }
+
+
+  getResponseInpudName() {
+    return this.responseInputName;
   }
 
 }

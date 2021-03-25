@@ -252,6 +252,8 @@ class Modal {
     }
 
     this._focus(currentModal, {shouldBeInside: false});
+
+    this._stateIsClosing = false;
   }
 
 

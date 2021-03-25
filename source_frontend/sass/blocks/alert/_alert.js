@@ -6,6 +6,7 @@ export default class Alert {
         info: 'alert--info',
         success: 'alert--success',
         warning: 'alert--warning',
+        simpleWarning: 'alert--simple-warning',
         danger: 'alert--danger'
       },
       closeButtonHtml: `<button class="button alert__close-button" type="button">
@@ -27,13 +28,22 @@ export default class Alert {
 
     targetElement[position](alertElement);
 
-    alertElement.scrollIntoView({behavior: 'smooth'});
+    if (!this._isElementInViewport(alertElement)) {
+      alertElement.scrollIntoView({behavior: 'smooth'});
+    }
+  }
+
+
+  _isElementInViewport (element) {
+    var rect = element.getBoundingClientRect();
+    return (rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight));
   }
 
 
   _createAlertElement(html, type, extraCssClass, isDissmisible) {
     const alertElement = document.createElement('div');
     alertElement.className = `${this.alertCssClass} ${this.typeToCssClass[type]} ${extraCssClass}`;
+    alertElement.setAttribute('role', 'alert');
     alertElement.innerHTML = html;
 
     if (isDissmisible) {

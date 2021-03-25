@@ -1,5 +1,6 @@
 .alert {
   position: relative;
+  margin: 0;
   padding: $space;
   background-color: $color__additional-1-1;
   border-top-right-radius: $controls__border-radius;
@@ -13,7 +14,8 @@
 .alert__close-button {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: $space * 3.5;
   height: $space * 3.5;
   display: flex;
@@ -43,6 +45,14 @@
 
 .alert--warning {
   border-left: $space*0.5 solid $color__danger;
+}
+
+.alert--simple-warning {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  background-color: transparent;
+  color: $color__error;
 }
 
 .alert--danger {

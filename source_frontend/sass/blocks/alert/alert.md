@@ -7,12 +7,12 @@
 
 
 ## синтаксис
-alert.show({selector, position, text, type = 'info', isDissmisible = true});
+new Alert({targetSelector, position, html, type = 'info', isDissmisible = true, scrollIntoView = false});
 
 
 ### параметры
 
-`selector` (string)
+`targetSelector` (string)
 Селектор элемента, относительно которого будет определяться позиция вставки alert
 
 `position` (string)
@@ -23,7 +23,7 @@ alert.show({selector, position, text, type = 'info', isDissmisible = true});
 * before - вставляет узлы или строки до node,
 * after - вставляет узлы или строки после node
 
-`text` (string)
+`html` (string)
 Строка, которая будет проанализирована как HTML или XML и вставлена в DOM дерево документа.
 
 `type` (string)
@@ -31,6 +31,7 @@ alert.show({selector, position, text, type = 'info', isDissmisible = true});
 * 'info' - default
 * 'success'
 * 'warning'
+* 'simpleWarning',
 * 'danger'
 
 `extraCssClass` (string)

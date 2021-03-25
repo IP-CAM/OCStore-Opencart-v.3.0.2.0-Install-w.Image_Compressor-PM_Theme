@@ -6,12 +6,12 @@ class ReviewWrite {
   constructor(formElement) {
     this.formSelector = '.review-write__form';
     this.productId = formElement.dataset.productId;
-    this.recaptchaAtion = 'submit_product_review';
+    this.recaptchaAction = 'submit_product_review';
     this.url = 'index.php?route=product/product/write&product_id=' + this.productId;
     this.submitButtonSelector = `${this.formSelector} button[type="submit"]`;
 
 
-    this.formElement = document.querySelector(this.formSelector);
+    this.formElement = formElement;
 
     this.reCaptcha = new ReCaptcha();
 
@@ -24,7 +24,7 @@ class ReviewWrite {
       loadingIndicator.on();
 
       // * reCAPTCHA
-      this.reCaptcha.execute(this.recaptchaAtion)
+      this.reCaptcha.execute(this.recaptchaAction)
         .then(() => {
           return fetch(this.url, {
             method: 'POST',
