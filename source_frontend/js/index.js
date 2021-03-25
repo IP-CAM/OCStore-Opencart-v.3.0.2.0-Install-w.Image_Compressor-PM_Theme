@@ -23,6 +23,8 @@ import initWishlist from './common-next-modules/wishlist.js'; // допилит�
 import initReviewVote from  './common-next-modules/review-vote.js';
 import initReviewWrite from './common-next-modules/review-write.js';
 import initReviewPagination from './common-next-modules/review-pagination.js';
+import initRegistration from './common-next-modules/registration.js';
+import initLogin from './common-next-modules/login.js';
 
 
 const projectObjects = {
@@ -49,7 +51,9 @@ const projectObjects = {
   wishList: initWishlist(),
   reviewVote: initReviewVote(),
   reviewWrite: initReviewWrite(),
-  reviewPagination: initReviewPagination()
+  reviewPagination: initReviewPagination(),
+  registration: initRegistration(),
+  login: initLogin()
 };
 
 window.yulms = projectObjects;

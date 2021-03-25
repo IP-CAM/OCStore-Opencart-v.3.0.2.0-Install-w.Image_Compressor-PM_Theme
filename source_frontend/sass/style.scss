@@ -34,6 +34,7 @@
 @import "blocks/dl/dl";
 @import "blocks/radio-tabs/radio-tabs";
 @import "blocks/nouislider/nouislider";
+@import "blocks/alert/alert";
 
 // Крупные компоненты
 @import "blocks/breadcrumbs/breadcrumbs";
@@ -46,7 +47,6 @@
 @import "blocks/switch-view/switch-view";
 @import "blocks/pagination/pagination";
 @import "blocks/minicard-list/minicard-list";
-@import "blocks/alert/alert";
 
 // Модули
 @import "blocks/page/page";
@@ -58,7 +58,6 @@
 @import "blocks/footer/footer";
 @import "blocks/page-goods/page-goods";
 @import "blocks/page-product/page-product";
-@import "blocks/page-account/page-account";
 @import "blocks/offer/offer";
 @import "blocks/cart-list/cart-list";
 @import "blocks/often-looking/often-looking";
@@ -69,6 +68,18 @@
 @import "blocks/review-write/review-write";
 @import "blocks/page-cart/page-cart";
 @import "blocks/pickup/pickup";
+@import "blocks/registration/registration";
+@import "blocks/login/login";
+@import "blocks/page-account/page-account";
+@import "blocks/page-account/forgot";
+@import "blocks/page-account/account-edit";
+@import "blocks/page-account/address-list";
+@import "blocks/page-account/address-form";
+@import "blocks/page-account/change-password";
+@import "blocks/page-account/newsletter";
+@import "blocks/page-account/order-list";
+@import "blocks/page-account/order-info";
+@import "blocks/page-account/account-reward";
 
 // переопределяющие стили
 @import "blocks/ripple/ripple";

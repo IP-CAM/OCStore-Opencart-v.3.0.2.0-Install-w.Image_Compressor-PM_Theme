@@ -1,0 +1,146 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+
+    <div class="address-form page-account__address-form">
+      <h1 class="title title--1 page-account__title">Адрес</h1>
+      <form class="address-form__form" action="{{ action }}" method="post">
+
+        {# * имя #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="firstname" value="{{ firstname }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_firstname }}</span>
+          </label>
+          {% if error_firstname %}
+            <div class="textfield__help textfield__help--error">{{ error_firstname }}</div>
+          {% endif %}
+        </div>
+
+        {# * фамилия #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="lastname" value="{{ lastname }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_lastname }}</span>
+          </label>
+          {% if error_lastname %}
+            <div class="textfield__help textfield__help--error">{{ error_lastname }}</div>
+          {% endif %}
+        </div>
+
+        {# * город #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="city" value="{{ city }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_city }}</span>
+          </label>
+          {% if error_city %}
+            <div class="textfield__help textfield__help--error">{{ error_city }}</div>
+          {% endif %}
+        </div>
+
+        {# * адрес #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="address_1" value="{{ address_1 }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_address_1 }}</span>
+          </label>
+          {% if error_address_1 %}
+            <div class="textfield__help textfield__help--error">{{ error_address_1 }}</div>
+          {% endif %}
+        </div>
+
+        {# * компания #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="company" value="{{ company }}">
+            <span class="textfield__label textfield__label--top">{{ entry_company }}</span>
+          </label>
+          {% if error_company %}
+            <div class="textfield__help textfield__help--error">{{ error_company }}</div>
+          {% endif %}
+        </div>
+
+        <label class="radiocheck">
+          <input class="radiocheck__input visually-hidden" type="checkbox" name="default" {% if default %}checked{% endif %} autocomplete="off">
+          <span class="radiocheck__box radiocheck__box--check"></span>
+          <span class="radiocheck__caption">{{ entry_default }}</span>
+        </label>
+
+        <input class="textfield__input" type="hidden" name="address_2">
+        <input class="textfield__input" type="hidden" name="postcode">
+        <input class="textfield__input" type="hidden" name="country_id" value="20">
+        <input class="textfield__input" type="hidden" name="zone_id" value="4232">
+
+
+        {% if error_country or error_zone or error_postcode or error_address_2 %}
+          <p class="alert alert--simple-warning" role="alert">
+            Упс... непредвиденная ошибка<br>
+            {{ error_address_2 }}
+            {{ error_postcode }}
+            {{ error_country }}
+            {{ error_zone }}
+          </p>
+        {% endif %}
+
+        <div class="address-form__button-container">
+          <a class="link" href="{{ back }}">{{ button_back }}</a>
+          <button class="button button--action-primary" type="submit">{{ button_continue }}</button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+
+  </main>
+</div>
+{{ footer }}
+
+
+
+
+          {# <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_default }}</label>
+            <div class="col-sm-10">
+
+            {% if default %}
+              <label class="radio-inline">
+                <input type="radio" name="default" value="1" checked="checked" />
+                {{ text_yes }}
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="default" value="0" />
+                {{ text_no }}</label>
+            {% else %}
+
+              <label class="radio-inline">
+                <input type="radio" name="default" value="1" />
+                {{ text_yes }}</label>
+              <label class="radio-inline">
+                <input type="radio" name="default" value="0" checked="checked" />
+                {{ text_no }}</label>
+              {% endif %} </div>
+          </div> #}

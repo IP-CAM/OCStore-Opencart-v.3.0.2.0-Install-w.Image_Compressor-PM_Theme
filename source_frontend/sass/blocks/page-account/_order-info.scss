@@ -1,0 +1,55 @@
+.order-info {
+  display: grid;
+  grid-template-columns: minmax(0%, 1fr);
+  gap: $space*2;
+
+  @include media-tablet-portrait-up {
+    grid-template-columns: repeat(2, minmax(0%, 1fr));
+
+    &__title {
+      grid-column: 1/-1;
+    }
+
+    &__alert {
+      grid-column: 1/-1;
+    }
+
+    &__product-list {
+      grid-column: 1/-1;
+    }
+
+    &__history {
+      grid-column: 1/-1;
+    }
+  }
+}
+
+.order-info__alert {
+  margin-bottom: $space;
+}
+
+
+.order-info__title {
+  margin: 0;
+}
+
+.order-info__section-title {
+  margin: 0 0 $space;
+}
+
+.order-info__manage-link {
+  display: block;
+  white-space: nowrap;
+
+  & + .order-info__manage-link {
+    margin-top: $space*0.5;
+  }
+}
+
+.order-info__total-cell {
+  font-weight: 600;
+}
+
+.order-info__price-cell {
+  white-space: nowrap;
+}

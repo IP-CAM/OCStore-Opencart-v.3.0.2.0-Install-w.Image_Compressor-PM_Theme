@@ -1,0 +1,49 @@
+.login__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login__textfield {
+  margin-bottom: $space;
+}
+
+
+.login__already-text {
+  margin: $space 0 0;
+  padding-top: $space;
+  border-top: 1px solid $color__additional-2;
+}
+
+
+.login__alert {
+  margin-bottom: $space;
+}
+
+
+.login__button-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  column-gap: $space;
+  align-items: center;
+  margin-top: $space*0.5;
+}
+
+.login__socials-login {
+  margin-top: $space*1.5;
+  padding-top: $space;
+  border-top: 1px solid $color__additional-2;
+}
+
+.login__no-account {
+  margin: $space 0 0;
+  padding-top: $space;
+  border-top: 1px solid $color__additional-2;
+}
+
+.login__no-account-link {
+  margin-left: $space;
+}
+
+.login__success {
+  margin-bottom: $space;
+}

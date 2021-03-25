@@ -1,0 +1,94 @@
+{{ header }}
+
+<div class="page__wrapper">
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+
+    <div class="account-edit page-account__account-edit">
+      <h1 class="title title--1 page-account__title">{{ text_your_details }}</h1>
+      <form class="account-edit__form" action="{{ action }}" method="post">
+
+        {# * e-mail #}
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="firstname" value="{{ firstname }}" autocomplete="off">
+            <span class="textfield__label textfield__label--top">{{ entry_firstname }}</span>
+          </label>
+          {% if error_firstname %}
+            <div class="textfield__help textfield__help--error">{{ error_firstname }}</div>
+          {% else %}
+            <div class="textfield__help">до 32 символов</div>
+          {% endif %}
+
+        </div>
+
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="lastname" value="{{ lastname }}" autocomplete="off">
+            <span class="textfield__label textfield__label--top">{{ entry_lastname }}</span>
+          </label>
+          {% if error_lastname %}
+            <div class="textfield__help textfield__help--error">{{ error_lastname }}</div>
+          {% else %}
+            <div class="textfield__help">до 32 символов</div>
+          {% endif %}
+        </div>
+
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="email" name="email" value="{{ email }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_email }}</span>
+          </label>
+          {% if error_email %}
+            <div class="textfield__help textfield__help--error">{{ error_email }}</div>
+          {% endif %}
+        </div>
+
+        <div class="textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="text" name="telephone" value="{{ telephone }}" autocomplete="off">
+            <span class="textfield__label textfield__label--top">{{ entry_telephone }}</span>
+          </label>
+          {% if error_telephone %}
+            <div class="textfield__help textfield__help--error">{{ error_telephone }}</div>
+          {% endif %}
+        </div>
+
+        {% if error_warning %}
+          <p class="alert alert--simple-warning" role="alert">{{ error_warning }}</p>
+        {% endif %}
+
+        <div class="account-edit__button-container">
+          <a class="link" href="{{ back }}">« Назад</a>
+          <button class="button button--action-primary" type="submit">Сохранить</button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+
+  </main>
+</div>
+
+{{ footer }}

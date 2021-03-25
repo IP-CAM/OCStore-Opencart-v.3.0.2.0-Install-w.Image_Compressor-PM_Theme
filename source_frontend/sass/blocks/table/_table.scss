@@ -1,25 +1,30 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  border-bottom: 1px solid $color__additional-2;
 }
 
+// размещать над table
+.table__responsive-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-.table__cation {
+.table__caption {
   margin-bottom: $space*0.5;
   font-weight: 700;
   text-align: left;
 }
 
 .table__cell {
-  width: 50%;
   padding: $space*0.5;
-  border-top: 1px solid $color__additional-2;
+  border-bottom: 1px solid $color__additional-2;
 }
 
-
 .table__cell--th {
+  position: sticky;
+  top: 0;
   font-weight: inherit;
   text-align: left;
+  border-top: 1px solid $color__additional-2;
   background-color: $color__primary-light;
 }

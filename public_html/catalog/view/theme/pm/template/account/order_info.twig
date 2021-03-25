@@ -1,0 +1,193 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+
+    <div class="order-info">
+      <h1 class="title title--1 order-info__title">Информация о заказе</h1>
+
+      {% if success %}
+        <p class="alert alert--success order-info__alert" role="alert">{{ success }}</p>
+      {% endif %}
+
+      {% if error_warning %}
+        <p class="alert alert--warning order-info__alert" role="alert">{{ error_warning }}</p>
+      {% endif %}
+
+      <section class="order-info__detail">
+        <h2 class="title title--2 order-info__section-title">{{ text_order_detail }}</h2>
+        <dl class="dl">
+          {% if invoice_no %}
+            <dt class="dl__dt dl__dt--bolder">{{ text_invoice_no }}</dt>
+            <dd class="dl__dd">{{ invoice_no }}</dd>
+          {% endif %}
+          <dt class="dl__dt dl__dt--bolder">{{ text_account_order_id }}</dt>
+          <dd class="dl__dd">{{ order_id }}</dd>
+
+          <dt class="dl__dt dl__dt--bolder">{{ text_date_added }}</dt>
+          <dd class="dl__dd">{{ date_added }}</dd>
+
+          {% if payment_method %}
+            <dt class="dl__dt dl__dt--bolder">{{ text_payment_method }}</dt>
+            <dd class="dl__dd">{{ payment_method }}</dd>
+          {% endif %}
+
+          {% if shipping_method %}
+            <dt class="dl__dt dl__dt--bolder">{{ text_shipping_method }}</dt>
+            <dd class="dl__dd">{{ shipping_method }}</dd>
+          {% endif %}
+
+          {% if comment %}
+            <dt class="dl__dt dl__dt--bolder">{{ text_comment }}</dt>
+            <dd class="dl__dd">{{ comment }}</dd>
+          {% endif %}
+        </dl>
+      </section>
+
+      <section class="order-info__address">
+        <h2 class="title title--2  order-info__section-title">{{ text_shipping_address }}</h2>
+        <div>{{ shipping_address }}</div>
+      </section>
+
+      <section class="order-info__product-list">
+        <h2 class="title title--2  order-info__section-title">Перечень товаров</h2>
+        <div class="table__responsive-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="table__cell table__cell--th">{{ column_name }}</th>
+                <th class="table__cell table__cell--th">{{ column_model }}</th>
+                <th class="table__cell table__cell--th">{{ column_quantity }}</th>
+                <th class="table__cell table__cell--th">{{ column_price }}</th>
+                <th class="table__cell table__cell--th">{{ column_total }}</th>
+                {% if products %}
+                  <th class="table__cell table__cell--th"></th>
+                {% endif %}
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for product in products %}
+                <tr>
+                  <td class="table__cell">{{ product.name }}
+                    {% for option in product.option %}
+                      <br>{{ option.name }}: {{ option.value }}
+                    {% endfor %}
+                  </td>
+                  <td class="table__cell">{{ product.model }}</td>
+                  <td class="table__cell">{{ product.quantity }}</td>
+                  <td class="table__cell order-info__price-cell">{{ product.price }}</td>
+                  <td class="table__cell order-info__price-cell">{{ product.total }}</td>
+                  <td class="table__cell">
+                    {% if product.reorder %}
+                      <a class="link order-info__manage-link" href="{{ product.reorder }}">{{ button_reorder }}</a>
+                    {% endif %}
+                    <a class="link order-info__manage-link" href="{{ product.return }}" title="">{{ button_return }}</a>
+                  </td>
+                </tr>
+              {% endfor %}
+
+              {% for voucher in vouchers %}
+                <tr>
+                  <td class="table__cell">{{ voucher.description }}</td>
+                  <td class="table__cell"></td>
+                  <td class="table__cell">1</td>
+                  <td class="table__cell">{{ voucher.amount }}</td>
+                  <td class="table__cell">{{ voucher.amount }}</td>
+                  {% if products %}
+                    <td class="table__cell"></td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+
+            <tfoot>
+              {% for total in totals %}
+                <tr>
+                  <td colspan="3"></td>
+                  <td class="table__cell">{{ total.title }}</td>
+                  <td class="table__cell order-info__total-cell order-info__price-cell ">{{ total.text }}</td>
+                  {% if products %}
+                    <td class="table__cell"></td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tfoot>
+          </table>
+        </div>
+      </section>
+
+      {% if histories %}
+        <section class="order-info__history">
+          <h2 class="title title--2  order-info__section-title">{{ text_history }}</h2>
+          <div class="table__responsive-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="table__cell table__cell--th">{{ column_date_added }}</th>
+                  <th class="table__cell table__cell--th">{{ column_status }}</th>
+                  <th class="table__cell table__cell--th">{{ column_comment }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for history in histories %}
+                <tr>
+                  <td class="table__cell">{{ history.date_added }}</td>
+                  <td class="table__cell">{{ history.status }}</td>
+                  <td class="table__cell">{{ history.comment }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      <a class="link" href="{{ continue }}">« назад</a>
+
+    </div>
+
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+
+  </main>
+</div>
+
+{{ footer }}
+
+
+
+
+
+
+
+{# {{ header }}
+
+
+
+      <div class="buttons clearfix">
+        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }} #}

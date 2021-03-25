@@ -1,0 +1,46 @@
+.address-list__alert-success {
+  margin-bottom: $space;
+}
+
+.address-list__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: $space*2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.address-list__item {
+  padding: $space;
+  border: 2px solid $color__additional-2;
+  border-radius: $controls__border-radius;
+  background-color: $color__additional-1-1;
+}
+
+.address-list__address {
+  margin-bottom: $space;
+}
+
+.address-list__edit-link {
+  margin-right: $space;
+}
+
+.address-list__warning {
+  margin-top: $space;
+}
+
+.address-list__button-container {
+  display: grid;
+  column-gap: 1rem;
+  align-items: center;
+  margin-top: $space*2;
+
+  @include media-tablet-landscape-down {
+    grid-template-columns: auto auto;
+  }
+
+  @include media-tablet-landscape-up {
+    grid-template-columns: minmax(0%, 10rem) minmax(0%, 20rem);
+  }
+}

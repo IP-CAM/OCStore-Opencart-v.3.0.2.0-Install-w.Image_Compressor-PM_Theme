@@ -1,28 +1,69 @@
 .page-account {
   @include media-tablet-landscape-up {
     display: grid;
-    grid-template-columns: #{$space*19} 1fr;
-    grid-template-rows: auto 1fr;
-    column-gap: $space*4;
+    grid-template-columns: #{$space*19} minmax(0%, 1fr);
     align-items: start;
-    grid-auto-flow: dense;
-
-    &__title {
-      grid-column: 2;
-    }
-
-    &__wishlist-list {
-      grid-column: 2;
-    }
+    column-gap: $space*4;
 
     &__column-left {
-      grid-column: 1;
-      grid-row: span 2;
+      order: -1;
     }
   }
 }
 
-
 .page-account__title {
+  margin: 0 0 $space*2;
+}
+
+.page-account__column-left {
+  @include media-tablet-portrait-down {
+    margin-top: $space*6;
+  }
+}
+
+.page-account__registration {
+  max-width: 500px;
+}
+
+.page-account__login {
+  max-width: 500px;
+}
+
+.page-account__forgot {
+  max-width: 500px;
+}
+
+.page-account__account-edit {
+  max-width: 500px;
+}
+
+.page-account__account-address-form {
+  max-width: 500px;
+}
+
+.page-account__change-password {
+  max-width: 500px;
+}
+
+.page-account__newsletter {
+  max-width: 500px;
+}
+
+.page-account__final-button {
+  max-width: 400px;
+  margin-top: $space*3;
+}
+
+.page-account__my-account-inner {
+  margin-top: $space*3;
+  display: grid;
+  gap: $space*2;
+
+  @include media-tablet-portrait-up {
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  }
+}
+
+.page-account__my-account-title {
   margin: 0 0 $space*2;
 }

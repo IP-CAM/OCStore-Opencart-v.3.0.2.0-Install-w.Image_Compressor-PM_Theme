@@ -14,14 +14,14 @@ $_['text_success']       = 'Ваша учетная запись была усп
 // Entry
 $_['entry_firstname']    = 'Имя';
 $_['entry_lastname']     = 'Фамилия';
-$_['entry_email']        = 'E-Mail';
+$_['entry_email']        = 'e-mail';
 $_['entry_telephone']    = 'Телефон';
 $_['entry_fax']          = 'Факс';
 
 // Error
-$_['error_exists']       = 'Такой E-Mail уже зарегистрирован!';
-$_['error_firstname']    = 'Имя должно содержать от 1 до 32 символов!';
-$_['error_lastname']     = 'Фамилия должна содержать от 1 до 32 символов!';
-$_['error_email']        = 'E-Mail адрес введен неверно!';
-$_['error_telephone']    = 'Номер телефона должен содержать от 3 до 32 символов!';
+$_['error_exists']       = 'Такой e-mail уже зарегистрирован';
+$_['error_firstname']    = 'Имя должно содержать от 1 до 32 символов';
+$_['error_lastname']     = 'Фамилия должна содержать от 1 до 32 символов';
+$_['error_email']        = 'e-mail адрес введен неверно';
+$_['error_telephone']    = 'Номер телефона должен содержать от 3 до 32 символов';
 $_['error_custom_field'] = '%s необходим!';

@@ -1,0 +1,62 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+
+    <div class="address-list">
+      <h1 class="title title--1 page-account__title">{{ text_address_book }}</h1>
+
+      {% if success %}
+        <p class="alert alert--success address-list__alert-success" role="alert">{{ success }}</p>
+      {% endif %}
+
+      {% if addresses %}
+        <ul class="address-list__list">
+        {% for result in addresses %}
+          <li class="address-list__item">
+            <div class="address-list__address">{{ result.address }}</div>
+            <a class="link address-list__edit-link" href="{{ result.update }}">{{ button_edit }}</a>
+            <a class="link" href="{{ result.delete }}">{{ button_delete }}</a>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <span>Список адресов пуст</span>
+      {% endif %}
+
+
+      {% if error_warning %}
+        <p class="alert alert--simple-warning address-list__warning" role="alert">{{ error_warning }}</p>
+      {% endif %}
+
+      <div class="address-list__button-container">
+        <a class="link" href="{{ back }}">« назад</a>
+        <a class="button button--action-secondary" href="{{ add }}">{{ button_new_address }}</a>
+      </div>
+    </div>
+
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+
+  </main>
+</div>
+{{ footer }}

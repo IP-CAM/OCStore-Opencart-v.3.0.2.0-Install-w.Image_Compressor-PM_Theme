@@ -1,0 +1,66 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+    <div class="account-reward">
+      <h1 class="title title--1 page-account__title">Бонусные баллы</h1>
+      <p class="account-reward__text-total">Всего баллов: <b>{{ total }}</b></p>
+      <div class="table__responsive-container account-reward__table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="table__cell table__cell--th">{{ column_date_added }}</th>
+              <th class="table__cell table__cell--th">{{ column_description }}</th>
+              <th class="table__cell table__cell--th">{{ column_points }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if rewards %}
+              {% for reward in rewards %}
+                <tr>
+                  <td class="table__cell">{{ reward.date_added }}</td>
+                  <td class="table__cell">
+                    {% if reward.order_id %}
+                      <a class="link" href="{{ reward.href }}">{{ reward.description }}</a>
+                    {% else %}
+                      {{ reward.description }}
+                    {% endif %}
+                  </td>
+                  <td class="table__cell">{{ reward.points }}</td>
+                </tr>
+              {% endfor %}
+            {% else %}
+            <tr>
+              <td class="table__cell" colspan="3">Начисления отсутсвуют</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <a class="link" href="{{ continue }}">« назад</a>
+    </div>
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+  </main>
+
+</div>
+
+{{ footer }}

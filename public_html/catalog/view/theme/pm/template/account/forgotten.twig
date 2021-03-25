@@ -1,0 +1,52 @@
+{{ header }}
+  <div class="page__wrapper">
+    <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+      <ol class="breadcrumbs__list">
+        {% for key, breadcrumb in breadcrumbs %}
+          <li class="breadcrumbs__item">
+            {% if key + 1 < breadcrumbs|length %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+            {% else %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </nav>
+
+    <main class="main page-account">
+      <div class="forgot page-account__forgot">
+
+        <h1 class="title title--1 page-account__title">Напоминание пароля</h1>
+
+        <p>{{ text_email }}</p>
+
+        <form action="{{ action }}" method="post">
+          <div class="textfield registration__textfield">
+            <label class="textfield__input-container">
+              <input class="textfield__input" type="email" name="email" value="{{ email }}" required>
+              <span class="textfield__label textfield__label--top">{{ entry_email }}</span>
+            </label>
+          </div>
+
+          {% if error_warning %}
+            <p class="alert alert--simple-warning" role="alert">{{ error_warning }}</p>
+          {% endif %}
+
+          <div class="forgot__button-container">
+            <a class="link" href="{{ back }}">{{ button_back }}</a>
+            <button class="button button--action-primary" type="submit">{{ button_continue }}</button>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="page-account__column-left">
+        {{ column_left }}
+      </div>
+      {{ column_right }}
+      {{ content_top }}
+      {{ content_bottom }}
+    </main>
+  </div>
+{{ footer }}

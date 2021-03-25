@@ -1,0 +1,96 @@
+{{ header }}
+  <div class="page__wrapper">
+    <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+      <ol class="breadcrumbs__list">
+        {% for key, breadcrumb in breadcrumbs %}
+          <li class="breadcrumbs__item">
+            {% if key + 1 < breadcrumbs|length %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+            {% else %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </nav>
+    <main class="main page-account">
+      <div class="login page-account__login">
+          <h1 class="title title--1 page-account__title">Вход</h1>
+
+          {% if success %}
+            <p class="alert alert--success login__success" role="alert">{{ success }}</p>
+          {% endif %}
+
+          <form class="login__form" action="{{ action }}" method="post">
+            {# * e-mail #}
+            <div class="textfield login__textfield">
+              <label class="textfield__input-container">
+                <input class="textfield__input" type="email" name="email" value="{{ email }}" autocomplete="off" required>
+                <span class="textfield__label textfield__label--top">{{ entry_email }}</span>
+              </label>
+            </div>
+            {# * Пароль #}
+            <div class="textfield login__textfield">
+              <label class="textfield__input-container">
+                <input class="textfield__input" type="password" name="password" value="{{ password }}" autocomplete="off" required minlength="4" maxlength="20">
+                <span class="textfield__label textfield__label--top">{{ entry_password }}</span>
+              </label>
+            </div>
+            {% if error_warning  %}
+              <p class="alert alert--simple-warning login__alert" role="alert">{{ error_warning }}</p>
+            {% endif %}
+            <div class="login__button-container">
+              <a href="{{ forgotten }}" class="link">{{ text_forgotten }}</a>
+              <button class="button button--action-primary" type="submit">{{ button_login }}</button>
+            </div>
+          </form>
+
+          <div class="socials-login login__socials-login">
+            <span>Или войти через:</span>
+            <ul class="socials-login__list">
+              <li>
+                <a class="socials-login__link" href="#">
+                  <svg class="icon socials-login__icon" width="24" height="24">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-google"></use>
+                  </svg>
+                  <span class="visually-hidden">Google</span>
+                </a>
+              </li>
+              <li>
+                <a class="socials-login__link" href="#">
+                  <svg class="icon socials-login__icon socials-login__icon--vk" width="24" height="24">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-vk"></use>
+                  </svg>
+                  <span class="visually-hidden">Вконтакте</span>
+                </a>
+              </li>
+              <li>
+                <a class="socials-login__link" href="#">
+                  <svg class="icon socials-login__icon socials-login__icon--fb" width="24" height="24">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-facebook"></use>
+                  </svg>
+                  <span class="visually-hidden">Фэйсбук</span>
+                </a>
+              </li>
+              <li>
+                <a class="socials-login__link" href="#">
+                  <svg class="icon socials-login__icon socials-login__icon--ok" width="24" height="24">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-ok"></use>
+                  </svg>
+                  <span class="visually-hidden">Однокласники</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <p class="login__no-account">Нет аккаунта?<a class="link login__no-account-link" href="{{ register }}">Зарегистрироваться</a></p>
+      </div>
+      <div class="page-account__column-left">
+        {{ column_left }}
+      </div>
+      {{ column_right }}
+      {{ content_top }}
+      {{ content_bottom }}
+    </main>
+  </div>
+{{ footer }}

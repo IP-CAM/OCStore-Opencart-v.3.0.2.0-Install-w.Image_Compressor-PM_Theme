@@ -1,0 +1,12 @@
+.address-form__form {
+  display: grid;
+  row-gap: $space;
+}
+
+.address-form__button-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}

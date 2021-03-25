@@ -5,6 +5,7 @@
 class ControllerAccountLogin extends Controller {
 	private $error = array();
 
+
 	public function index() {
 		$this->load->model('account/customer');
 
@@ -158,6 +159,38 @@ class ControllerAccountLogin extends Controller {
 
 		$this->response->setOutput($this->load->view('account/login', $data));
 	}
+
+
+  public function ajax() {
+    $this->load->model('account/customer');
+    $this->load->language('account/login');
+
+    if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
+      if ($this->validate()) {
+
+        $json = array();
+        $json['success'] = 'done';
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+
+      } else {
+
+        $json = array();
+        $json['success'] = 'done';
+
+        if (isset($this->error['warning'])) {
+          $json['validation_error']['error_warning'] = $this->error['warning'];
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+
+      }
+		}
+
+  }
+
 
 	protected function validate() {
 		// Check how many login attempts have been made.

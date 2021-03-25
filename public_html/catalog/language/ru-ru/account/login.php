@@ -16,7 +16,7 @@ $_['text_i_am_returning_customer'] = 'Я совершал здесь покуп�
 $_['text_forgotten']               = 'Забыли пароль?';
 
 // Entry
-$_['entry_email']                  = 'E-Mail адрес';
+$_['entry_email']                  = 'e-mail адрес';
 $_['entry_password']               = 'Пароль';
 
 // Error

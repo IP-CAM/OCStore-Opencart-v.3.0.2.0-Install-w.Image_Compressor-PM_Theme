@@ -1,0 +1,159 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+
+    <div class="registration page-account__registration">
+      <h1 class="title title--1 page-account__title">Регистрация</h1>
+      <form action="{{ action }}" method="post" data-registration-form>
+        {# * e-mail #}
+        <div class="textfield registration__textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="email" name="email" value="{{ email }}" autocomplete="off" required>
+            <span class="textfield__label textfield__label--top">{{ entry_email }}</span>
+          </label>
+          {% if error_email %}
+            <div class="textfield__help textfield__help--error">{{ error_email }}</div>
+          {% endif %}
+        </div>
+
+        {# * Пароль #}
+        <div class="textfield registration__textfield">
+          <label class="textfield__input-container">
+            <input class="textfield__input" type="password" name="password" value="{{ password }}" autocomplete="off" required minlength="4" maxlength="20">
+            <span class="textfield__label textfield__label--top">{{ entry_password }}</span>
+          </label>
+          {% if error_password %}
+            <div class="textfield__help textfield__help--error">{{ error_password }}</div>
+          {% else %}
+            <div class="textfield__help">от 4 до 20 символов</div>
+          {% endif %}
+        </div>
+
+        <input type="hidden" name="firstname" value="">
+        <input type="hidden" name="lastname" value="">
+        <input type="hidden" name="telephone" value="">
+
+        {{ captcha }}
+
+        {% if error_email or error_password or error_captcha or error_warning %}
+          <p class="alert alert--simple-warning registration__alert" role="alert">
+            {{ error_warning }}
+            {{ error_email }}
+            {{ error_password }}
+            {{ error_captcha }}
+          </p>
+        {% endif %}
+
+        {% if error_firstname or error_lastname or error_telephone %}
+          <p class="alert alert--simple-warning registration__alert" role="alert">
+            Упс... кажется произошла непредвиденная ошибка
+          </p>
+        {% endif %}
+
+        <button class="button button--action-primary registration__button" type="submit">{{ button_continue }}</button>
+      </form>
+      <p class="registration__already-text">{{ text_account_already }}</p>
+    </div>
+
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+
+  </main>
+</div>
+{{ footer }}
+
+
+
+
+
+{# ! Разметка вырезанных обязательных полей формы #}
+{# Группа покупателей #}
+{# <fieldset {% if customer_groups|length <= 1 %}hidden{% endif %}>
+  <legend>{{ entry_customer_group }}</legend>
+  {% for customer_group in customer_groups %}
+    <label class="radiocheck">
+      <input class="radiocheck__input visually-hidden" type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" autocomplete="off" {% if customer_group.customer_group_id == customer_group_id %}checked{% endif %}>
+      <span class="radiocheck__box radiocheck__box--radio"></span>
+      <span class="radiocheck__caption">{{ customer_group.name }}</span>
+    </label>
+  {% endfor %}
+</fieldset> #}
+
+{# <div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="text" name="firstname" value="{{ firstname }}" autocomplete="off" required minlength="1" maxlength="32">
+    <span class="textfield__label textfield__label--top">{{ entry_firstname }}</span>
+  </label>
+  {% if error_firstname %}
+    <div class="textfield__help textfield__help--error">{{ error_firstname }}</div>
+  {% else %}
+    <div class="textfield__help">от 1 до 32 символов</div>
+  {% endif %}
+</div> #}
+
+{# <div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="text" name="lastname" value="{{ lastname }}" autocomplete="off" required minlength="1" maxlength="32">
+    <span class="textfield__label textfield__label--top">{{ entry_lastname }}</span>
+  </label>
+  {% if error_lastname %}
+    <div class="textfield__help textfield__help--error">{{ error_lastname }}</div>
+  {% else %}
+    <div class="textfield__help">от 1 до 32 символов</div>
+  {% endif %}
+</div> #}
+
+{# <div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="tel" name="telephone" value="{{ telephone }}" autocomplete="off" required>
+    <span class="textfield__label textfield__label--top">{{ entry_telephone }}</span>
+  </label>
+  {% if error_telephone %}
+    <div class="textfield__help textfield__help--error">{{ error_telephone }}</div>
+  {% endif %}
+</div> #}
+
+{# <div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="password" name="confirm" value="{{ confirm }}" autocomplete="off" required minlength="4" maxlength="20">
+    <span class="textfield__label textfield__label--top">{{ entry_confirm }}</span>
+  </label>
+  {% if error_confirm %}
+    <div class="textfield__help textfield__help--error">{{ error_confirm }}</div>
+  {% endif %}
+</div> #}
+
+{# <fieldset>
+  <legend>{{ entry_newsletter }}</legend>
+  <label class="radiocheck">
+    <input class="radiocheck__input visually-hidden" type="radio" name="newsletter" value="1" autocomplete="off" {% if newsletter %}checked{% endif %}>
+    <span class="radiocheck__box radiocheck__box--radio"></span>
+    <span class="radiocheck__caption">{{ text_yes }}</span>
+  </label>
+  <label class="radiocheck">
+    <input class="radiocheck__input visually-hidden" type="radio" name="newsletter" value="0" autocomplete="off" {% if not newsletter %}checked{% endif %}>
+    <span class="radiocheck__box radiocheck__box--radio"></span>
+    <span class="radiocheck__caption">{{ text_no }}</span>
+  </label>
+
+</fieldset> #}

@@ -3,7 +3,7 @@
 // *	@license	GNU General Public License version 3; see LICENSE.txt
 
 // header
-$_['heading_title']  = 'Авторизация';
+$_['heading_title']  = 'Авторизация1';
 
 // Text
 $_['text_heading']   = 'Авторизация';

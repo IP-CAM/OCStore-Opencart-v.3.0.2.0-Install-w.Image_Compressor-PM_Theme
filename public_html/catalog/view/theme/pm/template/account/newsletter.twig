@@ -1,0 +1,69 @@
+{{ header }}
+<div class="page__wrapper">
+
+  <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+    <ol class="breadcrumbs__list">
+      {% for key, breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if key + 1 < breadcrumbs|length %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <main class="main page-account">
+    <div class="newsletter page-account__newsletter">
+      <h1 class="title title--1 page-account__title">E-mail рассылка</h1>
+      <form action="{{ action }}" method="post">
+
+        <fieldset class="newsletter__fieldset">
+          <legend class="newsletter__legend">{{ entry_newsletter }}</legend>
+          <label class="radiocheck newsletter__radiocheck">
+            <input class="radiocheck__input visually-hidden" type="radio" name="newsletter" value="1" {% if newsletter %}checked{% endif %}>
+            <span class="radiocheck__box radiocheck__box--radio"></span>
+            <span class="radiocheck__caption">{{ text_yes }}</span>
+          </label>
+          <label class="radiocheck">
+            <input class="radiocheck__input visually-hidden" type="radio" name="newsletter" value="0" {% if not newsletter %}checked{% endif %}>
+            <span class="radiocheck__box radiocheck__box--radio"></span>
+            <span class="radiocheck__caption">{{ text_no }}</span>
+          </label>
+        </fieldset>
+
+        <div class="newsletter__button-container">
+          <a class="link" href="{{ back }}">« назад</a>
+          <button class="button button--action-primary" type="submit">Сохранить</button>
+        </div>
+
+      </form>
+    </div>
+    <div class="page-account__column-left">
+      {{ column_left }}
+    </div>
+    {{ column_right }}
+    {{ content_top }}
+    {{ content_bottom }}
+  </main>
+
+</div>
+{{ footer }}
+
+
+{# {{ header }}
+
+        </fieldset>
+        <div class="buttons clearfix">
+          <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
+          <div class="pull-right">
+            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+          </div>
+        </div>
+      </form>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }} #}

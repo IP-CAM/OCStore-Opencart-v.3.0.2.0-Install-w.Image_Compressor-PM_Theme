@@ -1,0 +1,95 @@
+{{ header }}
+  <div class="page__wrapper">
+    <nav class="breadcrumbs page__breadcrumbs" aria-label="Дополнительная навигация">
+      <ol class="breadcrumbs__list">
+        {% for key, breadcrumb in breadcrumbs %}
+          <li class="breadcrumbs__item">
+            {% if key + 1 < breadcrumbs|length %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+            {% else %}
+              <a class="breadcrumbs__link" href="{{ breadcrumb.href }}" aria-current="page">{{ breadcrumb.text }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </nav>
+
+    <main class="main page-account">
+
+      <div>
+
+        <h1 class="title title--1 page-account__title">Личный кабинет</h1>
+
+        {% if success %}
+          <p class="alert alert--success" role="alert">{{ success }}</p>
+        {% endif %}
+
+        <div class="page-account__my-account-inner">
+          <section>
+            <h2 class="title title--2 page-account__my-account-title">{{ text_my_account }}</h2>
+            <ul class="list">
+              <li class="list__item"><a class="link" href="{{ edit }}">{{ text_edit }}</a></li>
+              <li class="list__item"><a class="link" href="{{ password }}">{{ text_password }}</a></li>
+              <li class="list__item"><a class="link" href="{{ address }}">{{ text_address }}</a></li>
+              <li class="list__item"><a class="link" href="{{ wishlist }}">{{ text_account_wishlist }}</a></li>
+            </ul>
+          </section>
+
+          {% if credit_cards %}
+            <section>
+              <h2 class="title title--2 page-account__my-account-title">{{ text_credit_card }}</h2>
+              <ul class="list">
+                {% for credit_card in credit_cards %}
+                  <li class="list__item"><a class="link" href="{{ credit_card.href }}">{{ credit_card.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endif %}
+
+          <section>
+            <h2 class="title title--2 page-account__my-account-title">{{ text_my_orders }}</h2>
+            <ul class="list">
+              <li class="list__item"><a class="link" href="{{ order }}">{{ text_order }}</a></li>
+              {# <li class="list__item"><a class="link" href="{{ download }}">{{ text_download }}</a></li> #}
+              {% if reward %}
+                <li class="list__item"><a class="link" href="{{ reward }}">{{ text_reward }}</a></li>
+              {% endif %}
+              {# <li class="list__item"><a class="link" href="{{ return }}">{{ text_return }}</a></li> #}
+              {# <li class="list__item"><a class="link" href="{{ transaction }}">{{ text_transaction }}</a></li> #}
+              {# <li class="list__item"><a class="link" href="{{ recurring }}">{{ text_recurring }}</a></li> #}
+            </ul>
+          </section>
+
+          {# Партнерcкий раздел #}
+          {# <section>
+            <h2 class="title title--2 page-account__my-account-title">{{ text_my_affiliate }}</h2>
+            <ul class="list">
+              {% if not tracking %}
+                <li class="list__item"><a class="link" href="{{ affiliate }}">{{ text_affiliate_add }}</a></li>
+              {% else %}
+                <li class="list__item"><a class="link" href="{{ affiliate }}">{{ text_affiliate_edit }}</a></li>
+                <li class="list__item"><a class="link" href="{{ tracking }}">{{ text_tracking }}</a></li>
+              {% endif %}
+            </ul>
+          </section> #}
+
+          <section>
+            <h2 class="title title--2 page-account__my-account-title">{{ text_my_newsletter }}</h2>
+            <ul class="list">
+              <li class="list__item"><a class="link" href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+            </ul>
+          </section>
+
+        </div>
+
+      </div>
+
+      <div class="page-account__column-left">
+        {{ column_left }}
+      </div>
+      {{ column_right }}
+      {{ content_top }}
+      {{ content_bottom }}
+    </main>
+  </div>
+{{ footer }}
