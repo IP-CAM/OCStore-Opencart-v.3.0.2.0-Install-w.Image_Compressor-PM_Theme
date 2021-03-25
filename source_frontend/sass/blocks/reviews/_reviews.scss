@@ -30,7 +30,7 @@
 
   @include media-tablet-landscape-up {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 14rem;
     column-gap: $space*2;
     align-items: center;
   }
@@ -87,8 +87,8 @@
 .reviews__vote-button {
   padding: calc(#{$space} - 1px) $space*1.5;
   white-space: nowrap;
-  color: $color-font__button;
-  background-color: transparent;
+  color: $color-font__subtitle2;
+  background-color: #ffffff;
   border-radius: $space*2;
   border: 1px solid $color__additional-2;
 
