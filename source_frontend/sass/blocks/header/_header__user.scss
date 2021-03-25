@@ -20,29 +20,30 @@
 
 .header__user-entry-text {
   margin: 0 0 $space;
+}
+
+.header__user-login-container {
+  padding-top: $space;
   padding-bottom: $space;
-  border-bottom: 1px solid $color__additional-2;
+  border-top: 1px solid $color__additional-2;
 }
 
 .header__user-login-button {
   width: 100%;
-  margin: 0 0 $space*0.5;
+  margin-bottom: $space*0.5;
 }
 
 .header__user-socials-login {
   margin-bottom: $space*0.5;
 }
 
-.header__user-call2reg {
-  margin-bottom: $space;
-}
-
 .header__user-dropdown-menu {
-  margin: 0 calc(var(--horizontal-paddings) * -1) $space;
+  margin: 0 calc(var(--horizontal-paddings) * -1);
   border-top: 1px solid $color__additional-2;
 }
 
 .header__user-logout {
   display: block;
+  margin-top: $space;
   text-align: center;
 }

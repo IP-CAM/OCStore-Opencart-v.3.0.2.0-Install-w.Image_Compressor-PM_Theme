@@ -235,63 +235,83 @@
         <svg class="icon icon--stroked header__icon" width="24" height="24">
           <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-user"></use>
         </svg>
-        <span class="header__link-caption header__user-caption">Мой аккаунт</span>
+        <span class="header__link-caption header__user-caption">
+          {% if logged and user_name %}
+            {{user_name}}
+          {% else %}
+            Мой аккаунт
+          {% endif %}
+        </span>
       </a>
       <div class="modal modal--bounded modal--closed header__user-modal">
         <h2 class="visually-hidden">Меню пользователя</h2>
-        <p class="header__user-entry-text">Добро пожаловать</p>
-        <a class="button button--options-primary header__user-login-button" href="{{ login }}">Войти</a>
+        <p class="header__user-entry-text">
+          {% if logged and user_name %}
+            Добро пожаловать, {{user_name}}
+          {% else %}
+            Добро пожаловать
+          {% endif %}
+        </p>
 
-        <div class="socials-login header__user-socials-login">
-          <span>Войти через:</span>
-          <ul class="socials-login__list">
-            <li>
-              <a class="socials-login__link" href="#">
-                <svg class="icon socials-login__icon" width="24" height="24">
-                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-google"></use>
-                </svg>
-                <span class="visually-hidden">Google</span>
-              </a>
-            </li>
-            <li>
-              <a class="socials-login__link" href="#">
-                <svg class="icon socials-login__icon socials-login__icon--vk" width="24" height="24">
-                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-vk"></use>
-                </svg>
-                <span class="visually-hidden">Вконтакте</span>
-              </a>
-            </li>
-            <li>
-              <a class="socials-login__link" href="#">
-                <svg class="icon socials-login__icon socials-login__icon--fb" width="24" height="24">
-                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-facebook"></use>
-                </svg>
-                <span class="visually-hidden">Фэйсбук</span>
-              </a>
-            </li>
-            <li>
-              <a class="socials-login__link" href="#">
-                <svg class="icon socials-login__icon socials-login__icon--ok" width="24" height="24">
-                  <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-ok"></use>
-                </svg>
-                <span class="visually-hidden">Однокласники</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        {% if not logged %}
+          <div class="header__user-login-container">
+            <a class="button button--options-primary header__user-login-button" href="{{ login }}">Войти</a>
 
-        <div class="header__user-call2reg">
-          <span>Новый покупатель?</span>
-          <a class="link" href="{{ register }}">Зарегистрироваться</a>
-        </div>
+            <div class="socials-login header__user-socials-login">
+              <span>Войти через:</span>
+              <ul class="socials-login__list">
+                <li>
+                  <a class="socials-login__link" href="#">
+                    <svg class="icon socials-login__icon" width="24" height="24">
+                      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-google"></use>
+                    </svg>
+                    <span class="visually-hidden">Google</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="socials-login__link" href="#">
+                    <svg class="icon socials-login__icon socials-login__icon--vk" width="24" height="24">
+                      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-vk"></use>
+                    </svg>
+                    <span class="visually-hidden">Вконтакте</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="socials-login__link" href="#">
+                    <svg class="icon socials-login__icon socials-login__icon--fb" width="24" height="24">
+                      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-facebook"></use>
+                    </svg>
+                    <span class="visually-hidden">Фэйсбук</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="socials-login__link" href="#">
+                    <svg class="icon socials-login__icon socials-login__icon--ok" width="24" height="24">
+                      <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-ok"></use>
+                    </svg>
+                    <span class="visually-hidden">Однокласники</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <span>Новый покупатель?</span>
+              <a class="link" href="{{ register }}">Зарегистрироваться</a>
+            </div>
+          </div>
+        {% endif %}
 
         <ul class="dropdown-menu__list header__user-dropdown-menu">
-          <li><a class="dropdown-menu__link" href="{{ account }}">Личные данные</a></li>
-          <li><a class="dropdown-menu__link" href="{{ order }}">История заказов</a></li>
           <li><a class="dropdown-menu__link" href="{{ wishlist }}">Избранные товары</a></li>
           <li><a class="dropdown-menu__link" href="#">Лист ожиданий</a></li>
+          <li><a class="dropdown-menu__link" href="{{ order }}">История заказов</a></li>
+          <li><a class="dropdown-menu__link" href="{{ account }}">Личный кабинет</a></li>
         </ul>
-        <a class="link link--nounderline header__user-logout" href="{{ logout }}">Выйти</a>
+
+        {% if logged %}
+          <a class="link link--nounderline header__user-logout" href="{{ logout }}">Выйти</a>
+        {% endif %}
       </div>
     </div>
 
