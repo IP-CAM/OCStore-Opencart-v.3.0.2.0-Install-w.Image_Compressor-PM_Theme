@@ -1,5 +1,6 @@
 .header__main-panel {
   display: flex;
+  align-items: center;
   padding-bottom: $space;
 
   & *:focus {

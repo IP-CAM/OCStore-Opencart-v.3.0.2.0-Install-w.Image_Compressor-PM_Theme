@@ -1,9 +1,5 @@
 .header__quantity-positioner {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 3.5rem;
 }
 
 
@@ -22,7 +18,7 @@
   background-color: #ffffff;
 
   @include media-mobile-only {
-    right: $space*-0.5;
+    right: $space*-0.2;
   }
 
   @include media-tablet-portrait-up {

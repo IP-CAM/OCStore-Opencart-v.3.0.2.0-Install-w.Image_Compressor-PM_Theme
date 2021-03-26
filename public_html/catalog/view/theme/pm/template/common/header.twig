@@ -219,15 +219,13 @@
     </div>
 
     <!-- Список желаний -->
-    <div class="header__wishlist">
-      <a class="header__link header__icon-container header__quantity-positioner" href="{{ wishlist }}">
-        <svg class="icon icon--stroked header__icon" width="24" height="24">
-          <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
-        </svg>
-        <span class="visually-hidden">{{ text_wishlist }}</span>
-        <span class="header__quantity" data-wishlist-count="{{ wishlist_count }}"></span>
-      </a>
-    </div>
+    <a class="header__wishlist header__link header__icon-container header__quantity-positioner" href="{{ wishlist }}">
+      <svg class="icon icon--stroked header__icon" width="24" height="24">
+        <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+      </svg>
+      <span class="visually-hidden">{{ text_wishlist }}</span>
+      <span class="header__quantity" data-wishlist-count="{{ wishlist_count }}"></span>
+    </a>
 
     <!-- User -->
     <div class="header__user">

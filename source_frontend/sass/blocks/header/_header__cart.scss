@@ -10,12 +10,22 @@
 }
 
 .header__cart-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   @include media-mobile-only {
     padding-right: $space*0.75;
   }
 
   @include media-tablet-portrait-only {
     padding-right: $space*1.75;
+  }
+}
+
+.header__cart-icon-container {
+  @include media-mobile-only {
+    flex-grow: 1;
   }
 }
 
