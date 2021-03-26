@@ -1,0 +1,8 @@
+<input type="hidden" name="attribute[{{ row }}][name]" value="" />
+
+<select name="attribute[{{ row }}][attribute_id]" onchange="$(this).parent('td').children('input[name=\'attribute[{{ row }}][name]\']').attr('value', $(this).children('option:selected').html());">
+ <option value="0">{{ text_none }}</option>
+ {% for value in attribute %}
+ <option value="{{ value['attribute_id'] }}">{{ value['attribute_name'] }}</option>
+ {% endfor %}
+</select>

@@ -1,0 +1,128 @@
+<style type="text/css">
+#form-image_bing_auto{{ product_id }} ol {
+	padding-left:20px;
+}
+
+#form-image_bing_auto{{ product_id }} ol li {
+	float:left;
+	width:100%;
+	height:28px;
+}
+</style>
+<form id="form-image_bing_auto{{ product_id }}">
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="center" width="10%">{{ text_number_images }}:</td>
+    <td class="center" width="10%">{{ text_main }}:</td>
+    <td class="left" width="55%">{{ text_folder }} ({{ text_by_priority }}):</td>
+    <td class="center" colspan="8">{{ text_optional }}:</td>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td class="center">
+     <select name="image_bing_auto[number_images]">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+     </select>
+    </td>
+    <td class="center"><input name="image_bing_auto[main_image]" type="text" value="0" size="3" /></td>
+    <td class="left">
+     <ol>
+      <li>{{ text_existing }}</li>
+      {% if main_category %}
+      <li>{{ text_main_category }} ({{ text_translit }})</li>
+      {% endif %}
+      <li>{{ text_category }} ({{ text_translit }})</li>
+      <li>
+       {{ text_folder }}:
+       <input class="image_bing_auto_directory" value="{{ directory }}" disabled="disabled">
+       <a class="btn btn-success btn-xs" onclick="$('#form-image_bing_auto{{ product_id }} input.image_bing_auto_directory').after(' <input name=\'image_bing_auto[directory][]\' /> <span class=\'separator\'>/</span> ');" title="{{ text_add }}"><i class="fa fa-plus"></i></a>
+       <a class="btn btn-danger btn-xs" onclick="$('#form-image_bing_auto{{ product_id }} input[name=\'image_bing_auto[directory][]\']:last').remove(); $('#form-image_bing_auto{{ product_id }} span.separator:last').remove();" title="{{ text_delete }}"><i class="fa fa-minus"></i></a>
+      </li>
+     </ol>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][color]">
+      <option value="">&mdash;&nbsp;{{ text_color }}&nbsp;&mdash;</option>
+      <option style="background:linear-gradient(to right, #999, #FFF)" value="Monochrome">Monochrome</option>
+      {% for value in filter['color'] %}
+      <option style="background:{{ value }};" value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][size]">
+      <option value="">&mdash;&nbsp;{{ text_size }}&nbsp;&mdash;</option>
+      {% for value in filter['size'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][imageType]">
+      <option value="">&mdash;&nbsp;{{ text_image_type }}&nbsp;&mdash;</option>
+      {% for value in filter['imageType'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][imageContent]">
+      <option value="">&mdash;&nbsp;{{ text_image_content }}&nbsp;&mdash;</option>
+      {% for value in filter['imageContent'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][aspect]">
+      <option value="">&mdash;&nbsp;{{ text_aspect }}&nbsp;&mdash;</option>
+      {% for value in filter['aspect'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][freshness]">
+      <option value="">&mdash;&nbsp;{{ text_freshness }}&nbsp;&mdash;</option>
+      {% for value in filter['freshness'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <select name="image_bing_auto[url][license]">
+      <option value="">&mdash;&nbsp;{{ text_license }}&nbsp;&mdash;</option>
+      {% for value in filter['license'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="center">
+     <input type="text" name="image_bing_auto[url][width]" size="8" placeholder="{{ text_width }}" />
+     &times;
+     <input type="text" name="image_bing_auto[url][height]" size="8" placeholder="{{ text_height }}" />
+    </td>
+   </tr>
+   <tr>
+    <td class="left" colspan="11"><b>{{ text_keyword }}: {{ keyword_field }}</b></td>
+   </tr>
+   <tr>
+    <td class="center" colspan="11"><a class="btn btn-success" onclick="editTool('{{ product_id }}', 'image_bing_auto', 'add');">{{ text_add }}</a></td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+
+//--></script>

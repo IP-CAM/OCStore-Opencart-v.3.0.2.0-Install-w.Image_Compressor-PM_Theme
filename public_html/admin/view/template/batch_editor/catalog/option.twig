@@ -1,0 +1,508 @@
+<form id="form-option{{ product_id }}">
+ {% if product_id == -1 %}
+ <div class="alert alert-info text-center">{{ notice_empty_field }}</div>
+ <p><span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <div class="col-sm-2">
+  <ul id="option" class="nav nav-pills nav-stacked">
+   {% set option_row = 0 %}
+   {% if data %}
+   {% for product_option in data['product_options'] %}
+   <li><a href="#tab-option-{{ product_id }}-{{ option_row }}" id="option-{{ option_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(this).parents('li:first').remove(); $('#form-option{{ product_id }} #tab-option-{{ product_id }}-{{ option_row }}').remove(); $('#form-option{{ product_id }} #option a:first').tab('show');"></i>&nbsp;{{ product_option['name'] }}</a></li>
+   {% set option_row = option_row + 1 %}
+   {% endfor %}
+   {% endif %}
+   <li><input type="text" name="option_input" class="form-control" /></li>
+  </ul>
+ </div>
+ 
+ {% set colspan = 6 %}
+ {% if base_price %}
+ {% set colspan = colspan + 1 %}
+ {% endif %}
+ {% if customer_group_id %}
+ {% set colspan = colspan + 1 %}
+ {% endif %}
+ {% if optsku %}
+ {% set colspan = colspan + 1 %}
+ {% endif %}
+ 
+ {% set option_row = 0 %}
+ {% set option_value_row = 0 %}
+ <div class="col-sm-10">
+ <div class="tab-content">
+ {% if data %}
+ {% for product_option in data['product_options'] %}
+ <div id="tab-option-{{ product_id }}-{{ option_row }}" class="tab-pane">
+  <input type="hidden" name="option[{{ option_row }}][product_option_id]" value="{{ product_option['product_option_id'] }}" />
+  <input type="hidden" name="option[{{ option_row }}][name]" value="{{ product_option['name'] }}" />
+  <input type="hidden" name="option[{{ option_row }}][option_id]" value="{{ product_option['option_id'] }}" />
+  <input type="hidden" name="option[{{ option_row }}][type]" value="{{ product_option['type'] }}" />
+  <table class="be-form">
+   <tr>
+    <td>{{ text_required }}</td>
+    <td><select name="option[{{ option_row }}][required]">
+      {% if product_option['required'] %}
+      <option value="1" selected="selected">{{ text_yes }}</option>
+      <option value="0">{{ text_no }}</option>
+      {% else %}
+      <option value="1">{{ text_yes }}</option>
+      <option value="0" selected="selected">{{ text_no }}</option>
+      {% endif %}
+     </select></td>
+   </tr>
+   {% if product_option['type'] == 'text' %}
+   <tr>
+    <td>{{ text_value }}</td>
+    <td><input type="text" name="option[{{ option_row }}][option_value]" value="{{ product_option['value'] }}" /></td>
+   </tr>
+   {% endif %}
+   {% if product_option['type'] == 'textarea' %}
+   <tr>
+    <td>{{ text_value }}</td>
+    <td><textarea name="option[{{ option_row }}][option_value]" cols="40" rows="5">{{ product_option['value'] }}</textarea></td>
+   </tr>
+   {% endif %}
+   {% if product_option['type'] == 'file' %}
+   <tr style="display: none;">
+    <td>{{ text_value }}</td>
+    <td><input type="text" name="option[{{ option_row }}][option_value]" value="{{ product_option['value'] }}" /></td>
+   </tr>
+   {% endif %}
+   {% if product_option['type'] == 'date' %}
+   {% if product_option['value'] == '0000-00-00' %}
+   {% set product_option = product_option|merge({'value':''}) %}
+   {% endif %}
+   <tr>
+    <td>{{ text_value }}</td>
+    <td><input type="text" name="option[{{ option_row }}][option_value]" value="{{ product_option['value'] }}" class="date" /></td>
+   </tr>
+   {% endif %}
+   {% if product_option['type'] == 'datetime' %}
+   {% if product_option['value'] == '0000-00-00 00:00' %}
+   {% set product_option = product_option|merge({'value':''}) %}
+   {% endif %}
+   <tr>
+    <td>{{ text_value }}</td>
+    <td><input type="text" name="option[{{ option_row }}][option_value]" value="{{ product_option['value'] }}" class="datetime" /></td>
+   </tr>
+   {% endif %}
+   {% if product_option['type'] == 'time' %}
+   {% if product_option['value'] == '00:00' %}
+   {% set product_option = product_option|merge({'value':''}) %}
+   {% endif %}
+   <tr>
+    <td>{{ text_value }}</td>
+    <td><input type="text" name="option[{{ option_row }}][option_value]" value="{{ product_option['value'] }}" class="time" /></td>
+   </tr>
+   {% endif %}
+  </table>
+  {% if product_option['type'] in option_type %}
+  <table id="option-value-{{ option_row }}" class="be-list">
+   <thead>
+    <tr>
+     <td class="center" width="1"></td>
+     <td class="left">{{ text_value }}</td>
+     <td class="right">{{ text_quantity }}</td>
+     <td class="left">{{ text_subtract }}</td>
+     <td class="right">{{ text_price }}</td>
+     {% if base_price %}
+     <td class="left">{{ text_base_price }}</td>
+     {% endif %}
+     <td class="right">{{ text_point }}</td>
+     <td class="right">{{ text_weight }}</td>
+     {% if customer_group_id %}
+     <td class="right">{{ text_customer_group }}</td>
+     {% endif %}
+     {% if optsku %}
+     <td class="right">{{ text_optsku }}</td>
+     {% endif %}
+    </tr>
+   </thead>
+   {% for product_option_value in product_option['product_option_value'] %}
+   <tbody id="option-value-row-{{ option_value_row }}">
+    <tr>
+     <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+     <td class="left">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][option_value_id]">
+       {% if data['option_values'][product_option['option_id']] is defined %}
+       {% for option_value in data['option_values'][product_option['option_id']] %}
+       {% if option_value['option_value_id'] == product_option_value['option_value_id'] %}
+       <option value="{{ option_value['option_value_id'] }}" selected="selected">{{ option_value['name'] }}</option>
+       {% else %}
+       <option value="{{ option_value['option_value_id'] }}">{{ option_value['name'] }}</option>
+       {% endif %}
+       {% endfor %}
+       {% endif %}
+      </select>
+      <input type="hidden" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][product_option_value_id]" value="{{ product_option_value['product_option_value_id'] }}" />
+     </td>
+     <td class="right"><input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][quantity]" value="{{ product_option_value['quantity'] }}" size="10" /></td>
+     <td class="left">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][subtract]">
+       {% if product_option_value['subtract'] %}
+       <option value="1" selected="selected">{{ text_yes }}</option>
+       <option value="0">{{ text_no }}</option>
+       {% else %}
+       <option value="1">{{ text_yes }}</option>
+       <option value="0" selected="selected">{{ text_no }}</option>
+       {% endif %}
+      </select></td>
+     <td class="right">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][price_prefix]">
+       {% for price_prefix in option_price_prefix %}
+       {% if product_option_value['price_prefix'] == price_prefix['value'] %}
+       <option value="{{ price_prefix['value'] }}" selected="selected">{{ price_prefix['name'] }}</option>
+       {% else %}
+       <option value="{{ price_prefix['value'] }}">{{ price_prefix['name'] }}</option>
+       {% endif %}
+       {% endfor %}
+      </select>
+      <input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][price]" value="{{ product_option_value['price'] }}" size="15" />
+     {% if base_price %}
+     <td class="left">
+     <input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][base_price]" value="{{ product_option_value['base_price'] }}" size="15" /></td>
+     {% endif %}
+     </td>
+     <td class="right">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][points_prefix]">
+       {% if product_option_value['points_prefix'] == '+' %}
+       <option value="+" selected="selected">+</option>
+       {% else %}
+       <option value="+">+</option>
+       {% endif %}
+       {% if product_option_value['points_prefix'] == '-' %}
+       <option value="-" selected="selected">-</option>
+       {% else %}
+       <option value="-">-</option>
+       {% endif %}
+      </select>
+      <input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][points]" value="{{ product_option_value['points'] }}" size="10" />
+     </td>
+     <td class="right">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][weight_prefix]">
+       {% if product_option_value['weight_prefix'] == '+' %}
+       <option value="+" selected="selected">+</option>
+       {% else %}
+       <option value="+">+</option>
+       {% endif %}
+       {% if product_option_value['weight_prefix'] == '-' %}
+       <option value="-" selected="selected">-</option>
+       {% else %}
+       <option value="-">-</option>
+       {% endif %}
+      </select>
+      <input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][weight]" value="{{ product_option_value['weight'] }}" size="15" />
+     </td>
+    {% if customer_group_id %}
+     <td class="right">
+      <select name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][customer_group_id]">
+       {% for array in customer_group_id %}
+       {% if array['customer_group_id'] == product_option_value['customer_group_id'] %}
+       <option value="{{ array['customer_group_id'] }}" selected="selected">{{ array['name'] }}</option>
+       {% else %}
+       <option value="{{ array['customer_group_id'] }}">{{ array['name'] }}</option>
+       {% endif %}
+       {% endfor %}
+      </select>
+     </td>
+     {% endif %}
+     {% if optsku %}
+     <td class="right"><input type="text" name="option[{{ option_row }}][product_option_value][{{ option_value_row }}][optsku]" value="{{ product_option_value['optsku'] }}" size="15" /></td>
+     {% endif %}
+    </tr>
+   </tbody>
+   {% set option_value_row = option_value_row + 1 %}
+   {% endfor %}
+   <tfoot>
+    <tr>
+     <td class="center"><a onclick="addOptionValue({{ product_id }}, {{ option_row }});" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+     <td colspan="{{ colspan }}"></td>
+    </tr>
+   </tfoot>
+  </table>
+  <select id="option-values-{{ option_row }}" style="display:none;">
+   {% if data['option_values'][product_option['option_id']] is defined %}
+   {% for option_value in data['option_values'][product_option['option_id']] %}
+   <option value="{{ option_value['option_value_id'] }}">{{ option_value['name'] }}</option>
+   {% endfor %}
+   {% endif %}
+  </select>
+  {% endif %}
+ </div>
+ {% set option_row = option_row + 1 %}
+ {% endfor %}
+ {% endif %}
+ </div>
+ </div>
+ <br style="margin-top:20px; clear:both;" />
+ <table class="be-list">
+  <tfoot>
+   <tr>
+    <td class="center">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'insert_option', {{ product_id }});">{{ button_insert }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'delete_option', {{ product_id }});">{{ button_delete_option }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'delete_option_value', {{ product_id }});">{{ button_delete_option_value }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'update', {{ product_id }});">{{ button_update }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'update', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+    </td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+if (typeof option_row == 'undefined') {
+	var option_row = [];
+}
+
+option_row[{{ product_id }}] = {{ option_row }};
+
+if (typeof option_value_row == 'undefined') {
+	var option_value_row = [];
+}
+
+option_value_row[{{ product_id }}] = {{ option_value_row }};
+
+if (typeof addOptionValue != 'function') {
+	function addOptionValue(product_id, row) {
+		var html = '';
+		
+		html += '<tbody id="option-value-row-' + option_value_row[product_id] + '">';
+		html += ' <tr>';
+		html += '  <td class="center"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+		html += '  <td class="left">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][option_value_id]">' + $('#option-values-' + row).html() + '</select>';
+		html += '   <input type="hidden" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][product_option_value_id]" value="" />';
+		html += '  </td>';
+		html += '  <td class="right"><input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][quantity]" value="" size="10" /></td>';
+		html += '  <td class="left">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][subtract]">';
+		html += '    <option value="1">{{ text_yes }}</option>';
+		html += '    <option value="0">{{ text_no }}</option>';
+		html += '   </select>';
+		html += '  </td>';
+		html += '  <td class="right">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][price_prefix]">';
+		<!--{% for price_prefix in option_price_prefix %}-->
+		html += '    <option value="{{ price_prefix["value"] }}">{{ price_prefix["name"] }}</option>';
+		<!--{% endfor %}-->
+		html += '   </select>';
+		html += '   <input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][price]" value="" size="15" />';
+		html += '  </td>';
+		<!--{% if base_price %}-->
+		html += '  <td class="left"><input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][base_price]" value="" size="15" /></td>';
+		<!--{% endif %}-->
+		html += '  <td class="right">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][points_prefix]">';
+		html += '    <option value="+">+</option>';
+		html += '    <option value="-">-</option>';
+		html += '   </select>';
+		html += '   <input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][points]" value="" size="10" />';
+		html += '  </td>';
+		html += '  <td class="right">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][weight_prefix]">';
+		html += '    <option value="+">+</option>';
+		html += '    <option value="-">-</option>';
+		html += '   </select>';
+		html += '   <input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][weight]" value="" size="15" />';
+		html += '  </td>';
+		
+		<!--{% if customer_group_id %}-->
+		html += '  <td class="right">';
+		html += '   <select name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][customer_group_id]">';
+		<!--{% for array in customer_group_id %}-->
+		html += '    <option value="{{ array["customer_group_id"] }}">{{ array["name"] }}</option>';
+		<!--{% endfor %}-->
+		html += '   </select>';
+		html += '  </td>';
+		<!--{% endif %}-->
+		
+		<!--{% if optsku %}-->
+		html += '  <td class="right"><input type="text" name="option[' + row + '][product_option_value][' + option_value_row[product_id] + '][optsku]" value="" size="15" /></td>';
+		<!--{% endif %}>-->
+		
+		html += ' </tr>';
+		html += '</tbody>';
+		
+		$('#form-option' + product_id + ' #option-value-' + row + ' tfoot').before(html);
+		
+		option_value_row[product_id]++;
+	}
+}
+
+$('#form-option{{ product_id }} input[name=\'option_input\']').autocomplete({
+	source: function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/option/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) { return { category:item['category'], label:item['name'], value:item['option_id'], type:item['type'], option_value:item['option_value'] }}));
+			}
+		});
+	},
+	'select': function(item) {
+		var html = '';
+		
+		html += '<div id="tab-option-{{ product_id }}-' + option_row[{{ product_id }}] + '" class="tab-pane">';
+		html += ' <input type="hidden" name="option[' + option_row[{{ product_id }}] + '][product_option_id]" value="" />';
+		html += ' <input type="hidden" name="option[' + option_row[{{ product_id }}] + '][name]" value="' + item['label'] + '" />';
+		html += ' <input type="hidden" name="option[' + option_row[{{ product_id }}] + '][option_id]" value="' + item['value'] + '" />';
+		html += ' <input type="hidden" name="option[' + option_row[{{ product_id }}] + '][type]" value="' + item['type'] + '" />';
+		html += ' <table class="be-form">';
+		html += '  <tr>';
+		html += '   <td>{{ text_required }}</td>';
+		html += '   <td>';
+		html += '    <select name="option[' + option_row[{{ product_id }}] + '][required]">';
+		html += '     <option value="1">{{ text_yes }}</option>';
+		html += '     <option value="0">{{ text_no }}</option>';
+		html += '    </select>';
+		html += '   </td>';
+		html += '  </tr>';
+		
+		if (item['type'] == 'text') {
+			html += '  <tr>';
+			html += '   <td>{{ text_value }}</td>';
+			html += '   <td><input type="text" name="option[' + option_row[{{ product_id }}] + '][option_value]" value="" /></td>';
+			html += '  </tr>';
+		}
+		
+		if (item['type'] == 'textarea') {
+			html += '  <tr>';
+			html += '   <td>{{ text_value }}</td>';
+			html += '   <td><textarea name="option[' + option_row[{{ product_id }}] + '][option_value]" cols="40" rows="5"></textarea></td>';
+			html += '  </tr>';
+		}
+		
+		if (item['type'] == 'file') {
+			html += ' <tr style="display: none;">';
+			html += '  <td>{{ text_value }}</td>';
+			html += '  <td><input type="text" name="option[' + option_row[{{ product_id }}] + '][option_value]" value="" /></td>';
+			html += ' </tr>';
+		}
+		
+		if (item['type'] == 'date') {
+			html += ' <tr>';
+			html += '  <td>{{ text_value }}</td>';
+			html += '  <td><input type="text" name="option[' + option_row[{{ product_id }}] + '][option_value]" value="" class="date" /></td>';
+			html += ' </tr>';
+		}
+		
+		if (item['type'] == 'datetime') {
+			html += '  <tr>';
+			html += '   <td>{{ text_value }}</td>';
+			html += '   <td><input type="text" name="option[' + option_row[{{ product_id }}] + '][option_value]" value="" class="datetime" /></td>';
+			html += '  </tr>';
+		}
+		
+		if (item['type'] == 'time') {
+			html += '  <tr>';
+			html += '   <td>{{ text_value }}</td>';
+			html += '   <td><input type="text" name="option[' + option_row[{{ product_id }}] + '][option_value]" value="" class="time" /></td>';
+			html += '  </tr>';
+		}
+		
+		html += ' </table>';
+		
+		<!--{% if product_id > -1 %}-->
+		if ($.inArray(item.type, [{{ option_type_string }}]) > -1) {
+			html += ' <table class="be-list" id="option-value-' + option_row[{{ product_id }}] + '">';
+			html += '  <thead>'; 
+			html += '   <tr>';
+			html += '    <td class="center" width="1"></td>';
+			html += '    <td class="left">{{ text_value }}</td>';
+			html += '    <td class="right">{{ text_quantity }}</td>';
+			html += '    <td class="left">{{ text_subtract }}</td>';
+			html += '    <td class="right">{{ text_price }}</td>';
+			<!--{% if base_price %}-->
+			html += '    <td class="left">{{ text_base_price }}</td>';
+			<!--{% endif %}-->
+			html += '    <td class="right">{{ text_point }}</td>';
+			html += '    <td class="right">{{ text_weight }}</td>';
+			<!--{% if customer_group_id %}-->
+			html += '    <td class="right">{{ text_customer_group }}</td>';
+			<!--{% endif %}-->
+			<!--{% if optsku %}-->
+			html += '    <td class="right">{{ text_optsku }}</td>';
+			<!--{% endif %}-->
+			html += '   </tr>';
+			html += '  </thead>';
+			html += '  <tfoot>';
+			html += '   <tr>';
+			html += '    <td class="left"><a onclick="addOptionValue({{ product_id }}, ' + option_row[{{ product_id }}] + ');" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>';
+			html += '    <td colspan="{{ colspan }}"></td>';
+			html += '   </tr>';
+			html += '  </tfoot>';
+			html += ' </table>';
+			html += ' <select id="option-values-' + option_row[{{ product_id }}] + '" style="display: none;">';
+			
+			for (i = 0; i < item['option_value'].length; i++) {
+				html += '  <option value="' + item['option_value'][i]['option_value_id'] + '">' + item['option_value'][i]['name'] + '</option>';
+			}
+			
+			html += ' </select>';
+			html += '</div>';
+		}
+		<!--{% endif %}-->
+		
+		$('#form-option{{ product_id }} .tab-content').append(html);
+		
+		$('#form-option{{ product_id }} #option > li:last-child').before('<li><a href="#tab-option-{{ product_id }}-' + option_row[{{ product_id }}] + '" id="option-' + option_row[{{ product_id }}] + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(this).parents(\'li:first\').remove(); $(\'#form-option{{ product_id }} #tab-option-{{ product_id }}-' + option_row[{{ product_id }}] + '\').remove(); $(\'#form-option{{ product_id }} #option a:first\').tab(\'show\');"></i>&nbsp;' + item['label'] + '</a></li>');
+		
+		$('#form-option{{ product_id }} #option a[href=\'#tab-option-{{ product_id }}-' + option_row[{{ product_id }}] + '\']').tab('show');
+		
+		creatDateTime();
+		
+		option_row[{{ product_id }}]++;
+		
+		return false;
+	}
+});
+
+$('#form-option{{ product_id }} #option a:first').tab('show');
+
+creatDateTime();
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

@@ -1,0 +1,233 @@
+
+#product_box {
+	display: none;
+	overflow: auto;
+	padding: 15px;
+}
+
+#product tbody .image_edit a {
+	display: inline-block;
+}
+
+#product tbody .image_edit img {
+	border: 1px solid #DDD;
+	float: left;
+}
+
+#product tbody .image_edit div.image_remove {
+	width: 16px;
+	height: 16px;
+	background: url(../image/delete.png) no-repeat left top;
+	position: relative;
+	top: -5px;
+	left: -5px;
+	float: left;
+	margin-bottom: -16px;
+}
+
+#product tbody .image_edit div.image_path {
+	width: 16px;
+	height: 16px;
+	background: url(../image/delete.png) no-repeat left top;
+	position: relative;
+	top: -7px;
+	right: -7px;
+	float: right;
+	margin-bottom: -16px;
+}
+
+#product tbody .image_edit img:hover, #product tbody .image_edit div:hover {
+	cursor: pointer;
+}
+
+#product tbody span {
+	float: left;
+	cursor: pointer;
+	width: 100%;
+	min-height: 24px;
+	border: 1px solid transparent;
+	padding: 3px;
+}
+
+#product tbody span:hover {
+	border: 1px solid #999;
+	border-radius: 2px;
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+	-khtml-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+	-o-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+}
+
+#product tbody input[type=text], #product tbody textarea, #product tbody select {
+	width: 100%;
+	/*margin: -3px;*/
+	float: left;
+	border-radius: 2px;
+	border: 1px solid #CCC;
+	padding: 3px;
+}
+
+#product tbody tr td #form_list input {
+	width: auto !important;
+	float: none !important;
+}
+
+#product tbody tr td #form_list .image img {
+	float: left;
+	margin: 0px;
+}
+
+#product .product_name {
+	vertical-align: bottom !important;
+}
+
+#product .product_name span {
+	font-weight: bold;
+}
+
+#product .product_name div {
+	margin-top: 8px;
+	float: left;
+	font-size: 11px;
+}
+
+#product .filter input, #product .filter select {
+	width: 80%;
+	min-width: 30px;
+}
+
+#product td[class*=column-] {
+	background: #F9F9F9;
+}
+
+#product td[class*=column-] div {
+	overflow-y: scroll;
+	height: 150px;
+	margin: -5px;
+	padding: 0px 5px;
+}
+
+#product td[class*=column-] table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#product td[class*=column-] table td {
+	font-size: 11px;
+	border: none;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+#product td[class*=column-] table tr:first-child td {
+	border-top: none;
+}
+
+#product td[class*=column-] table tr:last-child td {
+	border-bottom: none;
+}
+
+#product em[class*=em-product_special-] {
+	color: red;
+	margin-top: 5px;
+	float: left;
+	font-size: 11px;
+}
+
+#product em[class*=em-product_discount-] {
+	color: green;
+	margin-top: 5px;
+	float: left;
+	font-size: 11px
+}
+
+#product em[class^=date_modified_] {
+	color: #000;
+}
+
+#product em[class^=date_added_] {
+	color: #060;
+}
+
+#product td.quantity span {
+	color: green;
+}
+
+#product td.quantity_0 span {
+	color: red;
+}
+
+#attribute select, #attribute_list select {
+	width: 100%;
+}
+
+#jquery-notification {
+	z-index: 10001;
+}
+
+#jquery-notification .notic {
+	padding: 50px;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.form-hidden {
+	display: none;
+}
+
+.go_up {
+	position: fixed;
+	top: 93%;
+	right: 10px;
+	z-index:1000;
+}
+
+.em_div {
+	float: right !important;
+	width: 100%;
+	min-width: 370px;
+	clear: both;
+}
+
+.em_div em {
+	float: right;
+	font-size: 10px;
+	font-style: normal;
+	margin: 2px 0px 0px 0px;
+	padding: 2px 3px 2px 3px;
+}
+
+.select_box {
+	border-top: #DDDDDD 1px solid;
+	border-bottom: #DDDDDD 1px solid;
+	background-color: #F9F9F9;
+	padding: 10px 5px;
+	margin: 10px 0px;
+}
+
+.image {
+	padding:0px;
+	border:none;
+	text-align:center;
+}
+
+.image img {
+	cursor:pointer;
+	display:block;
+	margin:5px auto;
+}
+
+a[class^=filter_link_] {
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	display: inline-block;
+	padding: 3px;
+	margin: 2px;
+	text-decoration: none !important;
+}
+
+a.link_select {
+	background: #FFF;
+	color: #000;
+}

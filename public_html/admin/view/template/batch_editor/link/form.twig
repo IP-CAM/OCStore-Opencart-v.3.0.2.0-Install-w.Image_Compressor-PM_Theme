@@ -1,0 +1,36 @@
+<form id="form-link">
+ <table class="be-form">
+  <tbody>
+   <tr>
+    <td class="left">{{ text_description }}</td>
+    <td class="left">
+     {% for code, language in languages %}
+     <input name="link[description][{{ code }}]" type="text" value="" />
+     <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />&nbsp;&nbsp;
+     {% endfor %}
+    </td>
+   </tr>
+   <tr>
+    <td class="left">{{ text_table }}</td>
+    <td class="left">
+     <select name="link[table]">
+      <option value="">{{ text_none }}</option>
+      {% for table in tables %}
+      <option value="{{ table }}">{{ table }}</option>
+      {% endfor %}
+     </select>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <table class="be-list">
+  <tfoot>
+   <tr>
+    <td class="center" colspan="2"><a class="btn btn-success" onclick="saveLink();">{{ text_save }}</a></td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+
+//--></script>

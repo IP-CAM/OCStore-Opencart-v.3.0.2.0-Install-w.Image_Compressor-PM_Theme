@@ -1,0 +1,267 @@
+<style type="text/css">
+#form-image_google{{ product_id }} img {
+	vertical-align:middle;
+}
+
+#form-image_google{{ product_id }} select {
+	margin:3px;
+}
+
+#form-image_google{{ product_id }} .be-scrollbox {
+	width:100%;
+	height:400px;
+}
+
+#form-image_google{{ product_id }} .be-scrollbox b {
+	float:left;
+	width:100%;
+	background:#000;
+	color:#FFF;
+	font-weight:bold;
+	font-size:10px;
+	text-align:center;
+	padding:2px 0px 2px 0px;
+}
+
+#form-image_google{{ product_id }} .be-scrollbox div {
+	width:150px;
+	height:170px;
+	float:left;
+	margin:3px;
+	border:1px solid #CCC;
+	text-align:left;
+	overflow:hidden;
+	background-color:#FFF;
+}
+
+#form-image_google{{ product_id }} .be-scrollbox span {
+	float:left;
+	width:100%;
+	margin:3px 0px;
+	text-align:center;
+}
+</style>
+{% if product_id %}
+<table class="be-form">
+ <tr>
+  <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+  <td width="99%"><h3>{{ product_name }}</h3></td>
+ </tr>
+</table>
+{% endif %}
+<table class="be-list">
+ <tfoot>
+  <tr>
+   <td class="left" colspan="2"><form id="form-image_google-data{{ product_id }}">
+     <select name="fileType">
+      <option value="">---{{ text_file_type }}---</option>
+      <option value="jpg">JPG</option>
+      <option value="png">PNG</option>
+      <option value="gif">GIF</option>
+      <option value="bmp">BMP</option>
+     </select>
+     <select name="imgDominantColor">
+      <option value="">---{{ text_color }}---</option>
+      <option style="background:yellow;" value="yellow">Yellow</option>
+      <option style="background:green;" value="green">Green</option>
+      <option style="background:teal;" value="teal">Teal</option>
+      <option style="background:blue;" value="blue">Blue</option>
+      <option style="background:purple;" value="purple">Purple</option>
+      <option style="background:pink;" value="pink">Pink</option>
+      <option style="background:white;" value="white">White</option>
+      <option style="background:gray;" value="gray">Gray</option>
+      <option style="background:black;" value="black">Black</option>
+      <option style="background:brown;" value="brown">Brown</option>
+     </select>
+     <select name="imgColorType">
+      <option value="">---{{ text_colorization }}---</option>
+      <option value="mono">Mono</option>
+      <option value="gray">Gray</option>
+      <option value="color">Color</option>
+     </select>
+     <select name="imgSize">
+      <option value="">---{{ text_size }}---</option>
+      <option value="icon">Icon</option>
+      <option value="small">Small</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+      <option value="xlarge">Xlarge</option>
+      <option value="xxlarge">Xxlarge</option>
+      <option value="huge">Huge</option>
+     </select>
+     <select name="imgType">
+      <option value="">---{{ text_image_type }}---</option>
+      <option value="face">Face</option>
+      <option value="photo">Photo</option>
+      <option value="clipart">Clipart</option>
+      <option value="lineart">Lineart</option>
+     </select>
+    </form></td>
+  </tr>
+  <tr>
+   <td class="left" colspan="2"><form id="form-image_google{{ product_id }}">
+     <p>
+      {{ text_folder }}: <a class="btn btn-danger btn-xs" onclick="resetFolderImageGoogle('{{ product_id }}');" title="{{ text_reset }}"><i class="fa fa-repeat"></i></a>
+      <select name="image_google[directory][main]">
+       {% for directory in directories %}
+       <option value="{{ directory }}">{{ directory }}</option>
+       {% endfor %}
+      </select>
+      <a onclick="$('#form-image_google{{ product_id }} select[name=\'image_google[directory][main]\']').after(' <input name=\'image_google[directory][]\' /> <span class=\'separator\'>/</span> ');" class="btn btn-success btn-xs" title="{{ text_add }}"><i class="fa fa-plus"></i></a>
+      <a onclick="$('#form-image_google{{ product_id }} input[name=\'image_google[directory][]\']:last').remove(); $('#form-image_google{{ product_id }} span.separator:last').remove();" class="btn btn-danger btn-xs" title="{{ text_delete }}"><i class="fa fa-minus"></i></a>
+     </p>
+     <p>
+      {% if keyword is defined and keyword %}
+      {% set value = keyword %}
+      {% else %}
+      {% set value = '' %}
+      {% endif %}
+      <input name="image_google[keyword]" type="text" size="100" maxlength="128" value="{{ value }}" /> <a class="btn btn-primary" onclick="searchImageGoogle({{ product_id }});">{{ text_search }}</a>
+     </p>
+     <div class="be-scrollbox">
+     </div>
+     <div style="text-align:center; margin-top:10px;">
+      {{ text_main }} (<span class="image_google_count_main">0</span>)
+      &nbsp;&nbsp;&nbsp;
+      {{ text_additional }} (<span class="image_google_count_additional">0</span>)
+     </div>
+    </form></td>
+  </tr>
+  <tr>
+   <td class="center" colspan="2">
+    <a class="btn btn-success" onclick="editTool({{ product_id }}, 'image_google', 'add');">{{ text_add }}</a>
+    <a class="btn btn-primary" onclick="resetImageGoogle({{ product_id }});">{{ text_reset }}</a>
+    {% if product_id %}
+    <a class="btn btn-danger" onclick="$('#dialogTool').modal('hide');">&times;</a>
+    {% endif %}
+   </td>
+  </tr>
+ </tfoot>
+</table>
+<script type="text/javascript"><!--
+if (typeof counter == 'undefined') {
+	var counter = [];
+}
+counter[{{ product_id }}] = 1;
+
+$(document).ready(function() {
+	$('#form-image_google{{ product_id }} input[name=\'image_google[keyword]\']').keypress(function(e) {
+		if (e.keyCode == 13) {
+			searchImageGoogle({{ product_id }});
+			return false;
+		}
+	}).focus();
+	
+	$('#form-image_google{{ product_id }}').delegate('input[type=\'checkbox\']', 'click', function() {
+		if ($(this).attr('name') == 'image_google[data][main]') {
+			$('#form-image_google{{ product_id }} input[name=\'image_google[data][main]\']').not(this).removeAttr('checked');
+			$(this).parents('div:first').children('input[name=\'image_google[data][]\']').removeAttr('checked');
+		} else {
+			$(this).parents('div:first').children('input[name=\'image_google[data][main]\']').removeAttr('checked');
+		}
+		
+		$('#form-image_google{{ product_id }} .image_google_count_main').html($('#form-image_google{{ product_id }} input[name=\'image_google[data][main]\']:checked').length);
+		$('#form-image_google{{ product_id }} .image_google_count_additional').html($('#form-image_google{{ product_id }} input[name=\'image_google[data][]\']:checked').length);
+	});
+});
+
+if (typeof searchImageGoogle != 'function') {
+	function searchImageGoogle(product_id) {
+		counter[product_id] = 1;
+		
+		$('#form-image_google' + product_id + ' .be-scrollbox').html('');
+		$('#form-image_google' + product_id + ' .image_google_count_main').html('0');
+		$('#form-image_google' + product_id + ' .image_google_count_additional').html('0');
+		
+		getImageGoogle(product_id);
+	}
+}
+
+if (typeof resetImageGoogle != 'function') {
+	function resetImageGoogle(product_id) {
+		$('#form-image_google' + product_id + ' input[type=\'checkbox\']').removeAttr('checked');
+		$('#form-image_google' + product_id + ' .image_google_count_main').html('0');
+		$('#form-image_google' + product_id + ' .image_google_count_additional').html('0');
+	}
+}
+
+if (typeof getImageGoogle != 'function') {
+	function getImageGoogle(product_id) {
+		var html = '';
+		var keyword = encodeURIComponent ($('#form-image_google' + product_id + ' input[name=\'image_google[keyword]\']').val());
+		
+		if (!keyword) {
+			return false;
+		}
+		
+		xhr = $.ajax({type:'GET', dataType:'json', data:'q=' + keyword + '&start=' + counter[product_id] + '&num=10&' + $('#form-image_google-data' + product_id).serialize(), url:'index.php?route=batch_editor/tool/getImageGoogle&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(json){
+				if (json['warning']) {
+					creatMessage(json);
+				} else {
+					if (counter[product_id] == 1 && (json['value']).length > 0) {
+						$('#form-image_google' + product_id + ' .be-scrollbox').html('<span><a class="btn btn-primary" onclick="getImageGoogle(' + product_id + ');">{{ text_more }}</a></span>');
+					}
+					
+					$.each(json['value'], function(index, value) {
+						html = '<div>';
+						html += ' <label><input name="image_google[data][main]" type="checkbox" value="' + value['link'] + '"> {{ text_main }}</label><br />';
+						html += ' <label><input name="image_google[data][]" type="checkbox" value="' + value['link'] + '"> {{ text_additional }}</label><br />';
+						html += ' <b>' + value['width'] + 'x' + value['height'] + '</b>';
+						html += ' <a class="colorbox' + product_id + '" href="' + value['link'] + '">';
+						html += ' <img src="' + value['thumbnailLink'] + '" alt="" title="" width="' + value['thumbnailWidth'] + '" height="' + value['thumbnailHeight'] + '">';
+						html += ' </a>';
+						html += '</div>';
+						
+						$('#form-image_google' + product_id + ' .be-scrollbox span').before(html);
+						$('#form-image_google' + product_id + ' .be-scrollbox').scrollTop(9999);
+						$('#form-image_google' + product_id + ' .colorbox' + product_id).colorbox({overlayClose:true, opacity:0.5, rel:'colorbox' + product_id, innerWidth:'80%', innerHeight:'80%'});
+					});
+					
+					counter[product_id] += 10;
+					
+					if (counter[product_id] >= 51) {
+						counter[product_id] = 0;
+						
+						$('#form-image_google' + product_id + ' .be-scrollbox span').remove();
+					}
+				}
+				
+				creatOverlayLoad(false);
+			}
+		});
+	}
+}
+
+if (typeof resetFolderImageGoogle != 'function') {
+	function resetFolderImageGoogle(product_id) {
+		xhr = $.ajax({type:'GET', dataType:'json', url:'index.php?route=batch_editor/tool/getImageDirectories&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(json) {
+				var html = '<select name="image_google[directory][main]">';
+				
+				$.each(json, function(index, folder) {
+					html += '<option value="' + folder + '">' + folder + '</option>';
+				});
+				
+				html += '</select>';
+				
+				$('#form-image_google' + product_id + ' select[name=\'image_google[directory][main]\']').replaceWith(html);
+				
+				creatOverlayLoad(false);
+			}
+		});
+	}
+}
+
+<!--{% if keyword is defined and keyword %}-->
+searchImageGoogle({{ product_id }});
+<!--{% endif %}-->
+//--></script>
+
+<!--{% if product_id > 0 %}-->
+<script type="text/javascript"><!--
+$('#dialogTool').find('.modal-header').append('{{ text_image_google }}');
+//--></script>
+<!--{% endif %}-->

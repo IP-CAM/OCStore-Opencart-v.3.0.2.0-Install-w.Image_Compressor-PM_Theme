@@ -1,0 +1,244 @@
+<form id="form-{{ link }}{{ product_id }}">
+ {% if product_id == -1 %}
+ <div class="alert alert-info text-center">{{ notice_empty_field }}</div>
+ <p><span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="center" width="1"></td>
+    {% for field, setting in fields %}
+    {% if field != 'product_id' %}
+    {% if setting['extra'] == 'auto_increment' %}
+    <td class="center" width="1%">{{ description[field] }}</td>
+    {% else %}
+    <td class="left">{{ description[field] }}</td>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+   </tr>
+  </thead>
+  {% set row = 0 %}
+  {% if data %}
+  {% for array in data %}
+  <tbody>
+   <tr>
+    <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+    {% for field, value in array %}
+    {% if fields[field] is defined and field != 'product_id' %}
+    {% if fields[field]['type'] == 'text' %}
+    <td class="left"><textarea name="{{ link }}[{{ row }}][{{ field }}]">{{ value }}</textarea></td>
+    {% elseif fields[field]['type'] == 'tinyint' %}
+    {% if value %}
+    <td class="left enabled">
+    {% else %}
+    <td class="left disabled">
+    {% endif %}
+     {% if field matches '/status/' %}
+     <select name="{{ link }}[{{ row }}][{{ field }}]" onchange="selectTableTd(this);">
+      {% if value %}
+      <option value="0">{{ text_disabled }}</option>
+      <option value="1" selected="selected">{{ text_enabled }}</option>
+      {% else %}
+      <option value="0" selected="selected">{{ text_disabled }}</option>
+      <option value="1">{{ text_enabled }}</option>
+      {% endif %}
+     </select>
+     {% else %}
+     <select name="{{ link }}[{{ row }}][{{ field }}]" onchange="selectTableTd(this);">
+      {% if value %}
+      <option value="0">{{ text_no }}</option>
+      <option value="1" selected="selected">{{ text_yes }}</option>
+      {% else %}
+      <option value="0" selected="selected">{{ text_no }}</option>
+      <option value="1">{{ text_yes }}</option>
+      {% endif %}
+     </select>
+     {% endif %}
+    </td>
+    {% elseif list[field] is defined %}
+    <td class="left">
+     <select name="{{ link }}[{{ row }}][{{ field }}]" >
+      {% for value_temp in list[field] %}
+      {% if value_temp[field] == value %}
+      <option value="{{ value_temp[field] }}" selected="selected">{{ value_temp['name'] }}</option>
+      {% else %}
+      <option value="{{ value_temp[field] }}">{{ value_temp['name'] }}</option>
+      {% endif %}
+      {% endfor %}
+     </select>
+    </td>
+    {% else %}
+    {% set class = '' %}
+    {% if fields[field]['type'] == 'date' or fields[field]['type'] == 'datetime' %}
+    {% set class = fields[field]['type'] %}
+    {% if value == '0000-00-00' or value == '0000-00-00 00:00' or value == '0000-00-00 00:00:00' %}
+    {% set value = '' %}
+    {% endif %}
+    {% endif %}
+    {% if fields[field]['extra'] == 'auto_increment' %}
+    <td class="center"><b>{{ value }}</b><input name="{{ link }}[{{ row }}][{{ field }}]" value="{{ value }}" class="{{ class }}" type="hidden" /></td>
+    {% else %}
+    <td class="left"><input name="{{ link }}[{{ row }}][{{ field }}]" value="{{ value }}" class="{{ class }}" type="text" /></td>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+   </tr>
+   {% set row = row + 1 %}
+  </tbody>
+  {% endfor %}
+  {% else %}
+  <tbody class="no_results">
+   <tr>
+    <td class="center" colspan="{{ fields|length }}"><div class="alert alert-warning" align="center">{{ text_no_results }}</div></td>
+   </tr>
+  </tbody>
+  {% endif %}
+  <tfoot>
+   <tr>
+    <td class="center"><a onclick="add{{ link }}Row({{ product_id }});" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+    <td class="center" colspan="{{ fields|length }}">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+    </td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+creatDateTime();
+
+if (typeof {{ link }}_row == 'undefined') {
+	var {{ link }}_row = [];
+}
+
+{{ link }}_row[{{ product_id }}] = {{ row }};
+
+if (typeof add{{ link }}Row == 'undefined') {
+	function add{{ link }}Row(product_id) {
+		$('#form-{{ link }}' + product_id + ' .be-list .no_results').remove();
+		
+		var html = '';
+		
+		html += '<tbody>';
+		html += ' <tr>';
+		html += '  <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+		
+		<!--{% for field, setting in fields %}-->
+		{% if field != 'product_id' %}
+		{% if setting['type'] == 'text' %}
+		html += '  <td class="left"><textarea name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]"></textarea></td>';
+		{% elseif setting['type'] == 'tinyint' %}
+		{% if field matches '/status/' %}
+		html += '  <td class="left disabled">';
+		html += '   <select name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" onchange="selectTableTd(this);">';
+		html += '    <option value="0">{{ text_disabled }}</option>';
+		html += '    <option value="1" >{{ text_enabled }}</option>';
+		html += '   </select>';
+		html += '  </td>';
+		{% else %}
+		html += '  <td class="left">';
+		html += '   <select name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" onchange="selectTableTd(this);">';
+		html += '    <option value="0">{{ text_no }}</option>';
+		html += '    <option value="1" >{{ text_yes }}</option>';
+		html += '   </select>';
+		html += '  </td>';
+		{% endif %}
+		{% elseif list[field] is defined %}
+		html += '  <td class="left">';
+		html += '   <select name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" >';
+		{% for value in list[field] %}
+		html += '    <option value="{{ value[field] }}">{{ value["name"] }}</option>';
+		{% endfor %}
+		html += '   </select>';
+		html += '  </td>';
+		{% elseif field == 'price' and setting['type'] == 'decimal' %}
+		html += '  <td class="left">';
+		
+		if (product_id == 0) {
+			html += '   <select name="price_action[' + {{ link }}_row[product_id] + ']">';
+			{% for action in actions %}
+			html += '    <option value="{{ action["action"] }}">{{ action["name"] }}</option>';
+			{% endfor %}
+			html += '   </select>';
+		}
+		
+		html += '   <input name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" value="" type="text" />';
+		html += '  </td>';
+		{% else %}
+		{% set class = '' %}
+		{% if setting['type'] == 'date' %}
+		{% set class = 'date' %}
+		{% endif %}
+		{% if setting['type'] == 'datetime' %}
+		{% set class = 'datetime' %}
+		{% endif %}
+		{% if setting['extra'] == 'auto_increment' %}
+		html += '  <td class="center"><input name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" class="{{ class }}" value="" type="hidden" /></td>';
+		{% else %}
+		html += '  <td class="left"><input name="{{ link }}[' + {{ link }}_row[product_id] + '][{{ field }}]" class="{{ class }}" value="" type="text" /></td>';
+		{% endif %}
+		{% endif %}
+		{% endif %}
+		<!--{% endfor %}-->
+		
+		html += ' </tr>';
+		html += '</tbody>';
+		
+		$('#form-{{ link }}' + product_id + ' .be-list tfoot').before(html);
+		
+		creatDateTime();
+		
+		{{ link }}_row[product_id]++;
+	}
+}
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

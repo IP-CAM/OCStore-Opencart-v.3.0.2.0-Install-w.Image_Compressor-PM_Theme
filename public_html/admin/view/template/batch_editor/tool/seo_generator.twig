@@ -1,0 +1,178 @@
+<style type="text/css">
+#form-seo_generator{{ product_id }} span.seo_generator_optional {
+	margin-left:10px;
+}
+</style>
+<form id="form-seo_generator{{ product_id }}">
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="left" width="1"></td>
+    <td class="left" width="">{{ text_template }}:</td>
+    <td class="left" width="15%">{{ text_apply_to }}:</td>
+    <td class="left" width="150">{{ text_optional }}:</td>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td class="center" rowspan="2"></td>
+    <td class="center" valign="top" rowspan="2"><div style="height:260px; overflow-y:scroll; margin:-5px;">
+      <table class="be-list" id="table-seo_generator{{ product_id }}" style="margin:0px; border:none;">
+       <tfoot>
+        <tr>
+         <td class="center" width="1" height="23"><a onclick="addSeoGeneratorRow({{ product_id }});" class="btn btn-success btn-xs" title="{{ text_add }}"><i class="fa fa-plus"></i></a></td>
+         <td class="center" colspan="2"></td>
+        </tr>
+       </tfoot>
+      </table>
+     </div></td>
+    <td class="left"><b>{{ text_main }}</b>
+     <div class="be-scrollbox">
+      {% for field in apply_to['p'] %}
+      <div>
+       <label><input name="seo_generator[apply_to][p][]" type="checkbox" value="{{ field }}" /> {{ description[field] }}</label>
+      </div>
+      {% endfor %}
+     </div>
+    </td>
+    <td class="left" rowspan="2">
+     <label><input name="seo_generator[synonymizer]" type="checkbox" value="1" /> {{ text_synonymizer }}</label><br />
+     <label><input name="seo_generator[translit]" type="checkbox" value="1" /> {{ text_translit }}</label><br /></td>
+   </tr>
+   <tr>
+    <td class="left" valign="middle">
+     <b>{{ text_description }}</b>
+     <div class="be-scrollbox">
+      {% for field in apply_to['pd'] %}
+      <div>
+       <label><input name="seo_generator[apply_to][pd][]" type="checkbox" value="{{ field }}" /> {{ description[field] }}</label>
+      </div>
+      {% endfor %}
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td class="center" colspan="5"><a class="btn btn-success" onclick="editTool({{ product_id }}, 'seo_generator', 'upd');">{{ text_edit }}</a></td>
+   </tr>
+   <tr>
+    <td class="center"><a class="btn btn-success btn-sm" data-toggle="tooltip" title="{{ text_load_template }}" onclick="getTemplates('seo_generator', {{ product_id }});"><i class="fa fa-download"></i></a></td>
+    <td colspan="4" class="left">
+     <input name="template_name" type="text" size="64" value="" style="vertical-align:middle;" />
+     <a class="btn btn-success btn-sm" data-toggle="tooltip" title="{{ text_save_template }}" onclick="saveTemplate('seo_generator', {{ product_id }});"><i class="fa fa-save"></i></a>
+    </td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+var seo_generator_row = 0;
+
+function addSeoGeneratorRow(product_id) {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center" width="1" height="23"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ text_delete }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="left" width="1%">';
+	html += '   <select onchange="getSeoGeneratorData(this);">';
+	html += '    <option value=""></option>';
+	html += '    <option value="text">{{ text_text }}</option>';
+	html += '    <option value="data">{{ text_data }}</option>';
+	html += '    <option value="space">{{ text_space }}</option>';
+	html += '   <select>';
+	html += '  </td>';
+	html += '  <td class="left"></td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#form-seo_generator' + product_id + ' #table-seo_generator' + product_id + ' tfoot').before(html);
+}
+
+function getSeoGeneratorData(this_) {
+	var type = $(this_).val();
+	var html = '';
+	
+	if (type == 'text') {
+		html += '<textarea name="seo_generator[data][' + seo_generator_row + '][text]" style="width:99%; height:22px;"></textarea>';
+	}
+	
+	if (type == 'data') {
+		html += '<select name="seo_generator[data][' + seo_generator_row + '][data]" onchange="getSeoGeneratorOptional(this, ' + seo_generator_row + ');" >';
+		html += '<option value="product_id">{Product ID}</option>';
+		<!--{% for field in fields %}-->
+		<!--{% if field == 'price' %}-->
+		<!--{% for currency in currencies %}-->
+		html += '<option value="{{ field }}_{{ currency["code"] }}">{{ "{" }}{{ description[field] }} {{ currency["code"] }}{{ "}" }}</option>';
+		<!--{% endfor %}-->
+		<!--{% else %}-->
+		html += '<option value="{{ field }}">{{ "{" }}{{ description[field] }}{{ "}" }}</option>';
+		<!--{% endif %}-->
+		<!--{% endfor %}-->
+		<!--{% for option, description in options %}-->
+		html += '<option value="{{ "{" }}{{ option }}{{ "}" }}">{{ "{" }}{{ description }}{{ "}" }}</option>';
+		<!--{% endfor %}-->
+		html += '</select>';
+	}
+	
+	if (type == 'space') {
+		html += '<input name="seo_generator[data][' + seo_generator_row + '][text]" value="{space}" type="hidden" >';
+	}
+	
+	$(this_).parent('td').next('td:first').html(html);
+	
+	seo_generator_row++;
+}
+
+function getSeoGeneratorOptional(this_, row) {
+	$(this_).parent('td').children('span.seo_generator_optional').remove();
+	
+	if ($(this_).val() == '{attributes_all}') {
+		var html = '<span class="seo_generator_optional">';
+		
+		html += '{{ "{" }}{{ text_attribute }}{{ "}" }}';
+		html += '<input name="seo_generator[data][' + row + '][separator_attribute_value]" type="text" size="2" value=":" title="{{ text_separator }}" />';
+		html += '{{ "{" }}{{text_value}}{{ "}" }}';
+		html += '<input name="seo_generator[data][' + row + '][separator_attribute]" type="text" size="2" value=", " title="{{ text_separator }}" />';
+		html += '</span>';
+		
+		$(this_).after(html);
+	} else if ($(this_).val() == '{attribute}') {
+		var html = '<span class="seo_generator_optional">';
+		
+		html += '{<input name="seo_generator[data][' + row + '][attribute_name]" type="text" />}<input name="seo_generator[data][' + row + '][attribute_id]" type="hidden" />';
+		html += '<input name="seo_generator[data][' + row + '][separator_attribute_value]" type="text" size="2" value=":" title="{{ text_separator }}" />';
+		html += '<label>{{ "{" }}{{ text_value }}{{ "}" }} <input name="seo_generator[data][' + row + '][value_only]" type="checkbox" value="1" /></label>';
+		html += '</span>';
+		
+		$(this_).after(html);
+		
+		SeoGeneratorAttributeAutocomplete(row);
+	} else if ($(this_).val() == '{categories_all}') {
+		var html = '<span class="seo_generator_optional">';
+		
+		html += '<input name="seo_generator[data][' + row + '][separator_category]" type="text" size="2" value=", " title="{{ text_separator }}" />';
+		html += '</span>';
+		
+		$(this_).after(html);
+	}
+}
+
+function SeoGeneratorAttributeAutocomplete(row) {
+	$('#form-seo_generator{{ product_id }} input[name=\'seo_generator[data][' + row + '][attribute_name]\']').autocomplete({
+		delay: 0,
+		source: function(request, response) {
+			xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/attribute/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+				success: function(json) {
+					response($.map(json, function(item) { return { category:item['attribute_group'], label:item['name'], value:item['attribute_id'] }}));
+				}
+			});
+		},
+		'select': function(item) {
+			$('#form-seo_generator{{ product_id }} input[name=\'seo_generator[data][' + row + '][attribute_name]\']').attr('value', item['label']);
+			$('#form-seo_generator{{ product_id }} input[name=\'seo_generator[data][' + row + '][attribute_id]\']').attr('value', item['value']);
+			
+			return false;
+		}
+	});
+}
+//--></script>

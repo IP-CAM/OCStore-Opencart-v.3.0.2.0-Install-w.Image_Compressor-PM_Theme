@@ -1,0 +1,499 @@
+{% if products %}
+<div class="pagination">
+ <div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+ </div>
+</div>
+<table id="product" class="be-list">
+ <thead>
+  <tr class="sort">
+   <td class="center" width="1">
+    <input type="checkbox" onclick="selectRowAll(this);" />
+    <input type="button" onclick="selectRowInv();" style="width:16px; height:16px; background:#666; cursor:pointer;" />
+   </td>
+   <td class="center" width="1">
+    {% if sort == 'p.product_id' %}
+    {% set class = order|lower %}
+    {% else %}
+    {% set class = '' %}
+    {% endif %}
+    <a href="p.product_id" class="{{ class }}">ID</a>
+   </td>
+   {% for field, parameter in setting %}
+   {% if parameter['table'] == 'pd' or parameter['table'] == 'pt' or field == 'url_alias' %}
+   {% set class = 'language_'~language_id %}
+   {% else %}
+   {% set class = '' %}
+   {% endif %}
+   {% if field == 'image' %}
+   <td class="center {{ class }}">
+    <input name="{{ field }}-visible" type="hidden" value="1" />
+    {% if sort == parameter['sort'] %}
+    {% set class = order|lower %}
+    {% else %}
+    {% set class = '' %}
+    {% endif %}
+    <a href="{{ parameter['sort'] }}" class="{{ class }}" title="{{ parameter['description'] }}"><i class="fa fa-image fa-2x"></i></a>
+   </td>
+   {% else %}
+   <td class="left {{ class }}">
+    <input name="{{ field }}-visible" type="hidden" value="1" />
+    {% if parameter['sort'] is defined %}
+    {% if sort == parameter['sort'] %}
+    {% set class = order|lower %}
+    {% else %}
+    {% set class = '' %}
+    {% endif %}
+    <a href="{{ parameter['sort'] }}" class="{{ class }}">{{ parameter['description'] }}</a>
+    {% else %}
+    {{ parameter['description'] }}
+    {% endif %}
+   </td>
+   {% if field == 'name' %}
+   {% if option['column_categories'] %}
+   <td class="left">{{ text_category }}</td>
+   {% endif %}
+   {% if option['column_attributes'] %}
+   <td class="left">{{ text_attribute }}</td>
+   {% endif %}
+   {% if option['column_options'] %}
+   <td class="left">{{ text_option }}</td>
+   {% endif %}
+   {% endif %}
+   {% endif %}
+   {% endfor %}
+  </tr>
+  {% if option['quick_filter'] %}
+  <tr class="filter">
+   <td class="center"><a onclick="resetQuickFilter();" class="btn btn-danger btn-xs" data-toggle="tooltip" title="{{ button_reset }}"><i class="fa fa-repeat"></i></a></td>
+   <td class="center">
+    {% if post['product']['product_id']['value'] is defined %}
+    {% set value = post['product']['product_id']['value'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    <input name="table[product][product_id][value]" type="text" value="{{ value }}" />
+   </td>
+   {% for field, parameter in setting %}
+   <td class="center">
+    {% if list[field] is defined %}
+    {% if post['product'][field]['value'][-1] is defined %}
+    {% set value = post['product'][field]['value'][-1] %}
+    {% else %}
+    {% set value = '*' %}
+    {% endif %}
+    <select name="table[product][{{ field }}][value][-1]">
+     <option value="*"></option>
+     {% for data in list[field] %}
+     {% if value matches '/^\\d+$/' and value == data[field] %}
+     <option value="{{ data[field] }}" selected="selected">{{ data['name'] }}</option>
+     {% else %}
+     <option value="{{ data[field] }}">{{ data['name'] }}</option>
+     {% endif %}
+     {% endfor %}
+    </select>
+    {% elseif parameter['type'] == 'tinyint' %}
+    {% if post['product'][field]['value'] is defined %}
+    {% set value = post['product'][field]['value'] %}
+    {% else %}
+    {% set value = '*' %}
+    {% endif %}
+    <select name="table[product][{{ field }}][value]">
+     {% if field matches '/status/' %}
+     {% set text_1 = text_enabled %}
+     {% set text_0 = text_disabled %}
+     {% else %}
+     {% set text_1 = text_yes %}
+     {% set text_0 = text_no %}
+     {% endif %}
+     {% if value == '*' %}
+     <option value="*" selected="selected"></option>
+     <option value="1">{{ text_1 }}</option>
+     <option value="0">{{ text_0 }}</option>
+     {% elseif value %}
+     <option value="*"></option>
+     <option value="1" selected="selected">{{ text_1 }}</option>
+     <option value="0">{{ text_0 }}</option>
+     {% else %}
+     <option value="*"></option>
+     <option value="1">{{ text_1 }}</option>
+     <option value="0" selected="selected">{{ text_0 }}</option>
+     {% endif %}
+    </select>
+    {% else %}
+    {% if parameter['type'] == 'date' or parameter['type'] == 'datetime' %}
+    {% set class = parameter['type'] %}
+    {% else %}
+    {% set class = '' %}
+    {% endif %}
+    {% if parameter['table'] == 'p' %}
+    {% if post['product'][field]['value'] is defined %}
+    {% set value = post['product'][field]['value'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    <input name="table[product][{{ field }}][value]" type="text" class="{{ class }}" value="{{ value }}" />
+    {% else %}
+    {% if post['product_description'][field]['value'] is defined %}
+    {% set value = post['product_description'][field]['value'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    <input name="table[product_description][{{ field }}][value]" type="text" class="{{ class }}" value="{{ value }}" />
+    {% endif %}
+    {% endif %}
+   </td>
+   {% if field == 'name' %}
+   {% if option['column_categories'] %}
+   <td class="center">
+    {% if category[-1]['name'] is defined %}
+    {% set name = category[-1]['name'] %}
+    {% else %}
+    {% set name = '' %}
+    {% endif %}
+    {% if category[-1]['category_id'] is defined %}
+    {% set value = category[-1]['category_id'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    {% if option['category'] %}
+    <input name="category[-1][name]" value="{{ name }}" type="text" />
+    <input name="category[-1][category_id]" value="{{ value }}" type="hidden" />
+    {% else %}
+    <select name="category[-1][category_id]">
+     <option value="*"></option>
+     {% for category in categories %}
+     {% if value == category['category_id'] %}
+     <option value="{{ category['category_id'] }}" selected="selected">{{ category['name'] }}</option>
+     {% else %}
+     <option value="{{ category['category_id'] }}">{{ category['name'] }}</option>
+     {% endif %}
+     {% endfor %}
+    </select>
+    {% endif %}
+   </td>
+   {% endif %}
+   {% if option['column_attributes'] %}
+   <td class="center">
+    {% if attribute[-1]['name'] is defined %}
+    {% set name = attribute[-1]['name'] %}
+    {% else %}
+    {% set name = '' %}
+    {% endif %}
+    {% if attribute[-1]['attribute_id'] is defined %}
+    {% set value = attribute[-1]['attribute_id'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    <input name="attribute[-1][name]" value="{{ name }}" type="text" />
+    <input name="attribute[-1][attribute_id]" value="{{ value }}" type="hidden" />
+   </td>
+   {% endif %}
+   {% if option['column_options'] %}
+   <td class="center">
+    {% if option[-1]['name'] is defined %}
+    {% set name = option[-1]['name'] %}
+    {% else %}
+    {% set name = '' %}
+    {% endif %}
+    {% if option[-1]['option_id'] is defined %}
+    {% set value = option[-1]['option_id'] %}
+    {% else %}
+    {% set value = '' %}
+    {% endif %}
+    <input name="option[-1][name]" value="{{ name }}" type="text" />
+    <input name="option[-1][option_id]" value="{{ value }}" type="hidden" />
+   </td>
+   {% endif %}
+   {% endif %}
+   {% endfor %}
+  </tr>
+  {% endif %}
+ </thead>
+ {% for product in products %}
+ <tbody>
+  {% if product['selected'] %}
+  {% set class = 'selected' %}
+  {% else %}
+  {% set class = '' %}
+  {% endif %}
+  <tr class="selected_row-{{ product['product_id'] }} {{ class }}">
+   <td class="center">
+    {% if product['selected'] %}
+    <input type="checkbox" name="selected[]" value="{{ product['product_id'] }}" checked="checked" />
+    {% else %}
+    <input type="checkbox" name="selected[]" value="{{ product['product_id'] }}" />
+    {% endif %}
+   </td>
+   <td class="left" width="1"><b>{{ product['product_id'] }}</b></td>
+   {% for field, parameter in setting %}
+   {% if field == 'image' %}
+   <td class="center" width="1">
+    <div class="image">
+     <img src="{{ product['thumb'] }}" alt="{{ text_edit }}" title="{{ text_edit }}" height="{{ option['image']['height'] }}" width="{{ option['image']['width'] }}" />
+     <input data-table="product" data-field="image" data-product_id="{{ product['product_id'] }}" type="hidden" value="{{ product['image'] }}" />
+     <a class="btn btn-success btn-xs" onclick="getImageManager(this)" title="{{ text_path }}"><i class="fa fa-upload"></i></a>&nbsp;<a class="btn btn-danger btn-xs" title="{{ button_remove }}" onclick="if (!confirm('{{ button_remove }}?')) { return false; } $(this).parent().find('img, input').prop({'src':no_image, 'value':''}).trigger('change');"><i class="fa fa-trash-o"></i></a>
+    </div>
+   </td>
+   {% elseif field == 'name' %}
+   <td class="left product_name"><span class="input-name-{{ product['product_id'] }}">{{ product['name'] }}</span><br />
+    <div>
+     {% for _link, value in link %}
+     {% if value['enable']['product'] is defined %}
+     <a onclick="getLink({{ product['product_id'] }}, '{{ _link }}')">{{ value['description'] }}</a><em class="{{ _link }}_count_{{ product['product_id'] }}"></em>&nbsp;&nbsp;
+     {% endif %}
+     {% endfor %}
+    </div>
+    <div class="em_div">
+     <a class="btn btn-primary btn-xs" onclick="relatedToProduct({{ product['product_id'] }})" title="{{ text_related_to_product }}" data-toggle="tooltip"><i class="fa fa-exchange"></i></a>
+     <a class="btn btn-primary btn-xs" onclick="getTool({{ product['product_id'] }}, 'image_manager');" title="{{ text_image_manager }}" data-toggle="tooltip"><i class="fa fa-file"></i></a>
+     <a class="btn btn-primary btn-xs" onclick="getTool({{ product['product_id'] }}, 'image_google');" title="{{ text_image_google }}" data-toggle="tooltip"><i class="fa fa-google"></i></a>
+     <a class="btn btn-primary btn-xs" onclick="getTool({{ product['product_id'] }}, 'image_bing');" title="{{ text_image_bing }}" data-toggle="tooltip"><i class="fa fa-windows"></i></a>
+     <a class="btn btn-primary btn-xs" href="index.php?route=catalog/product/edit&user_token={{ user_token }}&product_id={{ product['product_id'] }}" target="_blank" title="{{ text_edit }}" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
+     <a class="btn btn-primary btn-xs" href="{{ product['product-url'] }}" target="_blank" title="{{ text_view }}" data-toggle="tooltip"><i class="fa fa-link"></i></a>
+     <em class="date_added_{{ product['product_id'] }}">{{ product['date_added'] }}</em><em class="date_modified_{{ product['product_id'] }}">{{ product['date_modified'] }}</em>
+    </div>
+   </td>
+   {% if option['column_categories'] %}
+   <td class="left column-product_to_category-{{ product['product_id'] }}"><div></div></td>
+   {% endif %}
+   {% if option['column_attributes'] %}
+   <td class="left column-product_attribute-{{ product['product_id'] }}"><div></div></td>
+   {% endif %}
+   {% if option['column_options'] %}
+   <td class="left column-product_option-{{ product['product_id'] }}"><div></div></td>
+   {% endif %}
+   {% elseif field == 'product_stickers' %}
+   <td class="left">
+    <div class="be-scrollbox" data-product_id="{{ product['product_id'] }}" style="height:140px;">
+     {% for product_sticker in product_stickers %}
+     <div>
+      <label>
+       {% if product[field] in product_sticker['product_sticker_id'] %}
+       <input type="checkbox" value="{{ product_sticker['product_sticker_id'] }}" checked="checked" />
+       {% else %}
+       <input type="checkbox" value="{{ product_sticker['product_sticker_id'] }}" />
+       {% endif %}
+       {{ product_sticker['name'] }}
+      </label>
+     </div>
+     {% endfor %}
+    </div>
+   </td>
+   {% else %}
+   {% if not product[field] %}
+   {% set class = 'attention' %}
+   {% else %}
+   {% set class = '' %}
+   {% endif %}
+   {% if parameter['list'] is defined %}
+   {% set type = 'select' %}
+   {% else %}
+   {% set type = 'input' %}
+   {% if field == 'quantity' %}
+   {% if 0 < product['quantity'] %}
+   {% set class = 'quantity' %}
+   {% else %}
+   {% set class = 'quantity_0' %}
+   {% endif %}
+   {% endif %}
+   {% endif %}
+   {% if parameter['type'] == 'tinyint' %}
+   {% set type = 'select' %}
+   {% if field == 'status' %}
+   {% if product['status'] %}
+   {% set class = 'enabled' %}
+   {% else %}
+   {% set class = 'disabled' %}
+   {% endif %}
+   {% if product['status'] %}
+   {% set value = text_enabled %}
+   {% else %}
+   {% set value = text_disabled %}
+   {% endif %}
+   {% else %}
+   {% if product[field] %}
+   {% set value = text_yes %}
+   {% else %}
+   {% set value = text_no %}
+   {% endif %}
+   {% endif %}
+   {% endif %}
+   <td class="left {{ class }} td_{{ field }}{{ product['product_id'] }}">
+    {% if parameter['type'] == 'tinyint' %}
+    <span class="{{ type }}-{{ field }}-{{ product['product_id'] }}">{{ value }}</span>
+    {% else %}
+    <span class="{{ type }}-{{ field }}-{{ product['product_id'] }}">{{ product[field] }}</span>
+    {% endif %}
+    {% if field == 'price' %}
+    <em class="em-product_special-{{ product['product_id'] }}"></em>
+    <em class="em-product_discount-{{ product['product_id'] }}"></em>
+    {% endif %}
+   </td>
+   {% endif %}
+   {% endfor %}
+  </tr>
+ </tbody>
+ {% endfor %}
+</table>
+<div class="pagination">
+ <div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+ </div>
+</div>
+{% else %}
+<div class="alert alert-warning" align="center">{{ text_no_results }}</div>
+<div align="center"><a class="btn btn-danger" onclick="getProduct('');">{{ button_reset }}</a></div>
+{% endif %}
+
+{% if option['quick_filter'] %}
+<script type="text/javascript"><!--
+$('#product .filter').bind('keypress', function(e) {
+	if (e.keyCode == 13) { setFilter(1); }
+});
+
+$('#product .filter select').bind('change', function(e) {
+	setFilter(1);
+});
+
+creatDateTime();
+//--></script>
+
+{% if option['column_categories'] %}
+{% if option['category'] %}
+<script type="text/javascript"><!--
+$('#product .filter input[name=\'category[-1][name]\']').autocomplete({
+	source: function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=batch_editor/data/autocomplete&user_token=' + user_token + '&autocomplete=category_id&keyword=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) {
+					return { label:item['name'], value:item['category_id'] }
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		var category = item['label'].split(' > ');
+		
+		$('#product .filter input[name=\'category[-1][name]\']').val(category[category.length - 1]);
+		$('#product .filter input[name=\'category[-1][category_id]\']').val(item['value']);
+		
+		setFilter(1);
+		getProduct('');
+		
+		return false;
+	}
+});
+
+$('#product .filter input[name=\'category[-1][name]\']').bind('keypress', function(e) {
+	if (e.keyCode == 13 && $(this).val() == '') { $('#product .filter input[name=\'category[-1][category_id]\']').val(''); }
+});
+//--></script>
+{% endif %}
+{% endif %}
+
+{% if option['column_attributes'] %}
+<script type="text/javascript"><!--
+$('#product .filter input[name=\'attribute[-1][name]\']').autocomplete({
+	source: function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/attribute/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {category:item['attribute_group'], label:item['name'], value:item['attribute_id'] }
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('#product .filter input[name=\'attribute[-1][name]\']').val(item['label']);
+		$('#product .filter input[name=\'attribute[-1][attribute_id]\']').val(item['value']);
+		
+		setFilter(1);
+		getProduct('');
+		
+		return false;
+	}
+});
+
+$('#product .filter input[name=\'category[-1][name]\']').bind('keypress', function(e) {
+	if (e.keyCode == 13 && $(this).val() == '') { $('#product .filter input[name=\'category[-1][category_id]\']').val(''); }
+});
+//--></script>
+{% endif %}
+
+{% if option['column_options'] %}
+<script type="text/javascript"><!--
+$('#product .filter input[name=\'option[-1][name]\']').autocomplete({
+	source: function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/option/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {category:item['category'], label:item['name'], value:item['option_id'] }
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('#product .filter input[name=\'option[-1][name]\']').val(item['label']);
+		$('#product .filter input[name=\'option[-1][option_id]\']').val(item['value']);
+		
+		setFilter(1);
+		getProduct('');
+		
+		return false;
+	}
+});
+
+$('#product .filter input[name=\'category[-1][name]\']').bind('keypress', function(e) {
+	if (e.keyCode == 13 && $(this).val() == '') { $('#product .filter input[name=\'category[-1][category_id]\']').val(''); }
+});
+//--></script>
+{% endif %}
+
+{% for field, parameter in setting %}
+{% if parameter['type'] == 'char' or parameter['type'] == 'varchar' or parameter['type'] == 'text' %}
+{% if parameter['table'] == 'p' %}
+{% set table = 'product' %}
+{% else %}
+{% set table = 'product_description' %}
+{% endif %}
+<script type="text/javascript"><!--
+$('#product .filter input[name=\'table[{{ table }}][{{ field }}][value]\']').autocomplete({
+	'source': function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=batch_editor/data/autocompleteByTableField&user_token=' + user_token + '&table={{ table }}&field={{ field }}&language_id=' + $('input[name=\'filter_language_id\']:checked').val() + '&keyword=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) {
+					return { label:item['value'], value:item['key'] }
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('#product .filter input[name=\'table[{{ table }}][{{ field }}][value]\']').val(item['label']);
+		setFilter(1);
+		
+		return false;
+	}
+});
+//--></script>
+{% endif %}
+{% endfor %}
+{% endif %}
+<script type="text/javascript"><!--
+
+$('#product tbody tr td:nth-child(1) :checkbox').click(function(e) {
+	var lastRow = $('#product').data('lastRow');
+	var thisRow = $(this).parents('tbody:first').index();
+	
+	if (lastRow !== undefined && e.shiftKey) {
+		var start = (lastRow < thisRow) ? lastRow : thisRow;
+		var end = (lastRow > thisRow) ? lastRow : thisRow;
+		
+		$('#product').find('tbody tr td:nth-child(1) :checkbox').slice(start, end).prop('checked', true).trigger('change');
+	}
+	
+	$('#product').data('lastRow', thisRow);
+});
+//--></script>

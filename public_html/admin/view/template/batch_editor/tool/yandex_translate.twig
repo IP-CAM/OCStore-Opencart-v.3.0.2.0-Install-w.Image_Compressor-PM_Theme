@@ -1,0 +1,42 @@
+<form id="form-yandex_translate{{ product_id }}">
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="center" width="33%">{{ text_direction }}:</td>
+    <td class="left" width="33%">{{ text_apply_to }}:</td>
+    <td class="left" width="33%">{{ text_optional }}:</td>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td class="center">
+     <select name="yandex_translate[from]">
+      <option value=""></option>
+      {% for code, language in languages %}
+      <option value="{{ code }}">{{ language['name'] }} [{{ code }}]</option>
+      {% endfor %}
+     </select>
+     &gt;
+     <select name="yandex_translate[to]">
+      <option value=""></option>
+      {% for code, language in languages %}
+      <option value="{{ code }}">{{ language['name'] }} [{{ code }}]</option>
+      {% endfor %}
+     </select>
+    </td>
+    <td class="left">
+     <b>{{ text_description }}</b>
+     <div class="be-scrollbox">
+      {% for field in apply_to['pd'] %}
+      <div><label><input name="yandex_translate[apply_to]" type="radio" value="{{ field }}" /> {{ description[field] }}</label></div>
+      {% endfor %}
+     </div>
+    </td>
+    <td class="left"><label><input name="yandex_translate[rewrite]" type="checkbox" value="1" /> {{ text_rewrite }}</label></td>
+   </tr>
+   <tr>
+    <td class="center" colspan="3"><a class="btn btn-success" onclick="editTool({{ product_id }}, 'yandex_translate', 'upd');">{{ text_edit }}</a></td>
+   </tr>
+  </tfoot>
+ </table>
+</form>

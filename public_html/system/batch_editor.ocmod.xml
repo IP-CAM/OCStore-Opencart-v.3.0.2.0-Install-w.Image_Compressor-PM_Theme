@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+ <name>Batch Editor</name>
+ <code>2.3.x.x</code>
+ <version>1.0</version>
+ <author>Yarik</author>
+ <link>http://opencartforum.com/files/file/301-batch-editor-пакетное-редактирование-товаров/</link>
+ 
+ <file path="admin/controller/common/column_left.php">
+  <operation>
+   <search>
+    <![CDATA[if ($this->user->hasPermission('access', 'catalog/product')) {]]>
+   </search>
+   <add position="before">
+    <![CDATA[
+			if ($this->user->hasPermission('access', 'batch_editor/index')) {
+				$catalog[] = array(
+					'name'     => 'Batch Editor',
+					'href'     => $this->url->link('batch_editor/index', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			]]>
+   </add>
+  </operation>
+ </file>
+ 
+</modification>

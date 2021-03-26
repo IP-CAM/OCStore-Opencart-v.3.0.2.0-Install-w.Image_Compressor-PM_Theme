@@ -1,0 +1,918 @@
+{{ header }}
+
+<style type="text/css">
+#table tbody tr td {
+	background-color: #FFF !important;
+}
+
+#table tbody tr:nth-child(2n) td {
+	background-color: #F9F9F9 !important;
+}
+
+#table tbody tr:hover td {
+	background-color: #E4EEF7 !important;
+}
+
+#table tbody tr td.drag:hover {
+	cursor: move;
+}
+
+#table tbody tr td.border_left, #table thead tr td.border_left {
+	border-left: 2px solid #CCC;
+}
+</style>
+{{ column_left }}
+<div id="content">
+ <div class="page-header">
+  <div class="container-fluid">
+   <div class="pull-right">
+    <a onclick="$('#form_setting').submit();" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></a>
+    <a onclick="location = '{{ url_cancel }}';" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+   </div>
+   <h1>{{ heading_title }}</h1>
+   <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li> <a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a> </li>
+    {% endfor %}
+   </ul>
+  </div>
+ </div>
+ <div class="container-fluid">
+  {% if warning %}
+  <div class="alert alert-danger">
+   <i class="fa fa-exclamation-circle"></i> {{ warning }} <a class="close" data-dismiss="alert">&times;</a>
+  </div>
+  {% endif %}
+  <div class="panel panel-default">
+   <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-list"></i>{{ heading_title }}</h3>
+   </div>
+   <div class="panel-body">
+    <form id="form_setting" action="{{ url_action }}" method="post">
+     <ul class="nav nav-tabs">
+      <li class="active"><a href="#tab-field" data-toggle="tab">{{ tab_general }}</a></li>
+      <li><a href="#tab-link" data-toggle="tab">{{ tab_link }}</a></li>
+      <li><a href="#tab-filter" data-toggle="tab">{{ tab_filter }}</a></li>
+      <li><a href="#tab-multilanguage" data-toggle="tab">{{ text_language }} ({{ text_variables }})</a></li>
+      <li><a href="#tab-option" data-toggle="tab">{{ tab_option }}</a></li>
+      <li><a href="#tab-support" data-toggle="tab"><span style="color:green;">Support</span></a></li>
+     </ul>
+     <div class="tab-content">
+      <div class="tab-pane active" id="tab-field">
+       <table id="table" class="be-list">
+        <thead>
+         <tr>
+          <td class="center" width="30" rowspan="3"><i class="fa fa-sort"></i></td>
+          <td class="center border_left" colspan="3">{{ text_visible }}</td>
+          <td class="center border_left" colspan="2">{{ text_seo_generator }}</td>
+          <td class="center border_left" colspan="2">{{ text_search_replace }}</td>
+          <td class="center border_left">{{ text_rounding_numbers }}</td>
+          <td class="center border_left">{{ text_image_google }}</td>
+          <td class="center border_left" width="1%" rowspan="3"></td>
+          <td class="left" width="1%" rowspan="3">{{ text_field }}</td>
+          <td class="left" width="1%" rowspan="3">{{ text_type }}</td>
+          <td class="left" width="70" rowspan="3">{{ text_size }}</td>
+          <td class="left" rowspan="3">{{ text_name }}</td>
+         </tr>
+         <tr>
+          <td class="center border_left" width="80">{{ tab_filter }}
+           <span class="be-help">[{{ text_tab }}]</span></td>
+          <td class="center" width="80">{{ tab_general }}
+           <span class="be-help">[{{ text_tab }}]</span></td>
+          <td class="center" width="80">{{ text_product }}
+           <span class="be-help">[{{ text_list }}]</span></td>
+          <td class="center border_left" width="80">{{ text_data }}</td>
+          <td class="center" width="80">{{ text_apply_to }}:</td>
+          <td class="center border_left" width="80">{{ text_data }}</td>
+          <td class="center" width="80">{{ text_apply_to }}:</td>
+          <td class="center border_left" width="80">{{ text_apply_to }}:</td>
+          <td class="center border_left" width="80">{{ text_keyword }}</td>
+         </tr>
+         <tr>
+          <td class="center border_left"><input type="checkbox" onclick="$('#tab-field input[name*=\'[enable][filter]\']').prop('checked', this.checked);" /></td>
+          <td class="center"><input type="checkbox" onclick="$('#tab-field input[name*=\'[enable][main]\']').prop('checked', this.checked);" /></td>
+          <td class="center"><input type="checkbox" onclick="$('#tab-field input[name*=\'[enable][product]\']').prop('checked', this.checked);" /></td>
+          <td class="center border_left"><input type="checkbox" onclick="$('#tab-field input[name=\'seo_generator[field][]\']').prop('checked', this.checked);" /></td>
+          <td class="center"><input type="checkbox" onclick="$('#tab-field input[name=\'seo_generator[apply_to][]\']').prop('checked', this.checked);" /></td>
+          <td class="center border_left"><input type="checkbox" onclick="$('#tab-field input[name=\'search_replace[field][]\']').prop('checked', this.checked);" /></td>
+          <td class="center"><input type="checkbox" onclick="$('#tab-field input[name=\'search_replace[apply_to][]\']').prop('checked', this.checked);" /></td>
+          <td class="center border_left"><input type="checkbox" onclick="$('#tab-field input[name=\'rounding_numbers[apply_to][]\']').prop('checked', this.checked);" /></td>
+          <td class="center border_left"><input type="checkbox" onclick="$('#tab-field input[name=\'image_google[keyword][]\']').prop('checked', this.checked);" /></td>
+         </tr>
+        </thead>
+        <tbody>
+         {% for field, parameter in table %}
+         <tr>
+          <td class="drag"></td>
+          <td class="center border_left">
+           {% if parameter['enable']['filter'] is defined %}
+           <input name="table[{{ field }}][enable][filter]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="table[{{ field }}][enable][filter]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if parameter['enable']['main'] is defined %}
+           <input name="table[{{ field }}][enable][main]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="table[{{ field }}][enable][main]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if field == 'description' %}
+           <input type="checkbox" disabled="disabled" />
+           {% else %}
+           {% if field == 'name' %}
+           <input type="checkbox" disabled="disabled" checked="checked" />
+           {% else %}
+           {% if parameter['enable']['product'] is defined %}
+           <input name="table[{{ field }}][enable][product]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="table[{{ field }}][enable][product]" type="checkbox" value="1" />
+           {% endif %}
+           {% endif %}
+           {% endif %}
+          </td>
+          <td class="center border_left">
+           {% if field in seo_generator['field'] %}
+           <input name="seo_generator[field][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="seo_generator[field][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if parameter['type'] == 'char' or parameter['type'] == 'varchar' or parameter['type'] == 'text' or parameter['type'] == 'longtext' %}
+           {% if field in seo_generator['apply_to'] %}
+           <input name="seo_generator[apply_to][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="seo_generator[apply_to][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+           {% else %}
+           <input type="checkbox" disabled="disabled" />
+           {% endif %}
+          </td>
+          <td class="center border_left">
+           {% if field in search_replace['field'] %}
+           <input name="search_replace[field][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="search_replace[field][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if parameter['type'] == 'char' or parameter['type'] == 'varchar' or parameter['type'] == 'text' or parameter['type'] == 'longtext' %}
+           {% if field in search_replace['apply_to'] %}
+           <input name="search_replace[apply_to][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="search_replace[apply_to][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+           {% else %}
+           <input type="checkbox" disabled="disabled" />
+           {% endif %}
+          </td>
+          <td class="center border_left">
+           {% if (parameter['type'] == 'int' or parameter['type'] == 'decimal') and list[field] is not defined %}
+           {% if field in rounding_numbers['apply_to'] %}
+           <input name="rounding_numbers[apply_to][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="rounding_numbers[apply_to][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+           {% else %}
+           <input type="checkbox" disabled="disabled" />
+           {% endif %}
+          </td>
+          <td class="center border_left">
+           {% if field != 'url_alias' and (parameter['type'] == 'char' or parameter['type'] == 'varchar') %}
+           {% if field in image_google['keyword'] %}
+           <input name="image_google[keyword][]" type="checkbox" value="{{ field }}" checked="checked" />
+           {% else %}
+           <input name="image_google[keyword][]" type="checkbox" value="{{ field }}" />
+           {% endif %}
+           {% else %}
+           <input type="checkbox" disabled="disabled" />
+           {% endif %}
+          </td>
+          <td class="center border_left">
+           {% if parameter['table'] == 'pd' or parameter['table'] == 'pt' or field == 'url_alias' %}
+           <img src="view/batch_editor/image/language.png" alt="{{ text_multilanguage }}" title="{{ text_multilanguage }}" style="vertical-align:middle; margin:-3px;" />
+           {% endif %}
+          </td>
+          <td class="left"><b>{{ field }}</b></td>
+          <td class="left">
+           {{ parameter['type'] }}
+           <input name="table[{{ field }}][type]" type="hidden" value="{{ parameter['type'] }}" />
+           <input name="table[{{ field }}][table]" type="hidden" value="{{ parameter['table'] }}" />
+           {% if parameter['calc'] is defined %}
+           <input name="table[{{ field }}][calc]" type="hidden" value="1" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if parameter['size'] is defined %}
+           {{ parameter['size'] }}
+           <input name="table[{{ field }}][size]" type="hidden" value="{{ parameter['size'] }}" />
+           {% endif %}
+           {% if parameter['size_2'] is defined %}
+           ,
+           {{ parameter['size_2'] }}
+           <input name="table[{{ field }}][size_2]" type="hidden" value="{{ parameter['size_2'] }}" />
+           {% endif %}
+          </td>
+          <td class="left">
+           {% if parameter['text'] is iterable %}
+           {% for code, language in languages %}
+           {% if parameter['text'][code] is defined %}
+           <input name="table[{{ field }}][text][{{ code }}]" type="text" value="{{ parameter['text'][code] }}" />
+           {% else %}
+           <input name="table[{{ field }}][text][{{ code }}]" type="text" value="{{ field }}" />
+           {% endif %}
+           <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />
+           &nbsp;&nbsp;
+           {% endfor %}
+           {% else %}
+           {{ parameter['text'] }}
+           {% endif %}
+          </td>
+         </tr>
+         {% endfor %}
+        </tbody>
+       </table>
+      </div>
+      <div class="tab-pane" id="tab-link">
+       <table class="be-list">
+        <thead>
+         <tr>
+          <td class="center" colspan="3">{{ text_visible }}</td>
+          <td class="left" width="10%" rowspan="2">{{ text_name }}</td>
+          <td class="left" rowspan="2">{{ text_description }}</td>
+          <td class="left" width="1%" rowspan="2"></td>
+         </tr>
+         <tr>
+          <td class="center" width="80">{{ text_filter }}
+           <span class="be-help">[{{ text_tab }}]</span></td>
+          <td class="center" width="80">{{ text_link }}
+           <span class="be-help">[{{ text_tab }}]</span></td>
+          <td class="center" width="80">{{ text_product }}
+           <span class="be-help">[{{ text_list }}]</span></td>
+         </tr>
+        </thead>
+        {% for link, data in setting['link'] %}
+        <tbody>
+         <tr>
+          <td class="center">
+           {% if link == 'description' or link == 'store' %}
+           <input type="checkbox" disabled="disabled" />
+           {% else %}
+           {% if data['enable']['filter'] is defined %}
+           <input name="link[{{ link }}][enable][filter]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][filter]" type="checkbox" value="1" />
+           {% endif %}
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if link != 'description' %}
+           {% if data['enable']['link'] is defined %}
+           <input name="link[{{ link }}][enable][link]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][link]" type="checkbox" value="1" />
+           {% endif %}
+           {% else %}
+           <input type="checkbox" disabled="disabled" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if data['enable']['product'] is defined %}
+           <input name="link[{{ link }}][enable][product]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][product]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="left">{{ link }}</td>
+          <td class="left">{{ data['description'] }}</td>
+          <td class="left"></td>
+         </tr>
+        </tbody>
+        {% endfor %}
+        <tbody class="additional_link">
+         <tr class="filter">
+          <td class="left" colspan="3">
+          <td class="left" colspan="3"><b>{{ text_additional }} <em style="color:red;">(Beta)</em></b></td>
+         </tr>
+        </tbody>
+        {% for link, data in setting['additional_link'] %}
+        <tbody class="{{ link }}">
+         <tr>
+          <td class="center">
+           {% if data['enable']['filter'] is defined %}
+           <input name="link[{{ link }}][enable][filter]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][filter]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if data['enable']['link'] is defined %}
+           <input name="link[{{ link }}][enable][link]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][link]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="center">
+           {% if data['enable']['product'] is defined %}
+           <input name="link[{{ link }}][enable][product]" type="checkbox" value="1" checked="checked" />
+           {% else %}
+           <input name="link[{{ link }}][enable][product]" type="checkbox" value="1" />
+           {% endif %}
+          </td>
+          <td class="left">{{ link }}</td>
+          <td class="left">{{ data['description'] }}</td>
+          <td class="center"><a onclick="deteteLink('{{ link }}');" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+         </tr>
+        </tbody>
+        {% endfor %}
+        <tfoot>
+         <tr>
+          <td class="center" colspan="5"></td>
+          <td class="center"><a onclick="addLink();" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+         </tr>
+        </tfoot>
+       </table>
+      </div>
+      <div class="tab-pane" id="tab-filter">
+       <table class="be-list">
+        <thead>
+         <tr>
+          <td class="left" colspan="4">{{ text_additional }}:</td>
+         </tr>
+         <tr>
+          <td class="center" width="1"></td>
+          <td class="left" width="20%">{{ text_table }}</td>
+          <td class="left" width="20%">{{ text_field }}</td>
+          <td class="left">{{ text_description }}</td>
+         </tr>
+        </thead>
+        {% for table, data in filter %}
+        {% for field in data['field'] %}
+        <tbody>
+         <tr>
+          <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+          <td class="left">{{ table }}</td>
+          <td class="left">{{ field }}</td>
+          <td class="left">
+           <input type="hidden" name="filter[{{ table }}][field][]" value="{{ field }}" />
+           {% for code, language in languages %}
+           {% set value = '' %}
+           {% if data['text'][field][code] is defined %}
+           {% set value = data['text'][field][code] %}
+           {% endif %}
+           <input type="text" name="filter[{{ table }}][text][{{ field }}][{{ code }}]" value="{{ value }}" />
+           <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />
+           {% endfor %}
+          </td>
+         </tr>
+        </tbody>
+        {% endfor %}
+        {% endfor %}
+        <tfoot>
+         <tr>
+          <td class="center" width="1"><a onclick="addFilterField();" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+          <td class="center" colspan="3"></td>
+         </tr>
+        </tfoot>
+       </table>
+      </div>
+      <div class="tab-pane" id="tab-multilanguage">
+       <table class="be-list" id="table-multilanguage">
+        <thead>
+         <tr>
+          <td class="left" width="1"></td>
+          <td class="left" width="10%">{{ text_variable }}</td>
+          <td class="left">{{ text_value }}</td>
+         </tr>
+        </thead>
+        {% for variable in variables %}
+        <tbody>
+         <tr>
+          <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+          <td class="left">{{ variable }}</td>
+          <td class="left">
+           {% for code, language in languages %}
+           {% set value = '' %}
+           {% if multilanguage['field'][code][variable] is defined %}
+           {% set value = multilanguage['field'][code][variable] %}
+           {% endif %}
+           <input type="text" name="multilanguage[field][{{ code }}][{{ variable }}]" value="{{ value }}" />
+           <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />
+           {% endfor %}
+          </td>
+         </tr>
+        </tbody>
+        {% endfor %}
+        <tfoot>
+         <tr class="filter">
+          <td class="center"><a onclick="addMultilanguage();" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+          <td class="left" colspan="2">{{ text_variable }}:
+           <input type="text" id="multilanguage-variable" size="50" /></td>
+         </tr>
+        </tfoot>
+       </table>
+      </div>
+      <div class="tab-pane" id="tab-option">
+       <table class="be-form">
+        <tr>
+         <td id="text_activate">
+          {% if activate %}
+          <p><b style="color:green;">{{ success_activate_extension }}</b></p>
+          {% else %}
+          <p><b style="color:red;">{{ error_activate_extension }}</b></p>
+          {% endif %}
+         </td>
+         <td id="button_activate">
+          {% if not activate %}
+          <a class="btn btn-primary" onclick="activate();">{{ button_activate }}</a>
+          {% endif %}
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_counter }}</td>
+         <td>
+          <select name="option[counter]">
+           {% if option['counter'] %}
+           <option value="0">{{ text_no }}</option>
+           <option value="1" selected="selected">{{ text_yes }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_no }}</option>
+           <option value="1">{{ text_yes }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_add_related }}</td>
+         <td>
+          <select name="option[related][add]">
+           {% if option['related']['add'] == 1 %}
+           <option value="1" selected="selected">{{ text_one_side }}</option>
+           <option value="2">{{ text_two_side }}</option>
+           {% else %}
+           <option value="1">{{ text_one_side }}</option>
+           <option value="2" selected="selected">{{ text_two_side }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_del_related }}</td>
+         <td>
+          <select name="option[related][del]">
+           {% if option['related']['del'] == 1 %}
+           <option value="1" selected="selected">{{ text_one_side }}</option>
+           <option value="2">{{ text_two_side }}</option>
+           {% else %}
+           <option value="1">{{ text_one_side }}</option>
+           <option value="2" selected="selected">{{ text_two_side }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_image_size }}</td>
+         <td>
+          <input name="option[image][width]" type="text" value="{{ option['image']['width'] }}" size="3" />
+          &times;
+          <input name="option[image][height]" type="text" value="{{ option['image']['height'] }}" size="3" />
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_view_categories }}</td>
+         <td>
+          <select name="option[category]">
+           {% if option['category'] %}
+           <option value="0">{{ text_list }}</option>
+           <option value="1" selected="selected">{{ text_autocomplete }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_list }}</option>
+           <option value="1">{{ text_autocomplete }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_column_categories }}</td>
+         <td>
+          <select name="option[column_categories]">
+           {% if option['column_categories'] %}
+           <option value="0">{{ text_disabled }}</option>
+           <option value="1" selected="selected">{{ text_enabled }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_disabled }}</option>
+           <option value="1">{{ text_enabled }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_column_attributes }}</td>
+         <td>
+          <select name="option[column_attributes]">
+           {% if option['column_attributes'] %}
+           <option value="0">{{ text_disabled }}</option>
+           <option value="1" selected="selected">{{ text_enabled }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_disabled }}</option>
+           <option value="1">{{ text_enabled }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_column_options }}</td>
+         <td>
+          <select name="option[column_options]">
+           {% if option['column_options'] %}
+           <option value="0">{{ text_disabled }}</option>
+           <option value="1" selected="selected">{{ text_enabled }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_disabled }}</option>
+           <option value="1">{{ text_enabled }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_quick_filter }}</td>
+         <td>
+          <select name="option[quick_filter]">
+           {% if option['quick_filter'] %}
+           <option value="0">{{ text_disabled }}</option>
+           <option value="1" selected="selected">{{ text_enabled }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_disabled }}</option>
+           <option value="1">{{ text_enabled }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_yandex_translate }} {<a href="https://tech.yandex.ru/keys/get/?service=trnsl" target="_blank">Key API</a>}</td>
+         <td><input name="option[yandex_translate_key_api]" size="110" value="{{ option['yandex_translate_key_api'] }}" /></td>
+        </tr>
+        <tr>
+         <td>{{ text_image_google }} {<a href="https://console.developers.google.com/apis/" target="_blank">Key API</a>}</td>
+         <td><input name="option[image_google_key_api]" size="110" value="{{ option['image_google_key_api'] }}" /></td>
+        </tr>
+        <tr>
+         <td>{{ text_image_google }} {<a href="https://cse.google.com/cse/" target="_blank">CX</a>}</td>
+         <td><input name="option[image_google_cx]" size="110" value="{{ option['image_google_cx'] }}" /></td>
+        </tr>
+        <tr>
+         <td>{{ text_image_bing }} {<a href="https://www.microsoft.com/cognitive-services/en-us/subscriptions" target="_blank">Key API</a>}</td>
+         <td><input name="option[image_bing_key_api]" size="110" value="{{ option['image_bing_key_api'] }}" /></td>
+        </tr>
+        <tr>
+         <td>{{ text_dir_image }}</td>
+         <td><input type="text" name="option[dir_image]" value="{{ option['dir_image'] }}" size="110" /></td>
+        </tr>
+        <tr>
+         <td>{{ text_product_image_remove }}</td>
+         <td>
+          <select name="option[product_image_remove]">
+           {% if option['product_image_remove'] %}
+           <option value="0">{{ text_disabled }}</option>
+           <option value="1" selected="selected">{{ text_enabled }}</option>
+           {% else %}
+           <option value="0" selected="selected">{{ text_disabled }}</option>
+           <option value="1">{{ text_enabled }}</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+        <tr>
+         <td>{{ text_option }} - {{ text_price_prefix }}</td>
+         <td><table id="option_price_prefix" class="be-list" style="width:300px; margin:0px;">
+           <thead>
+            <tr>
+             <td class="center"></td>
+             <td class="center">{{ text_value }}</td>
+             <td class="center">{{ text_name }}</td>
+            </tr>
+           </thead>
+           {% set option_price_prefix_row = 0 %}
+           {% for price_prefix in option['option_price_prefix'] %}
+           <tbody>
+            <tr>
+             <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+             <td class="center"><input type="text" name="option[option_price_prefix][{{ option_price_prefix_row }}][value]" value="{{ price_prefix['value'] }}" /></td>
+             <td class="center"><input type="text" name="option[option_price_prefix][{{ option_price_prefix_row }}][name]" value="{{ price_prefix['name'] }}" /></td>
+            </tr>
+           </tbody>
+           {% set option_price_prefix_row = option_price_prefix_row + 1 %}
+           {% endfor %}
+           <tfoot>
+            <tr>
+             <td class="center" width="1"><a class="btn btn-success btn-xs" onclick="addOptionPricePrefix();" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+             <td class="center" colspan="2"></td>
+            </tr>
+           </tfoot>
+          </table></td>
+        </tr>
+        <tr>
+         <td>{{ text_option }} - {{ text_type }}</td>
+         <td>
+          <table id="option_type" class="be-list" style="width:150px; margin:0px;">
+           {% for type in option['option_type'] %}
+           <tbody>
+            <tr>
+             <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+             <td class="center"><input type="text" name="option[option_type][]" value="{{ type }}" /></td>
+            </tr>
+           </tbody>
+           {% endfor %}
+           <tfoot>
+            <tr>
+             <td class="center" width="1"><a class="btn btn-success btn-xs" onclick="addOptionType();" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+             <td class="center"></td>
+            </tr>
+           </tfoot>
+          </table></td>
+        </tr>
+        <tr>
+         <td>{{ text_limit }}</td>
+         <td><table id="limit" class="be-list" style="width:200px; margin:0px;">
+           {% for limit in option['limit'] %}
+           <tbody>
+            <tr>
+             <td class="center"><a onclick="$(this).parents('tbody:first').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+             <td class="center"><input type="text" name="option[limit][]" value="{{ limit }}" /></td>
+            </tr>
+           </tbody>
+           {% endfor %}
+           <tfoot>
+            <tr>
+             <td class="center" width="1"><a class="btn btn-success btn-xs" onclick="addLimit();" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+             <td class="center"></td>
+            </tr>
+           </tfoot>
+          </table></td>
+        </tr>
+        <tr>
+         <td>{{ text_url_alias }}</td>
+         <td>
+          <select name="option[url_alias]">
+           {% if option['url_alias'] %}
+           <option value="0">SELECT</option>
+           <option value="1" selected="selected">CONCAT</option>
+           {% else %}
+           <option value="0" selected="selected">SELECT</option>
+           <option value="1">CONCAT</option>
+           {% endif %}
+          </select>
+         </td>
+        </tr>
+       </table>
+      </div>
+      <div class="tab-pane" id="tab-support">
+       <table class="be-form">
+        <tr>
+         <td>E-mail:</td>
+         <td><a href="mailto:yaroslav-kaverzin@yandex.ru">yaroslav-kaverzin@yandex.ru</a></td>
+        </tr>
+        <tr>
+         <td>Skype:</td>
+         <td><a href="skype:yaroslav-kaverzin?chat">yaroslav-kaverzin@yandex.ru</a></td>
+        </tr>
+        <tr>
+         <td>ICQ:</td>
+         <td><a onclick="retun false;">602250606</a></td>
+        </tr>
+       </table>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+ <script type="text/javascript"><!--//
+$(document).ready(function() {
+	$('#table tbody').tableDnD({
+		onDragClass: 'shadow',
+		dragHandle: '.drag',
+		onDrop: function(table, row) {}
+	});
+});
+
+var option_price_prefix_row = '{{ option_price_prefix_row }}';
+
+function addOptionPricePrefix() {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="center"><input type="text" name="option[option_price_prefix][' + option_price_prefix_row + '][value]" value="" /></td>';
+	html += '  <td class="center"><input type="text" name="option[option_price_prefix][' + option_price_prefix_row + '][name]" value="" /></td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	option_price_prefix_row++;
+	
+	$('#tab-option #option_price_prefix tfoot').before(html);
+}
+
+function addOptionType() {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="center"><input type="text" name="option[option_type][]" /></td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#tab-option #option_type tfoot').before(html);
+}
+
+function addLimit() {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="center"><input type="text" name="option[limit][]" value="" /></td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#tab-option #limit tfoot').before(html);
+}
+
+function addLink() {
+	var link_box = creatDialog('dialog');
+	
+	xhr = $.ajax({type:'GET', dataType:'html', url:'index.php?route=batch_editor/setting/addLink&user_token={{ user_token }}',
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(html) {
+			link_box.find('.modal-body').html(html);
+			link_box.find('.modal-header').append('{{ text_add }}');
+			link_box.modal('show')
+			creatOverlayLoad(false);
+		}
+	});
+}
+
+function saveLink() {
+	xhr = $.ajax({type:'POST', dataType:'json', data:$('#form-link').serialize(), url:'index.php?route=batch_editor/setting/saveLink&user_token={{ user_token }}',
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if (json['success']) {
+				var html = '';
+				var link_ = $('#form-link select[name=\'link[table]\']').val();
+				var description = $('#form-link input[name=\'link[description][' + json['value'] + ']\']').val();
+				
+				$('#tab-link table tbody.' + link_).remove();
+				
+				html += '<tbody class="' + link_ + '">';
+				html += ' <tr>';
+				html += '  <td class="center"><input name="link[' + link_ + '][enable][filter]" type="checkbox" value="1" /></td>';
+				html += '  <td class="center"><input name="link[' + link_ + '][enable][link]" type="checkbox" value="1" /></td>';
+				html += '  <td class="center"><input name="link[' + link_ + '][enable][product]" type="checkbox" value="1" /></td>';
+				html += '  <td class="left">' + link_ + '</td>';
+				html += '  <td class="left">' + description + '</td>';
+				html += '  <td class="center"><a onclick="deteteLink(\'' + link_ + '\');" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+				html += ' </tr>';
+				html += '</tbody>';
+				
+				$('#tab-link table tbody.additional_link').after(html);
+				
+				$('#dialog').modal('hide');
+			}
+			creatOverlayLoad(false);
+			creatMessage(json);
+		}
+	});
+}
+
+function deteteLink(link_) {
+	xhr = $.ajax({type:'POST', dataType:'json', data:'link=' + link_, url:'index.php?route=batch_editor/setting/deleteLink&user_token={{ user_token }}',
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if (json['success']) {
+				$('#tab-link table tbody.' + link_).remove();
+			}
+			
+			creatOverlayLoad(false);
+			creatMessage(json);
+		}
+	});
+}
+
+function addFilterField() {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center">';
+	html += '   <a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a>';
+	html += '  </td>';
+	html += '  <td class="left">';
+	html += '   <select onchange="getFilterField(this);">';
+	html += '    <option value=""></option>';
+	<!--{% for table in tables %}-->
+	html += '    <option value="{{ table }}">{{ table }}</option>';
+	<!--{% endfor %}-->
+	html += '   </select>';
+	html += '  </td>';
+	html += '  <td class="left">';
+	html += '  </td>';
+	html += '  <td class="left">';
+	html += '  </td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#tab-filter table tfoot').before(html);
+}
+
+function getFilterField(this_) {
+	var table = $(this_).val();
+	var field_box = $(this_).parents('td').next('td');
+	var html = '';
+	
+	if (table) {
+		xhr = $.ajax({type:'POST', dataType:'json', data:'table=' + table, url:'index.php?route=batch_editor/setting/getFilterField&user_token={{ user_token }}',
+			beforeSend: function() { field_box.html('<i class="fa fa-spinner fa-spin"></i>'); },
+			success: function(json) {
+				html += '<select name="filter[' + table + '][field][]" onchange="getFilterFieldText(this);" style="min-width:200px;">';
+				html += ' <option value=""></option>';
+				
+				$.each(json, function (index, field) {
+					html += ' <option value="' + field + '">' + field + '</option>';
+				});
+				
+				html += '</select>';
+				
+				field_box.html(html);
+			}
+		});
+	} else {
+		field_box.html('');
+	}
+}
+
+function getFilterFieldText(this_) {
+	var table = $(this_).parents('tbody').find('select:first').val();
+	var field = $(this_).val();
+	var text_box = $(this_).parents('td').next('td');
+	var html = '';
+	
+	if (field) {
+		<!--{% for code, language in languages %}-->
+		html += '<input type="text" name="filter[' + table + '][text][' + field + '][{{ code }}]" />&nbsp;';
+		html += '<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />&nbsp;';
+		<!--{% endfor %}-->
+	}
+	
+	text_box.html(html);
+}
+
+function addMultilanguage() {
+	var html = '';
+	var variable = $('#tab-multilanguage #multilanguage-variable');
+	var value = variable.val();
+	
+	if (!value) {
+		variable.fadeOut(300).fadeIn(300);
+		return false;
+	}
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center" width="1"><a onclick="$(this).parents(\'tbody:first\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="left">' + value + '</td>';
+	html += '';
+	html += '  <td class="left">';
+	<!--{% for code, language in languages %}-->
+	html += '   <input type="text" name="multilanguage[field][{{ code }}][' + value + ']" value="" />&nbsp;';
+	html += '   <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" title="{{ language['name'] }}" />&nbsp;';
+	<!--{% endfor %}-->
+	html += '  </td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#tab-multilanguage #table-multilanguage').append(html);
+	$('#tab-multilanguage #multilanguage-variable').val('');
+}
+
+function activate() {
+	xhr = $.ajax({type:'GET', dataType:'json', url:'index.php?route=batch_editor/setting/activate&user_token={{ user_token }}',
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			creatOverlayLoad(false);
+			creatMessage(json);
+			
+			if (json['success']) {
+				$('#tab-option #text_activate').html('<p><b style="color:green;">' + json['success'] + '</b></p>');
+				$('#tab-option #button_activate').html('');
+			}
+		}
+	});
+}
+//--></script>
+</div>
+{{ footer }}

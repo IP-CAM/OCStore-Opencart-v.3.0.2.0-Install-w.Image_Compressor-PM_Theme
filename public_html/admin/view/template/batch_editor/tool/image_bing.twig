@@ -1,0 +1,255 @@
+<style type="text/css">
+#form-image_bing{{ product_id }} img {
+	vertical-align:middle;
+}
+
+#form-image_bing{{ product_id }} select {
+	margin:3px;
+}
+
+#form-image_bing{{ product_id }} .be-scrollbox {
+	width:100%;
+	height:400px;
+}
+
+#form-image_bing{{ product_id }} .be-scrollbox b {
+	float:left;
+	width:100%;
+	background:#000;
+	color:#FFF;
+	font-weight:bold;
+	font-size:10px;
+	text-align:center;
+	padding:2px 0px 2px 0px;
+}
+
+#form-image_bing{{ product_id }} .be-scrollbox div {
+	width:150px;
+	height:170px;
+	float:left;
+	margin:3px;
+	border:1px solid #CCC;
+	text-align:left;
+	overflow:hidden;
+	background-color:#FFF;
+}
+
+#form-image_bing{{ product_id }} .be-scrollbox span {
+	float:left;
+	width:100%;
+	margin:3px 0px;
+	text-align:center;
+}
+</style>
+{% if product_id %}
+<table class="be-form">
+ <tr>
+  <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+  <td width="99%"><h3>{{ product_name }}</h3></td>
+ </tr>
+</table>
+{% endif %}
+<table class="be-list">
+ <tfoot>
+  <tr>
+   <td class="left" colspan="2">
+    <form id="form-image_bing-data{{ product_id }}">
+     <select name="color">
+      <option value="">&mdash;&nbsp;{{ text_color }}&nbsp;&mdash;</option>
+      <option style="background:linear-gradient(to right, #999, #FFF)" value="Monochrome">Monochrome</option>
+      {% for value in filter['color'] %}
+      <option style="background:{{ value }};" value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="size">
+      <option value="">&mdash;&nbsp;{{ text_size }}&nbsp;&mdash;</option>
+      {% for value in filter['size'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="imageType">
+      <option value="">&mdash;&nbsp;{{ text_image_type }}&nbsp;&mdash;</option>
+      {% for value in filter['imageType'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="imageContent">
+      <option value="">&mdash;&nbsp;{{ text_image_content }}&nbsp;&mdash;</option>
+      {% for value in filter['imageContent'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="aspect">
+      <option value="">&mdash;&nbsp;{{ text_aspect }}&nbsp;&mdash;</option>
+      {% for value in filter['aspect'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="freshness">
+      <option value="">&mdash;&nbsp;{{ text_freshness }}&nbsp;&mdash;</option>
+      {% for value in filter['freshness'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <select name="license">
+      <option value="">&mdash;&nbsp;{{ text_license }}&nbsp;&mdash;</option>
+      {% for value in filter['license'] %}
+      <option value="{{ value }}">{{ value }}</option>
+      {% endfor %}
+     </select>
+     <input type="text" name="width" size="8" placeholder="{{ text_width }}" />
+     &times;
+     <input type="text" name="height" size="8" placeholder="{{ text_height }}" />
+    </form>
+   </td>
+  </tr>
+  <tr>
+   <td class="left" colspan="2">
+    <form id="form-image_bing{{ product_id }}">
+     <p>
+      {{ text_folder }}: <a class="btn btn-danger btn-xs" onclick="resetFolderImageBing('{{ product_id }}');" title="{{ text_reset }}"><i class="fa fa-repeat"></i></a>
+      <select name="image_bing[directory][main]">
+       {% for directory in directories %}
+       <option value="{{ directory }}">{{ directory }}</option>
+       {% endfor %}
+      </select>
+      <a onclick="$('#form-image_bing{{ product_id }} select[name=\'image_bing[directory][main]\']').after(' <input name=\'image_bing[directory][]\' /> <span class=\'separator\'>/</span> ');" class="btn btn-success btn-xs" title="{{ text_add }}"><i class="fa fa-plus"></i></a>
+      <a onclick="$('#form-image_bing{{ product_id }} input[name=\'image_bing[directory][]\']:last').remove(); $('#form-image_bing{{ product_id }} span.separator:last').remove();" class="btn btn-danger btn-xs" title="{{ text_delete }}"><i class="fa fa-minus"></i></a>
+     </p>
+     <p>
+      {% if keyword is defined %}
+      {% set value = keyword %}
+      {% else %}
+      {% set value = '' %}
+      {% endif %}
+      <input name="image_bing[keyword]" type="text" size="100" maxlength="128" value="{{ value }}" />
+      <a class="btn btn-primary" onclick="searchImageBing({{ product_id }});">{{ text_search }}</a>
+     </p>
+     <div class="be-scrollbox">
+     </div>
+     <div style="text-align:center; margin-top:10px;">
+      {{ text_main }} (<span class="image_bing_count_main">0</span>)
+      &nbsp;&nbsp;&nbsp;
+      {{ text_additional }} (<span class="image_bing_count_additional">0</span>)
+     </div>
+    </form></td>
+  </tr>
+  <tr>
+   <td class="center" colspan="2">
+    <a class="btn btn-success" onclick="editTool({{ product_id }}, 'image_bing', 'add');">{{ text_add }}</a>
+    <a class="btn btn-primary" onclick="resetImageBing({{ product_id }});">{{ text_reset }}</a>
+    {% if product_id %}
+    <a class="btn btn-danger" onclick="$('#dialogTool').modal('hide');">&times;</a>
+    {% endif %}
+   </td>
+  </tr>
+ </tfoot>
+</table>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#form-image_bing{{ product_id }} input[name=\'image_bing[keyword]\']').keypress(function(e) {
+		if (e.keyCode == 13) {
+			searchImageBing('{{ product_id }}');
+			return false;
+		}
+	}).focus();
+	
+	$('#form-image_bing{{ product_id }}').delegate('input[type=\'checkbox\']', 'click', function() {
+		if ($(this).attr('name') == 'image_bing[data][main]') {
+			$('#form-image_bing{{ product_id }} input[name=\'image_bing[data][main]\']').not(this).removeAttr('checked');
+			$(this).parents('div:first').children('input[name=\'image_bing[data][]\']').removeAttr('checked');
+		} else {
+			$(this).parents('div:first').children('input[name=\'image_bing[data][main]\']').removeAttr('checked');
+		}
+		
+		$('#form-image_bing{{ product_id }} .image_bing_count_main').html($('#form-image_bing{{ product_id }} input[name=\'image_bing[data][main]\']:checked').length);
+		$('#form-image_bing{{ product_id }} .image_bing_count_additional').html($('#form-image_bing{{ product_id }} input[name=\'image_bing[data][]\']:checked').length);
+	});
+});
+
+if (typeof searchImageBing != 'function') {
+	function searchImageBing(product_id) {
+		$('#form-image_bing' + product_id + ' .be-scrollbox').html('');
+		$('#form-image_bing' + product_id + ' .image_bing_count_main').html('0');
+		$('#form-image_bing' + product_id + ' .image_bing_count_additional').html('0');
+		
+		getImageBing(product_id);
+	}
+}
+
+if (typeof resetImageBing != 'function') {
+	function resetImageBing(product_id) {
+		$('#form-image_bing' + product_id + ' input[type=\'checkbox\']').removeAttr('checked');
+		$('#form-image_bing' + product_id + ' .image_bing_count_main').html('0');
+		$('#form-image_bing' + product_id + ' .image_bing_count_additional').html('0');
+	}
+}
+
+if (typeof getImageBing != 'function') {
+	function getImageBing(product_id) {
+		var html = '';
+		var keyword = encodeURIComponent ($('#form-image_bing' + product_id + ' input[name=\'image_bing[keyword]\']').val());
+		
+		if (!keyword) {
+			return false;
+		}
+		
+		xhr = $.ajax({type:'GET', dataType:'json', data:'q=' + keyword + '&' + $('#form-image_bing-data' + product_id).serialize(), url:'index.php?route=batch_editor/tool/getImageBing&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(json){
+				if (json['warning']) {
+					creatMessage(json);
+				} else {
+					$.each(json['value'], function(index, value) {
+						html = '<div>';
+						html += ' <label><input name="image_bing[data][main]" type="checkbox" value="' + value['link'] + '"> {{ text_main }}</label><br />';
+						html += ' <label><input name="image_bing[data][]" type="checkbox" value="' + value['link'] + '"> {{ text_additional }}</label><br />';
+						html += ' <b>' + value['width'] + 'x' + value['height'] + '</b>';
+						html += ' <a class="colorbox' + product_id + '" href="' + value['link'] + '">';
+						html += ' <img src="' + value['thumbnailLink'] + '" alt="" title="" style="max-width:100%; height:auto;">';
+						html += ' </a>';
+						html += '</div>';
+						
+						$('#form-image_bing' + product_id + ' .be-scrollbox').append(html);
+						//$('#form-image_bing' + product_id + ' .be-scrollbox').scrollTop(9999);
+						$('#form-image_bing' + product_id + ' .colorbox' + product_id).colorbox({overlayClose:true, opacity:0.5, rel:'colorbox' + product_id, innerWidth:'80%', innerHeight:'80%'});
+					});
+				}
+				
+				creatOverlayLoad(false);
+			}
+		});
+	}
+}
+
+if (typeof resetFolderImageBing != 'function') {
+	function resetFolderImageBing(product_id) {
+		xhr = $.ajax({type:'GET', dataType:'json', url:'index.php?route=batch_editor/tool/getImageDirectories&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(json) {
+				var html = '<select name="image_bing[directory][main]">';
+				
+				$.each(json, function(index, folder) {
+					html += '<option value="' + folder + '">' + folder + '</option>';
+				});
+				
+				html += '</select>';
+				
+				$('#form-image_bing' + product_id + ' select[name=\'image_bing[directory][main]\']').replaceWith(html);
+				
+				creatOverlayLoad(false);
+			}
+		});
+	}
+}
+
+<!--{% if keyword is defined and keyword %}-->
+searchImageBing('{{ product_id }}');
+<!--{% endif %}-->
+//--></script>
+
+<!--{% if product_id > 0 %}-->
+<script type="text/javascript"><!--
+$('#dialogTool').find('.modal-header').append('{{ text_image_bing }}');
+//--></script>
+<!--{% endif %}-->

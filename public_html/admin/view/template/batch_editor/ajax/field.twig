@@ -1,0 +1,102 @@
+{% if setting['type'] == 'char' or setting['type'] == 'varchar' or setting['type'] == 'text' %}
+{% set is_text = true %}
+{% else %}
+{% set is_text = false %}
+{% endif %}
+
+{% if setting['type'] == 'date' or setting['type'] == 'datetime' %}
+{% set is_date = true %}
+{% else %}
+{% set is_date = false %}
+{% endif %}
+
+{% if list %}
+<table class="be-list" style="margin:-6px;">
+ <tbody>
+  <tr>
+   <td class="center" width="1">
+    <select name="table[{{ table }}][{{ field }}][not]">
+     <option value=""></option>
+     <option value="NOT">not</option>
+    </select>
+   </td>
+   <td class="left">
+    <div class="be-scrollbox" style="margin:-5px;">
+     {% for value in list %}
+     <div><label><input type="checkbox" name="table[{{ table }}][{{ field }}][value][]" value="{{ value[field] }}" />{{ value['name'] }}</label></div>
+     {% endfor %}
+    </div>
+   </td>
+  </tr>
+ </tbody>
+</table>
+{% else %}
+{% if setting['type'] == 'tinyint' %}
+<select name="table[{{ table }}][{{ field }}][value]">
+ {% if field == 'status' %}
+ <option value="0">{{ text_disabled }}</option>
+ <option value="1">{{ text_enabled }}</option>
+ {% else %}
+ <option value="0">{{ text_no }}</option>
+ <option value="1">{{ text_yes }}</option>
+ {% endif %}
+</select>
+{% else %}
+
+{% if setting['type'] == 'date' %}
+{% set class = 'date' %}
+{% else %}
+{% set class = '' %}
+{% endif %}
+
+{% if setting['type'] == 'datetime' %}
+{% set class = 'datetime' %}
+{% endif %}
+<table class="be-list" style="margin:-6px;">
+ <tbody>
+  <tr>
+   <td class="left" width="10%">
+    {% if setting['type'] != 'text' %}
+    <label><input name="table[{{ table }}][{{ field }}][duplicate]" type="checkbox" onchange="checkFilterDuplicate(this);" value="1" /> {{ text_duplicate }}</label>
+    {% endif %}
+   </td>
+   <td class="center" width="1">
+    <select name="table[{{ table }}][{{ field }}][not]">
+     <option value=""></option>
+     <option value="NOT">not</option>
+    </select>
+   </td>
+   <td class="center" width="1">
+    <select name="table[{{ table }}][{{ field }}][action]">
+     <option value="=">=</option>
+     <option value="LIKE%">[{{ text_value }}]%</option>
+     <option value="%LIKE">%[{{ text_value }}]</option>
+     <option value="%LIKE%">%[{{ text_value }}]%</option>
+    </select>
+   </td>
+   <td class="left" width="1">
+    <select name="table[{{ table }}][{{ field }}][is]" onchange="getFilterTextareaRange(this);" style="min-width:200px;">
+     <option value="value">{{ text_value }}</option>
+     {% if not is_date %}
+     <option value="array">{{ text_value_by_space }}</option>
+     {% endif %}
+     {% if not is_text %}
+     <option value="range">{{ text_range }}</option>
+     {% endif %}
+    </select>
+   </td>
+   <td class="left">
+    {% if is_date %}
+    <input name="table[{{ table }}][{{ field }}][value]" type="text" class="{{ class }}" />
+    {% else %}
+    <textarea name="table[{{ table }}][{{ field }}][value]" style="height:22px; vertical-align:middle; width:50%;"></textarea>
+    {% endif %}
+    {% if not is_text %}
+    <span style="display:none;">&gt;<input type="text" name="table{{ table }}][{{ field }}][value_min]" class="{{ class }}" disabled="disabled" />&mdash;<input type="text" name="table[{{ table }}][{{ field }}][value_max]" class="{{ class }}" disabled="disabled" />&lt;</span>
+    {% endif %}
+   </td>
+  </tr>
+ </tbody>
+</table>
+{% endif %}
+{% endif %}

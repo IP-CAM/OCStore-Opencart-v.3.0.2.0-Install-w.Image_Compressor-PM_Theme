@@ -1,0 +1,12 @@
+<select class="select-{{ field }}-{{ id }}">
+ {% if field == 'manufacturer_id' or field == 'tax_class_id' or field == 'asticker_id' %}
+ <option value="0"></option>
+ {% endif %}
+ {% for value in data %}
+ {% if value['name'] == name %}
+ <option value="{{ value[field] }}" selected="selected">{{ value['name'] }}</option>
+ {% else %}
+ <option value="{{ value[field] }}">{{ value['name'] }}</option>
+ {% endif %}
+ {% endfor %}
+</select>

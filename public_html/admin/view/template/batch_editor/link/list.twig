@@ -1,0 +1,205 @@
+<form id="form-{{ link }}{{ product_id }}">
+ {% if product_id == -1 %}
+ <span class="be-help">
+ <label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label>
+ </span>
+ {% if fields['main_category'] is defined %}
+ <span class="be-help">
+ <label><input name="none[main_category]" type="checkbox" value="1" onclick="inputFormDisabled(this);" /> {{ text_not_contain }} > {{ description['main_category'] }}</label>
+ </span>
+ {% endif %}
+ <br />
+ <span class="be-help">
+ <label>
+  <input name="has[{{ link }}]" type="checkbox" value="1" />
+  {{ text_strictly_selected }}
+ </label>
+ </span>
+ <span class="be-help">
+ <label>
+  <input name="count[{{ link }}]" type="checkbox" value="1" />
+  {{ text_with_regard_number }}
+ </label>
+ </span>
+ <p></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ {% set cols = '<col width="50" />' %}
+ {% for field, setting in fields %}
+ {% if field != 'product_id' %}
+ {% if setting['extra'] == 'auto_increment' %}
+ {% set cols = cols~'<col width="1%" />' %}
+ {% elseif field == 'main_category' %}
+ {% set cols = cols~'<col width="20%" />' %}
+ {% else %}
+ {% set cols = cols~'<col />' %}
+ {% endif %}
+ {% endif %}
+ {% endfor %}
+ <div class="be-scrollhead">
+  <table class="be-list">
+   {{ cols }}
+   <thead>
+    <tr>
+     <td class="center"></td>
+     {% for field, setting in fields %}
+     {% if field != 'product_id' %}
+     {% if setting['extra'] == 'auto_increment' %}
+     <td class="center">{{ description[field] }}</td>
+     {% elseif field == 'main_category' %}
+     <td class="center">
+      {{ description[field] }}<br />
+      <label>
+       <span class="be-help">
+        {% if main_category %}
+        <input id="no_checked" type="radio" value="0" onchange="selectTableRow(this);" />
+        {% else %}
+        <input id="no_checked" type="radio" value="0" onchange="selectTableRow(this);" checked="checked" />
+        {% endif %}
+        {{ text_none }}
+       </span>
+      </label>
+     </td>
+     {% else %}
+     <td class="left">{{ description[field] }}</td>
+     {% endif %}
+     {% endif %}
+     {% endfor %}
+    </tr>
+   </thead>
+  </table>
+ </div>
+ <div class="be-scrollcontent">
+  <table class="be-list">
+   {{ cols }}
+   {% set row = 0 %}
+   {% if list %}
+   {% for key, array in list %}
+   <tbody>
+    <tr>
+     {% for field, setting in fields %}
+     {% if field != 'product_id' %}
+     {% if field == 'main_category' %}
+     <td class="center">
+      {% if array['category_id'] == main_category %}
+      <input name="{{ link }}[{{ row }}][{{ field }}]" type="radio" value="1" onclick="selectTableRow(this);" checked="checked" />
+      {% else %}
+      <input name="{{ link }}[{{ row }}][{{ field }}]" type="radio" value="1" onclick="selectTableRow(this);" />
+      {% endif %}
+     </td>
+     {% else %}
+     {% if names[array[field]] is defined %}
+     <td class="center enabled">
+      <input name="{{ link }}[{{ row }}][{{ field }}]" type="checkbox" value="{{ array[field] }}" onchange="checkedTableTd(this);" checked="checked" />
+     </td>
+     {% else %}
+     <td class="center disabled">
+      <input name="{{ link }}[{{ row }}][{{ field }}]" type="checkbox" value="{{ array[field] }}" onchange="checkedTableTd(this);" />
+     </td>
+     {% endif %}
+     <td class="left">
+      {% if array['name'] is defined %}
+      {{ array['name'] }}
+      {% endif %}
+     </td>
+     {% endif %}
+     {% endif %}
+     {% endfor %}
+    </tr>
+   </tbody>
+   {% set row = row + 1 %}
+   {% endfor %}
+   {% else %}
+   <tbody class="no_results">
+    <tr>
+     <td class="center" colspan="{{ fields|length }}">
+      <div class="alert alert-warning" align="center">
+       {{ text_no_results }}
+      </div>
+     </td>
+    </tr>
+   </tbody>
+   {% endif %}
+  </table>
+ </div>
+ <div class="be-scrollfoot">
+  <table class="be-list">
+   <tfoot>
+    <tr>
+     <td class="center" colspan="{{ fields|length }}">
+      {% if product_id > -1 %}
+      <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+      <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+      <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+      {% endif %}
+      {% if product_id == -1 %}
+      <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+      <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+      {% elseif product_id == 0 %}
+      <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+      <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+      <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+      {% elseif product_id > 0 %}
+      <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+      <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+      <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+      <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+      {% endif %}
+     </td>
+    </tr>
+   </tfoot>
+  </table>
+ </div>
+</form>
+
+{% if fields['main_category'] is defined %}
+<script type="text/javascript"><!--
+$('#form-{{ link }}{{ product_id }} input[type=\'radio\']:checked').parents('tbody').addClass('selected');
+//--></script>
+{% endif %}
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+<script type="text/javascript"><!--
+$('#form-{{ link }}{{ product_id }} .be-list tbody tr td:nth-child(1) :checkbox').click(function(e) {
+	var table = $('#form-{{ link }}{{ product_id }} .be-list');
+	var lastRow = table.data('lastRow');
+	var thisRow = $(this).parents('tbody:first').index();
+	
+	if (lastRow !== undefined && e.shiftKey) {
+		var start = lastRow < thisRow ? lastRow : thisRow;
+		var end = lastRow > thisRow ? lastRow : thisRow;
+		
+		table.find('tbody tr td:nth-child(1) :checkbox').slice(start, end).prop('checked', true).trigger('change');
+	}
+	
+	table.data('lastRow', thisRow);
+});
+//--></script>
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

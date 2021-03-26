@@ -1,0 +1,109 @@
+{% set summernote = {} %}
+<form id="form-description{{ product_id }}">
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <ul class="nav nav-tabs">
+  {% for language in languages %}
+  <li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a>
+</li>
+  {% endfor %}
+ </ul>
+ <div class="tab-content">
+  {% for language in languages %}
+  <div class="tab-pane" id="language{{ language['language_id'] }}">
+   <table class="be-form">
+    {% for field, parameter in table %}
+    <tr>
+     <td width="17%">
+      {{ parameter['description'] }}
+      {% if field == 'name' %}
+      <span class="be-required">*</span>
+      {% endif %}
+     </td>
+     <td width="83%">
+      {% set form_value = '' %}
+      {% if data[language['language_id']][field] is defined %}
+      {% set form_value = data[language['language_id']][field] %}
+      {% endif %}
+      {% if parameter['type'] == 'text' %}
+      {% if field == 'description' %}
+      <textarea id="{{ link }}_{{ language['language_id'] }}_{{ field }}">{{ form_value }}</textarea>
+      <textarea name="{{ link }}[{{ language['language_id'] }}][{{ field }}]" style="display:none;">{{ form_value }}</textarea>
+      {% set summernote = summernote|merge(['description_'~language['language_id']~'_'~field]) %}
+      {% else %}
+      <textarea name="{{ link }}[{{ language['language_id'] }}][{{ field }}]" style="width:98%; height:50px;">{{ form_value }}</textarea>
+      {% endif %}
+      {% else %}
+      {% set size = 0 %}
+      {% if parameter['size'] is defined %}
+      {% set size = parameter['size'] %}
+      {% endif %}
+      {% if parameter['size_1'] is defined %}
+      {% set size = parameter['size'] + parameter['size_1'] + 1 %}
+      {% endif %}
+      {% if size %}
+      <input type="text" name="description[{{ language['language_id'] }}][{{ field }}]" maxlength="{{ size }}" size="120" value="{{ form_value }}" />
+      {% else %}
+      <input type="text" name="description[{{ language['language_id'] }}][{{ field }}]" size="120" value="{{ form_value }}" />
+      {% endif %}
+      {% endif %}
+     </td>
+    </tr>
+    {% endfor %}
+   </table>
+  </div>
+  {% endfor %}
+ </div>
+ <table class="be-list">
+  <tfoot>
+   <tr>
+    <td class="center">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="summernoteToTextarea('{{ product_id }}'); editLink('description', 'upd', '{{ product_id }}');">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a></td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#form-description{{ product_id }} .nav-tabs li:first').addClass('active');
+	$('#form-description{{ product_id }} .tab-pane:first').addClass('active');
+	
+	<!--{% for summernote_id in summernote %}-->
+	$('#form-description{{ product_id }} #{{ summernote_id }}').summernote({height:300, focus:true});
+	<!--{% endfor %}-->
+});
+
+function summernoteToTextarea(product_id) {
+	<!--{% for summernote_id in summernote %}-->
+	$('#form-description' + product_id + ' #{{ summernote_id }}').parent().find('textarea').html($('#form-description' + product_id + ' #{{ summernote_id }}').summernote('code'));
+	<!--{% endfor %}-->
+}
+//--></script>
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

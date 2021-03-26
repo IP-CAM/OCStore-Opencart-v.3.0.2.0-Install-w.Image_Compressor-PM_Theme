@@ -1,0 +1,57 @@
+<form id="form-rounding_numbers{{ product_id }}">
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="center" width="90%">{{ text_rounding }}:</td>
+    <td class="left" width="10%">{{ text_apply_to }}:</td>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td class="center" rowspan="2">
+     <div style="margin-bottom:50px;">
+      <label><input type="radio" name="rounding_numbers[rule]" value="1" checked="checked" /> {{ text_under_rule }}</label>
+      &nbsp;&nbsp;&nbsp;
+      <label><input type="radio" name="rounding_numbers[rule]" value="2" /> {{ text_in_big_way }}</label>
+     </div>
+     <table class="be-list">
+      <tbody>
+       <tr>
+        {% for i in -10..6 %}
+        <td class="center">
+         {% if i == 0 %}
+         <label><span style="font-size:18px;">.</span><br /><input type="radio" name="rounding_numbers[rounding]" value="{{ i }}" checked="checked" /></label>
+         {% else %}
+         <label><span style="font-size:18px;">{{ i|abs }}</span><br /><input type="radio" name="rounding_numbers[rounding]" value="{{ i }}" /></label>
+         {% endif %}
+        </td>
+        {% endfor %}
+       </tr>
+      </tbody>
+     </table>
+    </td>
+    <td class="left">
+     <b>{{ text_main }}</b>
+     <div class="be-scrollbox">
+      {% for field, description in apply_to['product'] %}
+      <div><label><input type="checkbox" name="rounding_numbers[apply_to][product][]" value="{{ field }}" /> {{ description }}</label></div>
+      {% endfor %}
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td class="left">
+     <b>{{ text_optional }}</b>
+     <div class="be-scrollbox">
+      <div><label><input type="checkbox" name="rounding_numbers[apply_to][product_special][]" value="price" /> {{ text_special_price }}</label></div>
+      <div><label><input type="checkbox" name="rounding_numbers[apply_to][product_discount][]" value="price" /> {{ text_discount_price }}</label></div>
+      <div><label><input type="checkbox" name="rounding_numbers[apply_to][product_option_value][]" value="price" /> {{ text_option_price }}</label></div>
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td class="center" colspan="2"><a class="btn btn-success" onclick="editTool({{ product_id }}, 'rounding_numbers', 'upd');">{{ text_edit }}</a></td>
+   </tr>
+  </tfoot>
+ </table>
+</form>

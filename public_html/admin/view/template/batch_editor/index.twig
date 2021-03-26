@@ -1,0 +1,1619 @@
+{{ header }}
+
+<script type="text/javascript"><!--
+var text = '';
+var text_no_results = '{{ text_no_results }}';
+var user_token = '{{ user_token }}';
+var no_image = '{{ no_image }}';
+var current_filter = 0;
+var current_tool = '';
+var current_product_id = 'filter';
+--></script>
+<style type="text/css">
+<!--{% for language in languages %}-->
+.language_{{ language.language_id }} {
+	background-image:url('language/{{ language.code }}/{{ language.code }}.png');
+	background-position:top left;
+	background-repeat:no-repeat;
+}
+<!--{% endfor %}-->
+</style>
+{{ column_left }}
+<div id="content">
+ <div class="page-header">
+  <div class="container-fluid">
+   <div class="pull-right">
+    <a onclick="location = '{{ url_setting }}';" data-toggle="tooltip" title="{{ button_setting }}" class="btn btn-primary"><i class="fa fa-wrench"></i></a>
+    <a onclick="clearCache();" data-toggle="tooltip" title="{{ button_clear_cache }}" class="btn btn-danger"><i class="fa fa-eraser"></i></a>
+    <a onclick="location = '{{ url_cancel }}';" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+   </div>
+   <h1>{{ heading_title }}</h1>
+   <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+   </ul>
+  </div>
+ </div>
+ <div class="container-fluid">
+  <div class="panel panel-default">
+   <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-list"></i> {{ heading_title }}</h3>
+   </div>
+   <div class="panel-body">
+    <div style="margin-bottom:10px;">
+     <label><input id="batch_edit" type="checkbox" /><em class="current_filter"></em></label><br />
+     <label><input id="product_update" type="checkbox" /><em>{{ text_product_update }}</em></label>
+    </div>
+    <ul class="nav nav-tabs">
+     <li class="active"><a href="#tab-empty" data-toggle="tab">&nbsp;-&nbsp;</a></li>
+     <li><a href="#tab-filter" data-toggle="tab">{{ button_filter }}</a></li>
+     <li><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+     <li><a href="#tab-link" data-toggle="tab">{{ tab_link }}</a></li>
+     <li><a href="#tab-tool" data-toggle="tab">{{ tab_tool }}</a></li>
+    </ul>
+    <div class="tab-content">
+     <!-- start empty -->
+     <div class="tab-pane active" id="tab-empty">
+      <div class="alert alert-info text-center">{{ notice_html_editor }}</div>
+      <table class="be-list">
+       <tfoot>
+        <tr>
+         <td class="left" width="50%"><a class="btn btn-success btn-sm" onclick="getFormProductAdd();" title="{{ button_insert }}" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
+          &nbsp;&nbsp;&nbsp;
+          <a class="btn btn-danger btn-sm" onclick="productAddCopyDelete('delete');" title="{{ button_remove }}" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a></td>
+         <td class="right" width="50%">{{ text_quantity_copies }}
+          <input id="quantity" type="text" value="{{ quantity_copies_products }}" size="3" style="vertical-align:middle;" />
+          &nbsp;
+          <a class="btn btn-primary btn-sm" onclick="productAddCopyDelete('copy');" title="{{ button_copy }}" data-toggle="tooltip"><i class="fa fa-copy"></i></a>
+         </td>
+        </tr>
+       </tfoot>
+      </table>
+     </div>
+     <!-- end empty -->
+     
+     <!-- start filter -->
+     <div class="tab-pane" id="tab-filter">
+      <form id="form-filter">
+       <table class="be-list" style="margin-bottom:0px;">
+        {% if filter_product %}
+        <thead>
+         <tr class="filter">
+          <td class="left" colspan="3">{{ tab_general }}</td>
+         </tr>
+        </thead>
+        <tbody id="table-product">
+         <tr class="filter">
+          <td class="center" width="20"><a onclick="addField('product');" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+          <td class="center" colspan="2"></td>
+         </tr>
+        </tbody>
+        {% endif %}
+        {% if filter_product_description %}
+        <thead>
+         <tr class="filter">
+          <td class="left" colspan="3">{{ text_description }}</td>
+         </tr>
+        </thead>
+        <tbody id="table-product_description">
+         <tr class="filter">
+          <td class="center" width="20"><a onclick="addField('product_description');" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+          <td class="center" colspan="2"></td>
+         </tr>
+        </tbody>
+        {% endif %}
+        {% if filter_additional %}
+        <thead>
+         <tr class="filter">
+          <td class="left" colspan="3">{{ text_additional }}</td>
+         </tr>
+        </thead>
+        <tbody id="table-additional">
+         <tr class="filter">
+          <td class="center" width="20"><a onclick="addField('additional');" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+          <td class="center" colspan="2"></td>
+         </tr>
+        </tbody>
+        {% endif %}
+       </table>
+      </form>
+      <table class="be-list" style="margin-top:0px; border-top:none;">
+       <tbody>
+        <tr class="filter">
+         <td class="left">
+          {% for link, description in filter_link %}
+          <div id="dialog-{{ link }}" style="display:none;"></div>
+          <a class="filter_link_{{ link }}" onclick="getLinkFilter('{{ link }}');">{{ description }}</a>
+          {% endfor %}
+         </td>
+         <td class="center" width="15%">
+          <div class="btn-group" id="filter_column">
+           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> {{ text_column }} <b class="label label-success"></b> <span class="caret"></span> </button>
+           <ul class="dropdown-menu" onclick="event.stopPropagation();">
+            <div class="be-scrollbox">
+             {% set count_column = 0 %}
+             {% for field, data in setting %}
+             {% if field != 'description' %}
+             <div>
+              <label>
+               {% if field == 'name' %}
+               <input type="checkbox" name="filter_column[]" value="{{ field }}" checked="checked" disabled="disabled" />
+               {% set count_column = count_column + 1 %}
+               {% else %}
+               {% if data['enable']['product'] is defined %}
+               <input type="checkbox" name="filter_column[]" value="{{ field }}" checked="checked" />
+               {% set count_column = count_column + 1 %}
+               {% else %}
+               <input type="checkbox" name="filter_column[]" value="{{ field }}" />
+               {% endif %}
+               {% endif %}
+               {{ data['description'] }}
+              </label>
+             </div>
+             {% endif %}
+             {% endfor %}
+            </div>
+           </ul>
+          </div>
+         </td>
+         <td class="center" width="15%">
+          <form id="form_filter_language">
+           <b>{{ text_language_description }}</b><br />
+           {% for language in languages %}
+           <label>
+            {% if language.language_id == language_id %}
+            <input type="radio" name="filter_language_id" value="{{ language.language_id }}" onchange="getProduct('&page=1');" checked="checked" />
+            {% else %}
+            <input type="radio" name="filter_language_id" value="{{ language.language_id }}" onchange="getProduct('&page=1');" />
+            {% endif %}
+            <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}" />
+           </label>
+           {% endfor %}
+          </form>
+         </td>
+         <td class="center" width="15%">
+          <form id="form_filter_store">
+           <b>{{ text_store }}</b><br />
+           <select name="filter_store_id" onchange="getProduct('&page=1');" >
+            {% for store in stores %}
+            <option value="{{ store['store_id'] }}">{{ store['name'] }}</option>
+            {% endfor %}
+           </select>
+          </form>
+         </td>
+         <td class="center" width="15%">
+          <form id="form_filter_limit">
+           <b>{{ text_limit }}</b><br />
+           <select name="filter_limit" onchange="getProduct('&page=1');">
+            {% for limit in option.limit %}
+            <option value="{{ limit }}">{{ limit }}</option>
+            {% endfor %}
+           </select>
+          </form>
+         </td>
+        </tr>
+        <tr class="filter">
+         <td class="center" colspan="5">
+          <a class="btn btn-primary" onclick="setFilter(0);">{{ button_filter }}</a>
+          <a class="btn btn-danger" onclick="resetFilter();">{{ button_reset }}</a>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+      <script type="text/javascript"><!--
+	$(document).ready(function() {
+		$('#tab-filter #form-filter').bind('keypress', function(e) {
+			if (e.keyCode == 13) { setFilter(0); }
+		});
+		
+		$('form').bind('keypress', function(e) {
+			if (e.keyCode == 13) { return false; }
+		});
+		
+		$('#tab-filter #filter_column .dropdown-toggle b').html('{{ count_column }}');
+		
+		$('#tab-filter #filter_column input[type=\'checkbox\']').bind('click', function(e) {
+			var count = $('#filter_column input[type=\'checkbox\']:checked').length;
+			
+			if (count > 0) {
+				$('#filter_column .dropdown-toggle b').removeClass('label-danger').addClass('label-success').html(count);
+			} else {
+				$('#filter_column .dropdown-toggle b').removeClass('label-success').addClass('label-danger').html(count);
+			}
+		});
+	});
+	
+	function addField(table) {
+		var html = '';
+		
+		html += '<tbody class="temp"><tr class="">';
+		html += '<td class="center"><a onclick="$(this).parents(\'tbody\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+		html += '<td class="left" width="1%">';
+		html += '<select onchange="getField(this);">';
+		html += '<option value=""></option>';
+		
+		if (table == 'product') {
+			<!--{% for field in filter_product %}-->
+			html += '<option value="product|{{ field }}">{{ setting[field]["description"] }}</option>';
+			<!--{% endfor %}-->
+		}
+		
+		if (table == 'product_description') {
+			<!--{% for field in filter_product_description %}-->
+			html += '<option value="product_description|{{ field }}">{{ setting[field]["description"] }}</option>';
+			<!--{% endfor %}-->
+		}
+		
+		if (table == 'additional') {
+			<!--{% for table, fields in filter_additional %}-->
+			<!--{% for field, text in fields %}-->
+			html += '<option value="{{ table }}|{{ field }}">{{ text }}</option>';
+			<!--{% endfor %}-->
+			<!--{% endfor %}-->
+		}
+		
+		html += '</select>';
+		html += '</td>';
+		html += '<td class="left"></td>';
+		html += '</tr></tbody>';
+		
+		$('#tab-filter #form-filter #table-' + table + '').before(html);
+	}
+	
+	function getField(this_) {
+		var data = $(this_).val();
+		var field_box = $(this_).parents('tr').children('td:last');
+		
+		if (data) {
+			xhr = $.ajax({type:'POST', dataType:'html', data:'data=' + data, url:'index.php?route=batch_editor/index/getField&user_token=' + user_token,
+				beforeSend: function() { field_box.html('<i class="fa fa-spinner fa-spin"></i>'); },
+				success: function(html) {
+					field_box.html(html);
+					creatDateTime();
+				}
+			});
+		} else {
+			field_box.html('');
+		}
+	}
+	
+	function filter() {
+		getProduct('&page=1');
+	}
+	
+	function getLinkFilter(link_) {
+		if ($('#dialog-' + link_).html()) {
+			$('#dialog-' + link_).modal('show');
+		} else {
+			var link_box = creatDialog('dialog-' + link_);
+			
+			xhr = $.ajax({type:'POST', dataType:'html', data:'link=' + link_ + '&product_id=-1', url:'index.php?route=batch_editor/index/getLink&user_token=' + user_token,
+				beforeSend: function() { creatOverlayLoad(true); },
+				success: function(html) {
+					link_box.find('.modal-body').html(html);
+					link_box.modal('show');
+					creatOverlayLoad(false);
+				}
+			});
+		}
+	}
+	
+	function setLinkFilter(link_) {
+		$('#dialog-' + link_).modal('hide');
+		$('#tab-filter a.filter_link_' + link_).addClass('link_select');
+	}
+	
+	function delLinkFilter(link_) {
+		$('#dialog-' + link_).html('').modal('hide');
+		$('#tab-filter a.filter_link_' + link_).removeClass('link_select');
+	}
+	
+	function getFilterUrl() {
+		var url = 'filter_language_id=' + getLanguageId() + '&filter_store_id=' + getStoreId();
+		
+		var data = getSelectedUrl(0);
+		
+		if (data) { url += data; }
+		
+		$('#filter_column input[type=\'checkbox\']:checked').each(function(index, element) {
+			url += '&' + encodeURIComponent($(element).attr('name')) + '=' + encodeURIComponent($(element).val());
+		});
+		
+		data = $('#product_box .pagination b').html();
+		
+		if (data) { url += '&page=' + data; }
+		
+		data = $('select[name=\'filter_limit\']').val();
+		
+		if (data) { url += '&limit=' + data; }
+		
+		if ($('#product_box .sort a.asc').attr('href')) {
+			url += '&sort=' + $('#product_box .sort a.asc').attr('href') + '&order=ASC';
+		} else if ($('#product_box .sort a.desc').attr('href')) {
+			url += '&sort=' + $('#product_box .sort a.desc').attr('href') + '&order=DESC';
+		} else {
+			url += '&sort=pd.name&order=ASC';
+		}
+		
+		if (current_filter == 0) {
+			data = $('#tab-filter #form-filter').serialize();
+			
+			if (data) { url += '&' + data; }
+			
+			<!--{% for link, description in filter_link %}-->
+			data = $('#form-{{ link }}-1').serialize();
+			
+			if (data) { url += '&' + data;}
+			<!--{% endfor %}-->
+		} else {
+			$('#product .filter input').each(function(index, element) {
+				var name = $(element).attr('name');
+				var value = $(element).val();
+				
+				if (name && value) {
+					url += '&' + name + '=' + encodeURIComponent(value);
+				}
+			});
+			
+			$('#product .filter select').each(function(index, element) {
+				var name = $(element).attr('name');
+				var value = $(element).val();
+				
+				if (name && value != '*') {
+					url += '&' + name + '=' + encodeURIComponent(value);
+				}
+			});
+		}
+		
+		return url;
+	}
+	
+	function getFilterTextareaRange(this_) {
+		var td = $(this_).parents('td:first').next('td:first');
+		
+		if ($(this_).val() == 'range') {
+			td.children('[name*=\'[value]\']').attr('disabled', 'disabled').css({'display':'none'});
+			td.children('span').css({'display':'inline'});
+			td.find('[name*=\'[value_min]\'], [name*=\'[value_max]\']').removeAttr('disabled');
+		} else {
+			td.find('[name*=\'[value_min]\'], [name*=\'[value_max]\']').attr('disabled', 'disabled');
+			td.children('span').css({'display':'none'});
+			td.children('[name*=\'[value]\']').removeAttr('disabled').css({'display':'inline'});
+		}
+	}
+	
+	function checkFilterDuplicate(this_) {
+		if ($(this_).prop('checked')) {
+			$(this_).parents('tbody:first').find('input[type=\'text\'], select, textarea').attr('disabled', 'disabled');
+		} else {
+			$(this_).parents('tbody:first').find('input[type=\'text\'], select, textarea').removeAttr('disabled');
+		}
+	}
+	
+	function setTextFilter() {
+		if (current_filter == 0) {
+			$('.current_filter').html('{{ text_batch_edit }} - {{ text_current_main }}');
+		} else {
+			$('.current_filter').html('{{ text_batch_edit }} - {{ text_current_quickly }}');
+		}
+	}
+	
+	function setFilter(current) {
+		current_filter = current;
+		setTextFilter();
+		filter();
+	}
+	
+	function resetFilter() {
+		$('#tab-filter select option').removeAttr('selected');
+		
+		$('#tab-filter #form-filter tbody.temp').remove();
+		
+		<!--{% for link, description in filter_link %}-->
+		$('#dialog-{{ link }}').html('');
+		<!--{% endfor %}-->
+		
+		$('#tab-filter a[class^=\'filter_link_\']').removeClass('link_select');
+		
+		//$('#tab-filter #filter_column input[type=\'checkbox\']').prop('checked', false);
+		
+		//filter_column.forEach(function(value) {
+			//$('#tab-filter #filter_column input[type=\'checkbox\'][value=\'' + value + '\']').prop('checked', true);
+		//});
+		
+		//$('#tab-filter #filter_column .dropdown-toggle b').html('(' + filter_column.length + ')');
+		
+		setFilter(0);
+	}
+	
+	function resetQuickFilter() {
+		$('#product .filter input').each(function(index, element) {
+			$(element).val('');
+		});
+		
+		$('#product .filter select').each(function(index, element) {
+			$(element).children('option').removeAttr('selected');
+		});
+		
+		setFilter(1);
+	}
+	//--></script>
+     </div>
+     <!-- end filter -->
+     
+     <!-- start main -->
+     <div class="tab-pane" id="tab-general">
+      <div class="select_box">
+       <select onchange="$('.form-hidden').hide(); $('#form-product-' + $(this).val()).fadeIn(500);">
+        <option value="">{{ text_none }}</option>
+        {% for field, parameter in edit_field %}
+        <option value="{{ field }}">{{ setting[field]['description'] }}</option>
+        {% endfor %}
+       </select>
+      </div>
+      {% for field, parameter in edit_field %}
+      {% if field == 'description' %}
+      <form class="form-hidden" id="form-product-description">
+       <table class="be-list">
+        <tfoot>
+         <tr>
+          <td class="left" width="50%"><textarea name="product_description" style="width:98%; height:150px;"></textarea></td>
+          <td class="left"><a class="btn btn-success" onclick="editProduct(0, '{{ field }}');">{{ text_edit }}</a></td>
+         </tr>
+        </tfoot>
+       </table>
+      </form>
+      {% else %}
+      <form class="form-hidden" id="form-product-{{ field }}">
+       <table class="be-list">
+        <tfoot>
+         <tr>
+          {% if field == 'image' %}
+          <td class="center" width="1%">
+           <div class="image">
+            <img src="{{ no_image }}" height="{{ option['image']['height'] }}" width="{{ option['image']['width'] }}" />
+            <input data-table="product" data-field="image" data-product_id="0" type="hidden" name="product_image" />
+            <a class="btn btn-success btn-xs" onclick="getImageManager(this)" title="{{ text_path }}"><i class="fa fa-upload"></i></a>&nbsp;<a class="btn btn-danger btn-xs" title="{{ text_clear }}" onclick="$(this).parent().find('img, input').prop({'src':no_image, 'value':''});"><i class="fa fa-trash-o"></i></a>
+           </div>
+          </td>
+          {% else %}
+          <td class="left" width="30%">
+           {% if list[field] is defined %}
+           <select name="product_{{ field }}">
+            {% if list[field]['zero'] is defined %}
+            <option value="0">{{ text_none }}</option>
+            {% endif %}
+            {% for value in parameter['list'] %}
+            <option value="{{ value[field] }}">{{ value['name'] }}</option>
+            {% endfor %}
+           </select>
+           {% else %}
+           {% if parameter['type'] == 'tinyint' %}
+           {% if field == 'status' %}
+           <select name="product_{{ field }}">
+            <option value="0">{{ text_disabled }}</option>
+            <option value="1">{{ text_enabled }}</option>
+           </select>
+           {% else %}
+           <select name="product_{{ field }}">
+            <option value="0">{{ text_no }}</option>
+            <option value="1">{{ text_yes }}</option>
+           </select>
+           {% endif %}
+           {% else %}
+           {% if parameter['calc'] is defined %}
+           <select name="calculate">
+            {% for value in calculate %}
+            <option value="{{ value['action'] }}">{{ value['name'] }}</option>
+            {% endfor %}
+           </select>
+           &nbsp;&nbsp;&nbsp;
+           {% endif %}
+           {% set class = '' %}
+           {% if parameter['type'] == 'date' or parameter['type'] == 'datetime' %}
+           {% set class = parameter['type'] %}
+           {% endif %}
+           <input class="{{ class }}" type="text" name="product_{{ field }}" />
+           {% endif %}
+           {% endif %}
+          </td>
+          {% endif %}
+          <td class="left"><a class="btn btn-success" onclick="editProduct(0, '{{ field }}');">{{ text_edit }}</a></td>
+         </tr>
+        </tfoot>
+       </table>
+      </form>
+      {% endif %}
+      {% endfor %}
+     </div>
+     <!-- end main -->
+     
+     <!-- start link -->
+     <div class="tab-pane" id="tab-link">
+      <div class="select_box">
+       <select onchange="getLink(0, $(this).val());">
+        <option value="">{{ text_none }}</option>
+        {% for link, description in edit_link %}
+        <option value="{{ link }}">{{ description }}</option>
+        {% endfor %}
+       </select>
+      </div>
+      <div id="link-box">
+      </div>
+     </div>
+     <!-- end link -->
+     
+     <!-- start tool -->
+     <div class="tab-pane" id="tab-tool">
+      <div class="select_box">
+       <select onchange="getTool(0, $(this).val());">
+        <option value="">{{ text_none }}</option>
+        <option value="option_price">{{ text_option_price }}</option>
+        <option value="seo_generator">{{ text_seo_generator }}</option>
+        <option value="search_replace">{{ text_search_replace }}</option>
+        <option value="image_google">{{ text_image_google }}</option>
+        <option value="image_google_auto">{{ text_image_google_auto }}</option>
+        <option value="image_bing">{{ text_image_bing }}</option>
+        <option value="image_bing_auto">{{ text_image_bing_auto }}</option>
+        <option value="yandex_translate">{{ text_yandex_translate }}</option>
+        <option value="rounding_numbers">{{ text_rounding_numbers }}</option>
+        <option value="lost_image">{{ text_lost_image }}</option>
+       </select>
+      </div>
+      <div id="tool-box">
+      </div>
+     </div>
+     <!-- end tool -->
+    </div>
+    <div id="product_box"></div>
+    <div id="javascript"></div>
+   </div>
+  </div>
+ </div>
+ <a class="btn btn-default go_up shadow" onclick="$('html, body').animate({scrollTop:0},800);" title="{{ text_up }}"><i class="fa fa-arrow-up fa-3x"></i></a>
+<script type="text/javascript"><!--
+var quick_edit = 0;
+var image_directory = false;
+var filter_column = [];
+var column = [];
+var batch_edit = [];
+var status = 0;
+
+function autocompleteProductCopyData(product_id) {
+	$('#product-copy-data-product_name-' + product_id).autocomplete({
+		delay: 0,
+		source: function(request, response) {
+			xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/product/autocomplete&user_token=' + user_token + '&filter_name=' +  encodeURIComponent(request),
+				success: function(json) {
+					response($.map(json, function(item) {
+						return { label:item['name'], value:item['product_id'] }
+					}));
+				}
+			});
+		},
+		'select': function(item) {
+			$('#product-copy-data-product_name-' + product_id).val(item['label']);
+			$('#product-copy-data-product_id-' + product_id).val(item['value']);
+			
+			return false;
+		}
+	});
+}
+
+function copyProductData(product_id, link_) {
+	var data = 'copy_product_id=' + $('#product-copy-data-product_id-' + product_id).val() + '&link=' + link_;
+	
+	if (product_id > 0) {
+		data += '&selected[]=' + product_id;
+	} else {
+		data += getSelectedUrl(0);
+	}
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/index/productCopyData&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if (json['success']) {
+				if (product_id > 0) {
+					getLink(product_id, link_);
+				} else {
+					creatOverlayLoad(false);
+				}
+				
+				<!--{% if option['counter'] %}-->
+				getProductCount(product_id, link_);
+				<!--{% endif %}-->
+				if (enableField('price')) {
+					if (link_ == 'special') { getProductPrice(product_id, 'product_special'); }
+					if (link_ == 'discount') { getProductPrice(product_id, 'product_discount'); }
+				}
+				if (link_ == 'description') { getProductDescription(product_id, 'description'); }
+				
+				<!--{% if option['column_categories'] %}-->
+				if (link_ == 'category') { getLinkToColumn(product_id, 'product_to_category') };
+				<!--{% endif %}-->
+				
+				<!--{% if option['column_attributes'] %}-->
+				if (link_ == 'attribute') { getLinkToColumn(product_id, 'product_attribute') };
+				<!--{% endif %}-->
+				
+				<!--{% if option['column_options'] %}-->
+				if (link_ == 'option') { getLinkToColumn(product_id, 'product_option') };
+				<!--{% endif %}-->
+				
+				getProductDateModified(product_id);
+			} else {
+				creatOverlayLoad(false);
+			}
+			creatMessage(json);
+		}
+	});
+}
+
+function listProductLink(product_id, link_, direction) {
+	if (direction == 'next') {
+		var next_product_id = $('#product input[name=\'selected[]\'][value=' + product_id + ']').parents('tbody:first').next('tbody').find('input[name=\'selected[]\']').val();
+	} else {
+		var next_product_id = $('#product input[name=\'selected[]\'][value=' + product_id + ']').parents('tbody:first').prev('tbody').find('input[name=\'selected[]\']').val();
+	}
+	
+	if (next_product_id != undefined) {
+		getLink(next_product_id, link_);
+	}
+}
+
+function getImageManager($this) {
+	$('.image_manager').remove();
+	
+	xhr = $.ajax({type:'GET', dataType:'html', url:'index.php?route=batch_editor/data/getImageManager&user_token=' + user_token,
+		success: function(html) { $($this).after(html); }
+	});
+}
+
+function selectRowInv() {
+	$('#product tbody input[name=\'selected[]\']').each(function(index, element) {
+		if (element.checked) {
+			$(element).removeAttr('checked').parents('tr').removeClass('selected');
+		} else {
+			$(element).prop('checked', 'checked').parents('tr').addClass('selected');
+		}
+	});
+}
+
+function clearCache() {
+	xhr = $.ajax({type:'GET', dataType:'json', url:'index.php?route=batch_editor/tool/clearCache&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) { creatMessage(json); creatOverlayLoad(false); }
+	});
+}
+
+function creatJoystick() {
+	$('.joystick').remove();
+	
+	if ($('#product').outerWidth() > $('#product_box').outerWidth()) {
+		var html = '<div class="joystick shadow"><a data-direction="left" class="btn btn-default"><i class="fa fa-arrow-left fa-3x"></i></a>&nbsp;&nbsp;&nbsp;<a data-direction="right" class="btn btn-default"><i class="fa fa-arrow-right fa-3x"></i></a></div>';
+		
+		$('#product_box').prepend(html);
+		
+		$('.joystick').hover(
+			function() { $(this).animate({'opacity':'1.0'}, 300); },
+			function() { $(this).animate({'opacity':'0.5'}, 300); }
+		);
+		
+		$('.joystick a').click(function() {
+			var this_ = $(this);
+			var width = $('#product_box').outerWidth();
+			var scroll_left = $('#product_box').scrollLeft();
+			
+			if (this_.attr('data-direction') == 'left') {
+				$('#product_box').animate({'scrollLeft':(scroll_left - width)}, 700);
+			} else {
+				$('#product_box').animate({'scrollLeft':(scroll_left + width)}, 700);
+			}
+		});
+	}
+}
+
+function productAddCopyDelete(action) {
+	var data = '';
+	var url = 'index.php?route=batch_editor/index/productAddCopyDelete&user_token=' + user_token;
+	
+	if (action == 'add') {
+		data = $('#productAdd').serialize() + '&action=add';
+	}
+	
+	if (action == 'copy') {
+		data = 'action=copy&quantity=' + $('#tab-empty #quantity').val() + getSelectedUrl(0);
+	}
+	
+	if (action == 'delete') {
+		data = 'action=delete' + getSelectedUrl(0);
+		
+		if (!confirm('{{ button_remove }}?')) { return false; }
+		
+		if ($('#batch_edit').prop('checked')) {
+			setEditProductId(data, url);
+			
+			return false;
+		}
+	}
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/index/productAddCopyDelete&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if (json['success'] && (action == 'delete' || action == 'copy')) {
+				getProduct('&page=' + $('#product_box .pagination b').html());
+			} else {
+				creatOverlayLoad(false);
+			}
+			creatMessage(json);
+		}
+	});
+}
+
+function getFormProductAdd() {
+	var form_box = creatDialog('dialogLink');
+	
+	xhr = $.ajax({type:'GET', dataType:'html', url:'index.php?route=batch_editor/index/getFormProductAdd&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(html) {
+			form_box.find('.modal-body').html(html);
+			form_box.modal('show');
+			
+			creatOverlayLoad(false);
+		}
+	});
+}
+
+function getProduct(data) {
+	xhr = $.ajax({type:'POST', dataType:'html', data:getFilterUrl() + data, url:'index.php?route=batch_editor/index/getProduct&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); $('#product_box').fadeOut('fast'); },
+		success: function(html) {
+			$('#product_box').html(html).fadeIn('slow');
+			
+			<!--{% if option['column_categories'] %}-->
+			getLinkToColumn(-1, 'product_to_category');
+			<!--{% endif %}-->
+			<!--{% if option['column_attributes'] %}-->
+			getLinkToColumn(-1, 'product_attribute');
+			<!--{% endif %}-->
+			<!--{% if option['column_options'] %}-->
+			getLinkToColumn(-1, 'product_option');
+			<!--{% endif %}-->
+			
+			if (enableField('price')) {
+				getProductPrice(-1, 'product_special');
+				getProductPrice(-1, 'product_discount');
+			}
+			
+			<!--{% if option['counter'] %}-->
+			getProductCount(-1, 0);
+			<!--{% else %}-->
+			creatOverlayLoad(false);
+			<!--{% endif %}-->
+			
+			creatJoystick();
+			creatProductClone();
+		}
+	});
+}
+
+function getLink(product_id, link_) {
+	$('.modal-backdrop').remove();
+	$('.bootstrap-datetimepicker-widget').remove();
+	
+	if (product_id) {
+		var link_box = creatDialog('dialogLink');
+	} else {
+		var link_box = $('#tab-link #link-box');
+	}
+	
+	if (link_) {
+		var data = 'link=' + link_ + '&product_id=' + product_id + '&language_id=' + getLanguageId();
+		
+		xhr = $.ajax({type:'POST', dataType:'html', data:data, url:'index.php?route=batch_editor/index/getLink&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(html) {
+				if (product_id) {
+					link_box.find('.modal-body').html(html);
+					link_box.modal('show');
+				} else {
+					link_box.html(html);
+				}
+				creatOverlayLoad(false);
+			}
+		});
+	} else { link_box.html(''); }
+}
+
+function getTool(product_id, tool) {
+	if (product_id > 0) {
+		var tool_box = creatDialog('dialogTool');
+	} else {
+		var tool_box = $('#tab-tool #tool-box');
+	}
+	
+	if (tool) {
+		var data = 'product_id=' + product_id + '&tool=' + tool + '&language_id=' + getLanguageId();
+		
+		xhr = $.ajax({type:'POST', dataType:'html', data:data, url:'index.php?route=batch_editor/tool/getTool&user_token=' + user_token,
+			beforeSend: function() { creatOverlayLoad(true); },
+			success: function(html) {
+				if (product_id) {
+					tool_box.find('.modal-body').html(html);
+					tool_box.modal('show');
+				} else {
+					tool_box.html(html);
+				}
+				creatOverlayLoad(false);
+			}
+		});
+	} else {
+		tool_box.html('');
+	}
+}
+
+function getProductPrice(product_id, price) {
+	var data = '&price=' + price + getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getProductPrice&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, value) {
+				if (value) {
+					var span = $('#product span.input-price-' + product_id);
+					var percent = -(100 - ((value * 100) / span.html())).toFixed(2);
+					if (!isFinite(percent)) { percent = 0; }
+					value += '<div>[' + percent + '%]</div>';
+				}
+				$('#product .em-' + price + '-' + product_id).html(value);
+			});
+		}
+	});
+}
+
+function getProductCount(product_id, link_) {
+	var data = '&links[]=' + link_ + getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getProductCount&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, data) { $.each(data, function(link_, value) { $('.' + link_ + '_count_' + product_id).html('(' + value + ')'); }); });
+			
+			if (link_ == 0) {
+				$('#overlay, #messageLoad').fadeOut('fast');
+			}
+			
+			creatProductClone();
+		}
+	});
+}
+
+function getProductDateModified(products) {
+	var data = '';
+	if (products) {
+		data += '&products[]=' + products;
+	} else {
+		$('#product_box input[name=\'selected[]\']').each(function(index, element) {
+			data += '&products[]=' + $(element).val();
+		});
+	}
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getProductDateModified&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, value) { $('em.date_modified_' + product_id).html(value); });
+		}
+	});
+}
+
+function getProductData(product_id, field) {
+	var data = 'field=' + field + '&language_id=' + getLanguageId() + '&store_id=' + getStoreId() + getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getProductData&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, value) {
+				if (field == 'image') {
+					$('#product .image input[data-product_id=\'' + product_id + '\']').val(value['image']).parents('div:first').find('img').attr('src', value['thumb']);
+				} else {
+					$('#product span[class*=-' + field + '-' + product_id + ']').fadeOut().html(value).css({'border':'1px solid green', 'border-radius':'2px'}).fadeIn(700);
+					
+					validateField(field, product_id, value);
+					
+					if (field == 'price') {
+						getProductPrice(0, 'product_special');
+						getProductPrice(0, 'product_discount');
+					}
+				}
+			});
+			
+			creatProductClone();
+		}
+	});
+}
+
+function getProductDescription(selected, link_) {
+	var data = 'language_id=' + getLanguageId() + getSelectedUrl(selected);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getProductDescription&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, data) {
+				$.each(data, function(field, value) {
+					var insert = false;
+					
+					if (enableField(field)) {
+						if (link_ == 'seo_generator' || link_ == 'search_replace' || link_ == 'yandex_translate') {
+							if ($('#tab-tool #form-' + link_ + selected + ' input[value=\'' + field + '\']').prop('checked')) { insert = true; }
+						} else {
+							insert = true;
+						}
+					}
+					
+					if (insert) {
+						validateField(field, product_id, value);
+						$('#product span[class*=-' + field + '-' + product_id + ']').fadeOut().html(value).css({'border':'1px solid green', 'border-radius':'2px'}).fadeIn();
+					}
+				});
+			});
+			
+			creatProductClone();
+		}
+	});
+}
+
+function getLinkToColumn(product_id, link_) {
+	var data = 'link=' + link_ + getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/data/getLinkToColumn&user_token=' + user_token,
+		success: function(json) {
+			$.each(json, function(product_id, html) {
+				$('#product_box td.column-' + link_ + '-' + product_id + ' div').html(html);
+			});
+			
+			creatJoystick();
+			creatProductClone();
+		}
+	});
+}
+
+function BatchEditPause(this_) {
+	if (status == 1) {
+		status = 0;
+		$(this_).html('{{ text_continue }}');
+	} else {
+		status = 1;
+		$(this_).html('{{ text_pause }}');
+		BatchEditStart();
+	}
+}
+
+function BatchEditStop() {
+	xhrAbort();
+	status = 0;
+	batch_edit = [];
+	
+	if (current_product_id == 'filter') {
+		getProduct('&page=1');
+	} else {
+		if (current_tool == 'image_google_auto' || current_tool == 'image_bing_auto') {
+			getProductData(0, 'image');
+			<!--{% if option['counter'] %}-->
+			getProductCount(0, 'image');
+			<!--{% endif %}-->
+			getProductDateModified(0);
+			creatProductClone();
+		}
+		
+		creatOverlayLoad(false);
+	}
+}
+
+function BatchEditStart() {
+	xhr = $.ajax({type:'POST', dataType:'json', data:batch_edit['data'], url:batch_edit['url'],
+		success: function(json) {
+			if (json['success']) {
+				if (json['value']) { setDataToForm(0, json['value']); }
+				
+				var total = parseInt ($('#messageLoad .progress-bar').attr('aria-valuemax'));
+				var value = parseInt ($('#messageLoad .progress-bar').attr('aria-valuenow')) + json['count'];
+				var width = parseInt ((value * 100) / total);
+				
+				$('#messageLoad .current_count').html(value);
+				$('#messageLoad .progress-bar').attr('aria-valuenow', value).html(width + '%').css({'width':width + '%'});
+				
+				if (status == 1) { setTimeout (function() { BatchEditStart(); }, 500); }
+			} else {
+				if ((json['warning'] && json['count']) || json['attention']) {
+					creatOverlayLoad(false);
+					creatMessage(json);
+				} else {
+					status = 0;
+					$('#messageLoad .progress').remove();
+					$('#messageLoad .button_pause').remove();
+					$('#messageLoad .button_stop').html('&times;');
+					$('#messageLoad').prepend('<div class="alert alert-success">{{ success_edit_product }}</div>');
+				}
+			}
+		}
+	});
+}
+
+function setDataToForm(product_id, data) {
+	var box = $('#form-' + current_tool + product_id + ' .data');
+	
+	if (data instanceof Array && box.is('table')) {
+		$.each(data, function (index, array) {
+			var html = '<tbody>';
+			
+			$.each(array, function (field, value) { html += '<td class="left">' + value + '</td>'; });
+			
+			html += '</tbody>';
+			
+			box.append(html);
+		});
+	}
+}
+
+function setEditProductId(data, url) {
+	if ((current_tool == 'image_google_auto' || current_tool == 'image_bing_auto') && $('#batch_edit').prop('checked') == false) {
+		current_product_id = 'array';
+		
+		var data_ = getSelectedUrl(0) + '&type=array';
+	} else {
+		current_product_id = 'filter';
+		
+		var data_ = getFilterUrl() + '&type=filter';
+		
+		if (!confirm ($('.current_filter').html())) {
+			return false;
+		}
+	}
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data_, url:'index.php?route=batch_editor/index/setEditProductId&user_token=' + user_token,
+		beforeSend: function() {
+			creatOverlayLoad(true);
+		},
+		success: function(json) {
+			if (json['count'] > 0) {
+				var html = '';
+				
+				html += '<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="' + json['count'] + '"></div></div>';
+				
+				html += '<div style="margin-top:0px;">';
+				html += ' <b style="color:#FFF;"><span class="current_count">0</span> {{ text_from }} ' + json['count'] + '</b><br />';
+				html += ' <span class="btn btn-primary button_pause" onclick="BatchEditPause(this);">{{ text_pause }}</span>';
+				html += ' <span class="btn btn-danger button_stop" onclick="BatchEditStop();">{{ text_stop }}</span>';
+				html += '</div>';
+				
+				$('#messageLoad').html(html);
+				
+				batch_edit = {'data':data + '&batch_edit=1', 'url':url};
+				status = 1;
+				
+				BatchEditStart();
+			} else {
+				creatMessage({'warning':'{{ error_empty_product }}'});
+				creatOverlayLoad(false);
+			}
+		}
+	});
+}
+
+function editProduct(product_id, field) {
+	var data = 'field=' + field + '&' + $('#form-product-' + field).serialize() + '&language_id=' + getLanguageId() + '&store_id=' + getStoreId();
+	var url = 'index.php?route=batch_editor/index/editProduct&user_token=' + user_token;
+	
+	if ($('#batch_edit').prop('checked')) {
+		setEditProductId(data, url);
+		return false;
+	}
+	
+	data += getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:url,
+		beforeSend:function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if ($('#product_update').prop('checked')) {
+				if (json['success']) {
+					getProduct('');
+				} else {
+					creatOverlayLoad(false);
+				}
+			} else {
+				if (json['success']) {
+					if (enableField(field)) { getProductData(0, field); }
+					getProductDateModified(0);
+				}
+				creatOverlayLoad(false);
+			}
+			creatMessage(json);
+			creatJoystick();
+		}
+	});
+}
+
+function editLink(link_, action, product_id) {
+	var data = 'link=' + link_ + '&action=' + action + '&' + $('#form-' + link_ + product_id).serialize();
+	var url = 'index.php?route=batch_editor/index/editLink&user_token=' + user_token;
+	
+	if ($('#batch_edit').prop('checked') && product_id == 0) {
+		setEditProductId(data, url);
+		return false;
+	}
+	
+	data += getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:url,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if ($('#product_update').prop('checked') && product_id == 0) {
+					if (json['success']) {
+						getProduct('');
+					} else {
+						creatOverlayLoad(false);
+					}
+			} else {
+				if (json['success']) {
+					<!--{% if option['counter'] %}-->
+					getProductCount(product_id, link_);
+					<!--{% endif %}-->
+					if (enableField('price')) {
+						if (link_ == 'special') { getProductPrice(product_id, 'product_special'); }
+						if (link_ == 'discount') { getProductPrice(product_id, 'product_discount'); }
+					}
+					if (link_ == 'description') { getProductDescription(product_id, 'description'); }
+					
+					<!--{% if option['column_categories'] %}-->
+					if (link_ == 'category') { getLinkToColumn(product_id, 'product_to_category') };
+					<!--{% endif %}-->
+					
+					<!--{% if option['column_attributes'] %}-->
+					if (link_ == 'attribute') { getLinkToColumn(product_id, 'product_attribute') };
+					<!--{% endif %}-->
+					
+					<!--{% if option['column_options'] %}-->
+					if (link_ == 'option') { getLinkToColumn(product_id, 'product_option') };
+					<!--{% endif %}-->
+					
+					getProductDateModified(product_id);
+				}
+				creatOverlayLoad(false);
+			}
+			creatMessage(json);
+			creatJoystick();
+		}
+	});
+}
+
+function editTool(product_id, tool, action) {
+	current_tool = tool;
+	
+	var data = 'tool=' + tool + '&action=' + action + '&' + $('#form-' + tool + product_id).serialize() + '&language_id=' + getLanguageId() + '&store_id=' + getStoreId();
+	var url = 'index.php?route=batch_editor/tool/editTool&user_token=' + user_token;
+	
+	if (($('#batch_edit').prop('checked') && product_id == 0) || tool == 'image_google_auto' || tool == 'image_bing_auto') {
+		setEditProductId(data, url);
+		return false;
+	}
+	
+	data += getSelectedUrl(product_id);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:url,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if ($('#product_update').prop('checked') && product_id == 0) {
+				if (json['success']) {
+					getProduct('');
+				} else {
+					creatOverlayLoad(false);
+				}
+			} else {
+				if (json['success']) {
+					if (tool == 'image_google' || tool == 'image_bing') {
+						getProductData(product_id, 'image');
+						getProductCount(product_id, 'image');
+					}
+					if (tool == 'seo_generator' || tool == 'search_replace') {
+						getProductDescription(product_id, tool);
+						
+						$.each($('#form-' + tool + product_id + ' input[name=\'' + tool + '[apply_to][p][]\']:checked'), function(index, element) {
+							getProductData(product_id, $(element).val());
+						});
+					}
+					if (tool == 'yandex_translate') {
+						getProductDescription(product_id, tool);
+					}
+					if (tool == 'rounding_numbers') {
+						$.each($('#form-' + tool + product_id + ' input[name=\'' + tool + '[apply_to][product][]\']:checked'), function(index, element) {
+							getProductData(product_id, $(element).val());
+						});
+					}
+					if (tool == 'lost_image') {
+						getProductCount(0, 'image');
+					}
+					if (tool == 'option_price') {
+						getLinkToColumn(0, 'product_option');
+					}
+					if (json['value']) { setDataToForm(product_id, json['value']); }
+					getProductDateModified(0);
+				}
+				creatOverlayLoad(false);
+			}
+			creatMessage(json);
+			creatJoystick();
+		}
+	});
+}
+
+function relatedToProduct(product_id) {
+	var data = 'link=related&action=add&selected[]=' + product_id;
+	$('#product input[name=\'selected[]\']:checked').each(function(index, element) { data += '&related[]=' + $(element).val(); });
+	
+	xhr = $.ajax({type:'POST', dataType:'json', data:data, url:'index.php?route=batch_editor/index/editLink&user_token=' + user_token,
+		beforeSend:function() { creatOverlayLoad(true); },
+		success: function(json) {
+			if (json['success']) {
+				getProductCount(product_id, 'related');
+				getProductDateModified(product_id);
+				<!--{% if option['related']['add'] == 2 %}-->
+				getProductCount(0, 'related');
+				getProductDateModified(0);
+				<!--{% endif %}-->
+			}
+			creatMessage(json);
+			creatOverlayLoad(false);
+		}
+	});
+}
+
+function relatedToForm(form) {
+	var count = 0;
+	
+	$('#product input[name=\'selected[]\']:checked').each(function(index, element) {
+		var product_id = $(element).val();
+		var product_name = $('#product span.input-name-' + product_id).html();
+		
+		$('#' + form + ' #related' + product_id).remove();
+		$('#' + form + ' #related').append('<div id="related' + product_id + '"><a onclick="$(this).parent(\'div\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;&nbsp;' + product_name + '<input type="hidden" name="related[]" value="' + product_id + '" /></div>');
+		
+		count++;
+	});
+	
+	if (count == 0) {
+		creatMessage({'warning':'{{ error_empty_product }}'});
+	}
+}
+
+function htmlspecialchars(html) {
+	html = html.replace(/&/g, "&amp;");
+	html = html.replace(/"/g, "&quot;");
+	html = html.replace(/</g, "&lt;");
+	html = html.replace(/>/g, "&gt;");
+	return html;
+}
+
+function validateField(field, id, value) {
+	if (field == 'status') {
+		if (value == 0 || value == '{{ text_disabled }}') {
+			$('#product .' + 'td_' + field + id).removeClass('enabled').addClass('disabled');
+		} else {
+			$('#product .' + 'td_' + field + id).removeClass('disabled').addClass('enabled');
+		}
+	} else if (field == 'quantity') {
+		if (value <= 0) {
+			$('#product .' + 'td_' + field + id).removeClass('quantity').addClass('quantity_0');
+		} else {
+			$('#product .' + 'td_' + field + id).removeClass('quantity_0').addClass('quantity');
+		}
+	} else {
+		if (!value) {
+			$('#product .' + 'td_' + field + id).addClass('attention');
+		} else {
+			$('#product .' + 'td_' + field + id).removeClass('attention');
+		}
+	}
+}
+
+function enableField(field) {
+	return ($('#product thead input[name=\'' + field + '-visible\']').val()) ? true : false;
+}
+
+function saveTemplate(template, prefix) {
+	xhr = $.ajax({type:'POST', dataType:'json', data:$('#form-' + template + prefix).serialize() + '&template=' + template, url:'index.php?route=batch_editor/template/saveTemplate&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success:function(json) { creatMessage(json); creatOverlayLoad(false); }
+	});
+}
+
+function getTemplates(template, product_id) {
+	var template_box = creatDialog('dialogTemplate');
+	
+	xhr = $.ajax({type:'POST', dataType:'html', data:'template=' + template + '&product_id=' + product_id, url:'index.php?route=batch_editor/template/getTemplates&user_token=' + user_token,
+		success:function(html) {
+			$('#dialogTemplate').find('.modal-body').html(html);
+			$('#dialogTemplate').modal('show').on('hidden.bs.modal', function(e) {
+				if ($('.modal.in').length) {
+					$(document.body).addClass('modal-open');
+				}
+			});
+		}
+	});
+}
+
+function getSelectedUrl(product_id) {
+	var data = '';
+	
+	if (product_id > 0) {
+		data += '&selected[]=' + product_id;
+	} else if (product_id == 0) {
+		$('#product_box input[name=\'selected[]\']:checked').each(function(index, element) { data += '&selected[]=' + $(element).val(); });
+	} else {
+		$('#product_box input[name=\'selected[]\']').each(function(index, element) { data += '&selected[]=' + $(element).val(); });
+	}
+	
+	return data;
+}
+
+function getLanguageId() {
+	return $('#tab-filter input[name=\'filter_language_id\']:checked').val();
+}
+
+function getStoreId() {
+	return $('select[name=\'filter_store_id\']').val();
+}
+
+function creatDateTime() {
+	$('.date').datetimepicker({
+		pickTime: false,
+		format: 'YYYY-MM-DD'
+	});
+	
+	$('.time').datetimepicker({
+		pickDate: false,
+		format: 'HH:mm'
+	});
+	
+	$('.datetime').datetimepicker({
+		pickDate: true,
+		pickTime: true,
+		format: 'YYYY-MM-DD HH:mm:ss'
+	});
+}
+
+function selectRowAll(_this) {
+	$('#product tbody input[name=\'selected[]\']').prop('checked', _this.checked);
+	
+	if (_this.checked) {
+		$('#product tbody tr').addClass('selected');
+	} else {
+		$('#product tbody tr').removeClass('selected');
+	}
+}
+
+function CKEditorClose(status) {
+	if (status) {
+		$('.CKEditorCurrent').val($('#CKEditorTextarea').summernote('code'));
+	}
+	
+	$('#CKEditorDialog').modal('hide');
+	$('.CKEditorCurrent').removeClass('CKEditorCurrent');
+}
+
+$(document).ready(function() {
+	$('#product_box').delegate('.pagination a', 'click', function(e) {
+		getProduct('&page=' + $(this).attr('href'));
+		
+		return false;
+	});
+	
+	$('#product_box').delegate('#product thead .sort a, #product-clone thead .sort a', 'click', function(e) {
+		var data = '&sort=' + $(this).attr('href');
+		if ($(this).attr('class') == 'asc') {
+			data += '&order=DESC';
+		} else {
+			data += '&order=ASC';
+		}
+		getProduct(data);
+		return false;
+	});
+	
+	$('#product_box').delegate('#product tbody input, #product tbody select', 'keypress', function(e) {
+		if (e.keyCode == 13) {
+			$(this).trigger('blur');
+			return false;
+		}
+	});
+	
+	$('#product_box').delegate('#product tbody input[name=\'selected[]\']', 'change', function(e) {
+		if (this.checked) {
+			$(this).parents('tr:first').addClass('selected');
+		} else {
+			$(this).parents('tr:first').removeClass('selected');
+		}
+	});
+	
+	$('#product_box').delegate('#product tbody span', 'click', function(e) {
+		if (quick_edit) {
+			return false;
+		}
+		
+		var this_class = $(this).attr('class');
+		var arr = this_class.match(/^([a-z]*)\-([a-z0-9\_]*)\-([0-9]*)$/);
+		var type = arr[1];
+		var field = arr[2];
+		text = $(this).html().replace(/"/g, "&quot;");
+		
+		if (type == 'select') {
+			xhr = $.ajax({type:'GET', dataType:'html', data:'id=' + arr[3] + '&name=' + encodeURIComponent(text) + '&field=' + field, url:'index.php?route=batch_editor/data/loadList&user_token=' + user_token,
+				success: function(html) {
+					$('#product .' + this_class).replaceWith(html);
+					$('#product select.' + this_class).focus();
+				}
+			});
+		} else if (type == 'textarea') {
+			$('#product .' + this_class).replaceWith('<textarea class="' + this_class + '" rows="2">' + text + '</textarea>');
+			$('#product textarea.' + this_class).focus();
+		} else {
+			$('#product .' + this_class).replaceWith('<input type="text" class="' + this_class + '" value="' + text + '" />');
+			$('#product input.' + this_class).focus();
+		}
+		
+		creatProductClone();
+	});
+	
+	$('#product_box').delegate('#product tbody input, #product tbody textarea, #product tbody select', 'blur', function(e) {
+		var this_class = $(this).attr('class');
+		
+		if (this_class) {
+			var arr = this_class.match(/^([a-z]*)\-([a-z0-9\_]*)\-([0-9]*)$/);
+		} else {
+			return false;
+		}
+		
+		if (arr == null) {
+			return false;
+		}
+		
+		var html = '<span class="' + this_class + '">';
+		var type = arr[1];
+		var field = arr[2];
+		var product_id = arr[3];
+		
+		if (type == 'select') {
+			var text_edit = $('#product .' + this_class + ' :selected').text();
+		} else {
+			var text_edit = $(this).val();
+		}
+		
+		text_edit = htmlspecialchars(text_edit);
+		
+		if (text != text_edit) {
+			quick_edit = 1;
+			
+			var value = encodeURIComponent($(this).val());
+			
+			$(this).attr('disabled', 'disabled');
+			
+			xhr = $.ajax({type:'POST', dataType:'json', data:'selected[]=' + product_id + '&product_' + field + '=' + value + '&field=' + field + '&language_id=' + getLanguageId() + '&store_id=' + getStoreId(), url:'index.php?route=batch_editor/index/editProduct&user_token=' + user_token,
+				error: function() {
+					quick_edit = 0;
+					
+					$('#product .' + this_class).replaceWith('<span class="' + this_class + '" style="background:red; border-radius:3px;">' + text + '</span>');
+					
+					alert('{{ error_server }}');
+				},
+				success: function(json) {
+					quick_edit = 0;
+					
+					if (json['warning']) {
+						$('#product .' + this_class).replaceWith(html + text + '</span>');
+						
+						creatMessage(json);
+					} else {
+						validateField(field, product_id, json['value']);
+						if (type == 'select') {
+							$('#product .' + this_class).replaceWith(html + text_edit + '</span>');
+						} else {
+							$('#product .' + this_class).replaceWith(html + json['value'] + '</span>');
+							
+							if (field == 'price') {
+								getProductPrice(product_id, 'product_special');
+								getProductPrice(product_id, 'product_discount');
+							}
+						}
+						$('#product .' + this_class).css({'border':'1px solid green', 'border-radius':'2px'});
+						
+						getProductDateModified(product_id);
+					}
+					
+					creatJoystick();
+					creatProductClone();
+				}
+			});
+		} else {
+			$(this).replaceWith(html + text_edit + '</span>');
+			
+			creatProductClone();
+		}
+	});
+	
+	$('#product_box').delegate('#product tbody .image input[data-field=\'image\']', 'change', function(e) {
+		var image = $(this).parents('.image:first').find('img');
+		var value = $(this).val();
+		var product_id = $(this).attr('data-product_id');
+		
+		xhr = $.ajax({type:'POST', dataType:'json', url:'index.php?route=batch_editor/index/editProduct&user_token=' + user_token, data:'selected[]=' + product_id + '&product_image=' + value + '&field=image',
+			success: function(json) {
+				if (json['warning']) { creatMessage(json); }
+			}
+		});
+	});
+	
+	$('#form-copy input[name=\'product_copy\']').bind('keypress', function(e) {
+		if (e.keyCode == 13) { return false; }
+	});
+	
+	$(document).delegate('.image img', 'click', function(e) {
+		$('#modal-image').remove();
+		$('.image_manager').remove();
+		$('#current-image-input').removeAttr('id');
+		
+		var thumb = $(this);
+		var input = thumb.parents('div:first').find('input');
+		
+		input.attr('id', 'current-image-input');
+		
+		xhr = $.ajax({dataType:'html', url:'index.php?route=common/filemanager&user_token=' + user_token + '&target=' + encodeURIComponent('current-image-input'),
+			success: function(html) {
+				$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+				
+				$('#modal-image').modal('show').on('hidden.bs.modal', function(e) {
+					xhr = $.ajax({type:'POST', dataType:'html', data:'image=' + input.val(), url:'index.php?route=batch_editor/tool/imageResize&user_token=' + user_token,
+						success: function(src) {
+							thumb.attr('src', src);
+						}
+					});
+					
+					$('#modal-image').remove();
+					
+					input.trigger('change');
+					
+					if ($('.modal.in').length) {
+						$(document.body).addClass('modal-open');
+					}
+				});
+			}
+		});
+	});
+	
+	$(document).delegate('textarea', 'dblclick', function(e) {
+		$('.CKEditorCurrent').removeClass('CKEditorCurrent');
+		$('#CKEditorDialog').remove();
+		
+		$(this).addClass('CKEditorCurrent');
+		var dialog = creatDialog('CKEditorDialog');
+		
+		dialog.find('.modal-body').html('<textarea id="CKEditorTextarea">' + $(this).val() + '</textarea>');
+		dialog.find('.modal-footer').html('<a class="btn btn-success" onclick="CKEditorClose(true);">+</a><a class="btn btn-danger" onclick="CKEditorClose(false);">&times;</a>');
+		dialog.modal('show').on('hidden.bs.modal', function(e) {
+			if ($('.modal.in').length) {
+				$(document.body).addClass('modal-open');
+			}
+		});
+		
+		$('#CKEditorTextarea').summernote({height:300, focus:true});
+	});
+	
+	<!--{% if success %}-->
+	creatMessage({'success':'{{ success }}'});
+	<!--{% endif %}-->
+	
+	getProduct('');
+	setTextFilter();
+	creatDateTime();
+	
+	jQuery.event.props.push('dataTransfer');
+});
+
+$.ajaxSetup({
+	error: function() { alert('{{ error_server }}'); }
+});
+//--></script>
+</div>
+{{ footer }}

@@ -1,0 +1,277 @@
+
+a {
+	outline: none !important;
+	cursor: pointer;
+}
+
+label {
+	font-size: 12px !important;
+	cursor: pointer;
+}
+
+label input {
+	margin-right: 5px !important;
+	vertical-align: middle;
+}
+
+.be-list {
+	border-collapse: collapse;
+	width: 100%;
+	border-top: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.be-list img {
+	vertical-align: middle;
+}
+
+.be-list .button {
+	color: #FFF;
+}
+
+.be-list thead td, .be-list tbody td, .be-list tfoot td {
+	border-right: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+.be-list thead td {
+	background-color: #EFEFEF;
+}
+
+.be-list thead td, .be-list thead td a {
+	text-decoration: none;
+	color: #222222;
+	font-weight: bold;
+}
+
+.be-list tbody:nth-child(2n) tr td {
+	background: #F9F9F9;
+}
+
+.be-list tbody tr:hover td {
+	background-color: #E4EEF7 !important;
+}
+
+.be-list tfoot td {
+	background-color: #FFFFFF;
+}
+
+.be-list .left {
+	text-align: left;
+	padding: 5px;
+}
+
+.be-list .right {
+	text-align: right;
+	padding: 5px;
+}
+
+.be-list .center {
+	text-align: center;
+	padding: 5px;
+}
+
+.be-list .asc {
+	padding: 1px 17px;
+	background: url('../image/sort_asc.png') right center no-repeat;
+}
+
+.be-list .desc {
+	padding: 1px 17px;
+	background: url('../image/sort_desc.png') right center no-repeat;
+}
+
+.be-list td.white, .be-list td.white:hover {
+	background: #FFFFFF !important;
+}
+
+.be-list .alert {
+	margin: 0px;
+}
+
+.be-list td.attention {
+	background: #FFC !important;
+}
+
+.be-list td.enabled {
+	background: #EAF7D9 !important;
+}
+
+.be-list td.disabled {
+	background: #FFD1D1 !important;
+}
+
+.be-list tr.filter td, .be-list tr:hover.filter td {
+	padding: 5px;
+	background: #E7EFEF !important;
+}
+
+.be-form {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.be-form > tbody > tr > td:first-child {
+	width: 200px;
+}
+
+.be-form > tbody > tr > td {
+	padding: 10px;
+	color: #000000;
+	border-bottom: 1px dotted #CCCCCC;
+}
+
+.be-scrollbox {
+	border: 1px solid #DDDDDD;
+	width: 400px;
+	height: 100px;
+	background: #FFFFFF;
+	overflow-y: scroll;
+	border-radius: 3px;
+}
+
+.be-scrollbox div {
+	padding: 3px;
+	text-align:left;
+	background-color:#FFF;
+}
+
+.be-scrollbox div:nth-child(2n) {
+	background-color: #E4EEF7;
+}
+
+.be-scrollbox div img {
+	float: left;
+	cursor: pointer;
+	margin-right: 5px;
+}
+
+.be-scrollhead {
+	overflow-y:scroll;
+}
+
+.be-scrollhead .be-list {
+	margin:0px;
+}
+
+.be-scrollhead .be-list thead tr td {
+	height:35px !important;
+}
+
+.be-scrollcontent {
+	height:400px;
+	overflow-y:scroll;
+	border-left:1px solid #DDDDDD;
+	border-bottom:1px solid #DDDDDD;
+}
+
+.be-scrollcontent table {
+	table-layout:fixed;
+	border-top:none;
+	border-left:none;
+	margin:0px;
+}
+
+.be-scrollfoot table {
+	border-top:none;
+	margin:0px;
+}
+
+.be-help {
+	color: #666;
+	font-size: 11px;
+	font-weight: normal;
+	font-family: Verdana, Geneva, sans-serif;
+	display: block !important;
+}
+
+.be-required {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+.CKEditorCurrent {
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background: #CCC;
+}
+
+.notice {
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	background: #F0F0F0;
+	padding: 10px;
+	text-align: center;
+}
+
+.joystick {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 150px;
+	background: #F0F0F0;
+	opacity: 0.5;
+	margin-left: -75px;
+	padding: 5px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.shadow {
+	box-shadow: 0px 8px 6px -6px #000;
+	-webkit-box-shadow: 0px 8px 6px -6px #000;
+	-moz-box-shadow: 0px 8px 6px -6px #000;
+	-khtml-box-shadow: 0px 8px 6px -6px #000;
+	-o-box-shadow: 0px 8px 6px -6px #000;
+}
+
+.pagination {
+	width:100%;
+}
+
+.dropdown-menu .be-scrollbox {
+	width:250px;
+	height:400px;
+	margin:-2px 3px;
+}
+
+#overlay {
+	display: none;
+	z-index: 10000;
+	background: url(../image/transparent.png) repeat;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100% !important;
+	height: 100% !important;
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+#messageLoad {
+	position: fixed;
+	width: 400px;
+	line-height: 40px;
+	margin-top: -25px;
+	margin-left: -200px;
+	left: 50%;
+	top: 50%;
+	padding-left: 30px;
+	display: none;
+	text-align: center;
+	z-index: 10001;
+}
+
+.dropdown-menu {
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.selected td {
+	background-color: #E4EEF7 !important;
+}

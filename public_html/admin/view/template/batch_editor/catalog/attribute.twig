@@ -1,0 +1,265 @@
+<form id="form-attribute{{ product_id }}">
+ {% if product_id == -1 %}
+ <div class="alert alert-info text-center">{{ notice_empty_field }}</div>
+ <p></p>
+ <span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span> <br />
+ <span class="be-help"><label><input name="has[{{ link }}]" type="checkbox" value="1" /> {{ text_strictly_selected }}</label></span>
+ <span class="be-help"><label><input name="count[{{ link }}]" type="checkbox" value="1" /> {{ text_with_regard_number }}</label></span>
+ <p></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <div class="be-scrollhead">
+  <table class="be-list">
+   <col width="50" /><col width="20%" /><col width="20%" /><col />
+   <thead>
+    <tr>
+     <td class="center"></td>
+     <td class="left">{{ text_group }}</td>
+     <td class="left">{{ text_name }}</td>
+     <td class="left">{{ text_value }}</td>
+    </tr>
+   </thead>
+  </table>
+ </div>
+ 
+ <div class="be-scrollcontent">
+  <table class="be-list" id="table-attribute{{ product_id }}">
+   <col width="50" /><col width="20%" /><col width="20%" /><col />
+   {% set attribute_row = 0 %}
+   {% if data %}
+   {% for attribute in data %}
+  <tbody>
+   <tr>
+    <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+    <td class="left">
+     <select name="attribute_group[{{ attribute_row }}]" onchange="loadAttribute({{ product_id }}, {{ attribute_row }});">
+      <option value="0">{{ text_none }}</option>
+      {% for attribute_1 in attributes %}
+      {% if attribute_1['attributes'][attribute['attribute_id']] is defined %}
+      <option value="{{ attribute_1['attribute_group_id'] }}" selected="selected">{{ attribute_1['attribute_group_name'] }}</option>
+      {% else %}
+      <option value="{{ attribute_1['attribute_group_id'] }}">{{ attribute_1['attribute_group_name'] }}</option>
+      {% endif %}
+      {% endfor %}
+     </select>
+    </td>
+    <td class="left attribute_box{{ attribute_row }}">
+     <input type="hidden" name="attribute[{{ attribute_row }}][attribute_id]" value="{{ attribute['attribute_id'] }}" />
+     <input type="text" name="attribute[{{ attribute_row }}][name]" value="{{ attribute['name'] }}" />
+    </td>
+    <td class="left">
+     {% for language in languages %}
+     {% set value = '' %}
+     {% if attribute['attribute_description'][language['language_id']] is defined %}
+     {% set value = attribute['attribute_description'][language['language_id']]['text'] %}
+     {% endif %}
+     <a class="btn btn-primary btn-xs value" data-language_id="{{ language['language_id'] }}"><i class="fa fa-download"></i></a>&nbsp;
+     <input name="attribute[{{ attribute_row }}][attribute_description][{{ language['language_id'] }}][text]" value="{{ value }}" />
+     <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> &nbsp;&nbsp;&nbsp;
+     {% endfor %}
+    </td>
+   </tr>
+  </tbody>
+  {% set attribute_row = attribute_row + 1 %}
+  {% endfor %}
+  {% else %}
+  <tbody class="no_results">
+   <tr>
+    <td class="center" colspan="4"><div class="alert alert-warning" align="center">{{ text_no_results }}</div></td>
+   </tr>
+  </tbody>
+  {% endif %}
+  </table>
+ </div>
+ 
+ <div class="be-scrollfoot">
+  <table class="be-list">
+   <col width="50" /><col />
+  <tfoot>
+   <tr>
+    <td class="center"><a onclick="addAttribute({{ product_id }})" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+    <td class="center" colspan="3">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+    </td>
+   </tr>
+   <tr>
+    <td class="center"><a onclick="getTemplates('attribute', {{ product_id }});" class="btn btn-success btn-sm" data-toggle="tooltip" title="{{ text_load_template }}"><i class="fa fa-download"></i></a></td>
+    <td colspan="3" class="left">
+     <input name="template_name" type="text" size="64" value="" />
+     <a onclick="saveTemplate('attribute', {{ product_id }});" class="btn btn-success btn-sm" data-toggle="tooltip" title="{{ text_save_template }}"><i class="fa fa-save"></i></a></td>
+   </tr>
+  </tfoot>
+ </table>
+ </div>
+</form>
+<script type="text/javascript"><!--
+if (typeof attribute_row == 'undefined') {
+	var attribute_row = [];
+}
+
+attribute_row[{{ product_id }}] = {{ attribute_row }};
+
+if (typeof attributeAutocomplete != 'function') {
+	function attributeAutocomplete(product_id, row) {
+		var input = $('#form-attribute' + product_id + ' #table-attribute' + product_id + ' input[name=\'attribute[' + row + '][name]\']');
+		var input_id = $('#form-attribute' + product_id + ' #table-attribute' + product_id + ' input[name=\'attribute[' + row + '][attribute_id]\']');
+		
+		input.autocomplete({
+			source: function(request, response) {
+				xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/attribute/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+					success: function(json) {
+						response($.map(json, function(item) { return { category:item['attribute_group'], label:item['name'], value:item['attribute_id'] }}));
+					}
+				});
+			}, 
+			'select': function(item) {
+				input.val(item['label']);
+				input_id.val(item['value']);
+			}
+		});
+	}
+}
+
+if (typeof addAttribute != 'function') {
+	function addAttribute(product_id) {
+		var html = '';
+		
+		html += '<tbody>';
+		html += ' <tr>';
+		html += '  <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+		html += '  <td class="left">';
+		html += '   <select name="attribute_group[' + attribute_row[product_id] + ']" onchange="loadAttribute(' + product_id + ', ' + attribute_row[product_id] + ');">';
+		html += '    <option value="0">{{ text_none }}</option>';
+		<!--{% for attribute in attributes %}-->
+		html += '    <option value="{{ attribute["attribute_group_id"] }}">{{ attribute["attribute_group_name"] }}</option>';
+		<!--{% endfor %}-->
+		html += '   </select>';
+		html += '  </td>';
+		html += '  <td class="left attribute_box' + attribute_row[product_id] + '">';
+		html += '   <input type="text" name="attribute[' + attribute_row[product_id] + '][name]" value="" />';
+		html += '   <input type="hidden" name="attribute[' + attribute_row[product_id] + '][attribute_id]" value="" />';
+		html += '  </td>';
+		html += '  <td class="left">';
+		{% for language in languages %}
+		html += '   <a class="btn btn-primary btn-xs value" data-language_id="{{ language["language_id"] }}"><i class="fa fa-download"></i></a>&nbsp; ';
+		html += '   <input name="attribute[' + attribute_row[product_id] + '][attribute_description][{{ language["language_id"] }}][text]" /> ';
+		html += '   <img src="language/{{ language["code"] }}/{{ language["code"] }}.png" title="{{ language["name"] }}" /> &nbsp;&nbsp;&nbsp; ';
+		{% endfor %}
+		html += '  </td>';
+		html += ' </tr>';
+		html += '</tbody>';
+		
+		$('#form-attribute' + product_id + ' #table-attribute' + product_id + ' tbody.no_results').remove();
+		$('#form-attribute' + product_id + ' #table-attribute' + product_id + '').append(html).parent('.be-scrollcontent').scrollTop(99999);
+		
+		attributeAutocomplete(product_id, attribute_row[product_id]);
+		
+		attribute_row[product_id]++;
+	}
+}
+
+if (typeof loadAttribute != 'function') {
+	function loadAttribute(product_id, row) {
+		var data = 'row=' + row + '&attribute_group_id=' + $('#form-attribute' + product_id + ' #table-attribute' + product_id + ' select[name=\'attribute_group[' + row + ']\']').val();
+		
+		xhr = $.ajax({type:'GET', dataType:'html', data:data, url: 'index.php?route=batch_editor/data/loadAttribute&user_token=' + user_token,
+			beforeSend: function() {
+				$('#form-attribute' + product_id + ' #table-attribute' + product_id + ' td.attribute_box' + row).html('<i class="fa fa-spinner fa-spin"></i>');
+			},
+			success: function(html) {
+				$('#form-attribute' + product_id + ' #table-attribute' + product_id + ' td.attribute_box' + row).html(html);
+			}
+		});
+	}
+}
+
+$('#form-attribute{{ product_id }} #table-attribute{{ product_id }} tbody').each(function (row, element) {
+	attributeAutocomplete({{ product_id }}, row);
+});
+
+$(document).ready(function(e) {
+	$('#form-attribute{{ product_id }} #table-attribute{{ product_id }}').delegate('.value', 'click', function() {
+		var html = '';
+		var replacement = $(this).next();
+		var current_value = replacement.val();
+		
+		if (replacement.is('input')) {
+			var attribute_id = $(this).parent().prev().find('[name*=\'[attribute_id]\']').val();
+			var language_id = $(this).attr('data-language_id');
+			
+			xhr = $.ajax({type:'POST', dataType:'json', data:'attribute_id=' + attribute_id + '&language_id=' + language_id, url:'index.php?route=batch_editor/data/getAttributeValue&user_token=' + user_token,
+				beforeSend: function() {},
+				success: function(json) {
+					if (json.length) {
+						html += '<select name="' + replacement.attr('name') + '" style="width:' + replacement.outerWidth() + 'px">';
+						
+						$.each(json, function(index, value) {
+							if (value['text'] == current_value) {
+								html += '<option value="' + value['text'] + '" selected="selected">' + value['text'] + '</option>';
+							} else {
+								html += '<option value="' + value['text'] + '">' + value['text'] + '</option>';
+							}
+						});
+						
+						html += '</select>';
+					} else {
+						html += '<input name="' + replacement.attr('name') + '" />';
+					}
+					
+					replacement.replaceWith(html);
+				}
+			});
+		} else {
+			replacement.replaceWith('<input name="' + replacement.attr('name') + '" value="' + current_value + '" />');
+		}
+	});
+});
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

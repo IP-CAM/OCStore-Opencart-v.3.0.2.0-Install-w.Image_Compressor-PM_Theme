@@ -1,0 +1,149 @@
+<form id="form-recurring{{ product_id }}">
+ {% if product_id == -1 %}
+ <p><span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="center" width="1"><i class="fa fa-minus"></i></td>
+    <td class="left">{{ text_recurring }}</td>
+    <td class="left">{{ text_customer_group }}</td>
+   </tr>
+  </thead>
+  {% set recurring_row = 0 %}
+  {% if data %}
+  {% for value in data %}
+  <tbody>
+   <tr>
+    <td class="center"><a class="btn btn-danger btn-xs" onclick="removeTableRow(this);" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+    <td class="left">
+     <select name="recurring[{{ recurring_row }}][recurring_id]">
+      {% for recurring_id in recurring %}
+      {% if recurring['recurring_id'] == value['recurring_id'] %}
+      <option value="{{ recurring['recurring_id'] }}" selected="selected">{{ recurring['name'] }}</option>
+      {% else %}
+      <option value="{{ recurring['recurring_id'] }}">{{ recurring['name'] }}</option>
+      {% endif %}
+      {% endfor %}
+     </select>
+    </td>
+    <td class="left">
+     <select name="recurring[{{ recurring_row }}][customer_group_id]">
+      {% for customer_group in customer_groups %}
+      {% if customer_group['customer_group_id'] == value['customer_group_id'] %}
+      <option value="{{ customer_group['customer_group_id'] }}" selected="selected">{{ customer_group['name'] }}</option>
+      {% else %}
+      <option value="{{ customer_group['customer_group_id'] }}">{{ customer_group['name'] }}</option>
+      {% endif %}
+      {% endfor %}
+     </select>
+    </td>
+   </tr>
+  </tbody>
+  {% set recurring_row = recurring_row + 1 %}
+  {% endfor %}
+  {% else %}
+  <tbody class="no_results">
+   <tr>
+    <td class="center" colspan="3"><div class="alert alert-warning" align="center">{{ text_no_results }}</div></td>
+   </tr>
+  </tbody>
+  {% endif %}
+  <tfoot>
+   <tr>
+    <td class="center"><a class="btn btn-success btn-xs" onclick="addReccuringRow({{ product_id }});" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+    <td class="center" colspan="2">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+    </td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+if (typeof recurring_row == 'undefined') {
+	var recurring_row = [];
+}
+
+recurring_row[{{ product_id }}] = {{ recurring_row }};
+
+if (typeof addRecurringRow == 'undefined') {
+	function addReccuringRow(product_id) {
+		$('#form-recurring' + product_id + ' .be-list .no_results').remove();
+		
+		var html = '';
+		
+		html += '<tbody>';
+		html += ' <tr>';
+		html += '  <td class="center"><a class="btn btn-danger btn-xs" onclick="removeTableRow(this);" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+		html += '  <td class="left">';
+		html += '   <select name="recurring[' + recurring_row[product_id] + '][recurring_id]">';
+		<!--{% for recurring_id in recurring %}-->
+		html += '    <option value="{{ recurring["recurring_id"] }}">{{ recurring["name"] }}</option>';
+		<!--{% endfor %}-->
+		html += '   </select>';
+		html += '  </td>';
+		html += '  <td class="left">';
+		html += '   <select name="recurring[' + recurring_row[product_id] + '][customer_group_id]">';
+		<!--{% for customer_group in customer_groups %}-->
+		html += '    <option value="{{ customer_group["customer_group_id"] }}">{{ customer_group["name"] }}</option>';
+		<!--{% endfor %}-->
+		html += '   </select>';
+		html += '  </td>';
+		html += ' </tr>';
+		html += '</tbody>';
+		
+		$('#form-recurring' + product_id + ' .be-list tfoot').before(html);
+		
+		recurring_row[product_id]++;
+	}
+}
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

@@ -1,0 +1,101 @@
+<form id="form-filter{{ product_id }}">
+ {% if product_id == -1 %}
+ <p><span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <table class="be-list">
+  <thead>
+   <tr>
+    <td class="left"><input type="text" name="filter_input" value="" size="100" /></td>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="left white"><div class="be-scrollbox" id="filter" style="width:100%; height:350px;">
+      {% for value in data %}
+      <div id="filter{{ value['filter_id'] }}">
+       <a onclick="$(this).parent('div').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;&nbsp;
+       {{ value['name'] }}
+       <input type="hidden" name="filter[]" value="{{ value['filter_id'] }}" />
+      </div>
+      {% endfor %}
+     </div>
+    </td>
+   </tr>
+  </tbody>
+  <tfoot>
+   <tr>
+    <td class="center">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+    </td>
+   </tr>
+  </tfoot>
+ </table>
+</form>
+<script type="text/javascript"><!--
+$('#form-filter{{ product_id }} input[name=\'filter_input\']').autocomplete({
+	delay: 100,
+	source: function(request, response) {
+		xhr = $.ajax({dataType:'json', url:'index.php?route=catalog/filter/autocomplete&user_token=' + user_token + '&filter_name=' + encodeURIComponent(request),
+			success: function(json) {
+				response($.map(json, function(item) { return { label:item['name'], value:item['filter_id'] }}));
+			}
+		});
+	},
+	'select': function(item) {
+		var html = '<div id="filter' + item['value'] + '"><a onclick="$(this).parent(\'div\').remove();" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;&nbsp;' + item['label'] + '<input type="hidden" name="filter[]" value="' + item['value'] + '" /></div>';
+		$('#form-filter{{ product_id }} #filter' + item['value']).remove();
+		$('#form-filter{{ product_id }} #filter').append(html);
+		
+		return false;
+	}
+});
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}

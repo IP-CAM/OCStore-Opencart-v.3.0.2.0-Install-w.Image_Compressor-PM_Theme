@@ -1,0 +1,124 @@
+<div class="be-scrollhead">
+ <table class="be-list">
+  <col width="50" /><col width="" /><col width="10%" /><col width="10%" />
+  <thead>
+   <tr>
+    <td class="center"></td>
+    <td class="left">{{ text_name }}</td>
+    <td class="center" colspan="2">{{ text_date_added }}</td>
+   </tr>
+  </thead>
+ </table>
+</div>
+<div class="be-scrollcontent">
+ <table class="be-list">
+  {% if data %}
+  <col width="50" /><col width="" /><col width="10%" /><col width="10%" />
+  {% for index, value in data %}
+  <tbody id="template{{ index }}">
+   <tr>
+    <td class="center"><a onclick="deleteTemplate('{{ template }}', {{ index }});" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+    <td class="left"><a onclick="loadTemplate('{{ template }}', {{ index }}, {{ product_id }});">{{ value['name'] }}</a></td>
+    <td class="center">{{ value['time'] }}</td>
+    <td class="center">{{ value['date'] }}</td>
+   </tr>
+  </tbody>
+  {% endfor %}
+  {% else %}
+  <tbody>
+   <tr>
+    <td class="center"><div class="alert alert-warning" align="center">{{ text_no_results }}</div></td>
+   </tr>
+  </tbody>
+  {% endif %}
+ </table>
+</div>
+
+<script type="text/javascript"><!--
+function deleteTemplate(template, index) {
+	xhr = $.ajax({type:'POST', dataType:'json', data:'template=' + template + '&index=' + index, url:'index.php?route=batch_editor/template/deleteTemplate&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success:function(json) {
+			if (json['success']) {
+				$('#dialogTemplate #template' + index).remove(); 
+			}
+			
+			if (!$('#dialogTemplate table tbody').length) {
+				$('#dialogTemplate .be-scrollcontent .be-list').append('<tbody><tr><td class="center" colspan="4"><div class="alert alert-warning" align="center">{{ text_no_results }}</div></td></tr></tbody>');
+			}
+			
+			creatMessage(json);
+			creatOverlayLoad(false);
+		}
+	});
+}
+
+function loadTemplate(template, index, product_id) {
+	xhr = $.ajax({type:'POST', dataType:'json', data:'template=' + template + '&index=' + index, url:'index.php?route=batch_editor/template/loadTemplate&user_token=' + user_token,
+		beforeSend: function() { creatOverlayLoad(true); },
+		success: function(json) {
+			<!--{% if template == 'attribute' %}-->
+			$.each(json['value'], function (attribute_id, value) {
+				var row = attribute_row[product_id];
+				addAttribute(product_id);
+				
+				$('#form-attribute' + product_id + ' input[name=\'attribute[' + row + '][name]\']').val(value['name']);
+				$('#form-attribute' + product_id + ' input[name=\'attribute[' + row + '][attribute_id]\']').val(attribute_id);
+				
+				$.each(value['text'], function(language_id, text) { $('#form-attribute' + product_id + ' input[name=\'attribute[' + row + '][attribute_description][' + language_id + '][text]\']').val(text); });
+			});
+			<!--{% endif %}-->
+			
+			<!--{% if template == 'seo_generator' %}-->
+			$.each(json['value'], function (index, data) {
+				addSeoGeneratorRow(product_id);
+				
+				var tbody = $('#form-seo_generator' + product_id + ' #table-seo_generator' + product_id + ' tbody:last');
+				
+				$.each(data, function (type, value) {
+					if (type == 'text' || type == 'data') {
+						tbody.find('select:first option[value=\'' + type + '\']').attr('selected', 'selected');
+						tbody.find('select:first').trigger('change');
+					}
+					
+					if (type == 'text') {
+						tbody.find('textarea').html(value);
+					} else if (type == 'data') {
+						tbody.find('select:last option[value=\'' + value + '\']').attr('selected', 'selected');
+						tbody.find('select:last').trigger('change');
+					} else {
+						tbody.find('input[name*=\'[' + type + ']\']').val(value);
+					}
+				});
+			});
+			<!--{% endif %}-->
+			
+			<!--{% if template == 'search_replace' %}-->
+			$.each(json['value']['type'], function (index, type) {
+				addSearchReplaceRow(product_id);
+				
+				var tbody = $('#form-search_replace' + product_id + ' #table-search_replace' + product_id + ' tbody:last');
+				
+				tbody.find('select:first option[value=\'' + type + '\']').prop('selected', true);
+				tbody.find('select:first').trigger('change');
+				
+				tbody.find('textarea:first').html(json['value']['what'][index]);
+				
+				if (type == 'text') {
+					tbody.find('textarea:last').html(json['value']['on_what'][index]);
+				} else {
+					tbody.find('select:last option[value=\'' + json['value']['on_what'][index] + '\']').prop('selected', true);
+				}
+			});
+			<!--{% endif %}-->
+			
+			$('#dialogTemplate').modal('hide');
+			creatOverlayLoad(false);
+		}
+	});
+}
+
+$(document).ready(function() {
+	$('#dialogTemplate').find('.modal-header').append('{{ text_header }}');
+});
+//--></script>

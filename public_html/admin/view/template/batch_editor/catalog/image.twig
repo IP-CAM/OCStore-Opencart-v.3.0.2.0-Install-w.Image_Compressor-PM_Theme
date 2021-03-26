@@ -1,0 +1,167 @@
+<form id="form-image{{ product_id }}">
+ {% if product_id == -1 %}
+ <div class="alert alert-info text-center">{{ notice_empty_field }}</div>
+ <p><span class="be-help"><label><input name="none[{{ link }}]" type="checkbox" /> {{ text_not_contain }} > {{ title }}</label></span></p>
+ {% endif %}
+ {% if product_id > 0 %}
+ <table class="be-form">
+  <tr>
+   <td width="1%"><img src="{{ product_image }}" alt="{{ product_name }}" title="{{ product_name }}" /></td>
+   <td width="99%"><h3>{{ product_name }}</h3></td>
+  </tr>
+ </table>
+ {% endif %}
+ <div class="be-scrollhead">
+  <table class="be-list">
+   <col width="50" /><col width="30%" />
+   <thead>
+    <tr>
+     <td class="center"></td>
+     <td class="center">{{ text_image }}</td>
+     <td class="left">{{ text_sort_order }}</td>
+    </tr>
+   </thead>
+  </table>
+ </div>
+ <div class="be-scrollcontent">
+  <table class="be-list" id="table-image{{ product_id }}">
+   <col width="50" /><col width="30%" />
+   {% set image_row = 0 %}
+   {% if data %}
+   {% for value in data %}
+   <tbody>
+    <tr>
+     <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>
+     <td class="center">
+      <div class="image">
+       <img src="{{ value['thumb'] }}" alt="" title="" />
+       <input name="image[{{ image_row }}][image]" data-table="product_image" data-field="image" data-product_id="{{ product_id }}" type="hidden" value="{{ value['image'] }}" />
+       {% if product_id > 0 %}
+       <a class="btn btn-primary btn-xs" onclick="setMainImage(this);" title="{{ text_main }}"><i class="fa fa-file-image-o"></i></a>
+       {% endif %}
+       <a class="btn btn-success btn-xs" onclick="getImageManager(this)" title="{{ text_path }}"><i class="fa fa-upload"></i></a>
+       <a class="btn btn-danger btn-xs" onclick="$(this).parent().find('img, input').prop({'src':no_image, 'value':''});" title="{{ text_clear }}"><i class="fa fa-trash-o"></i></a>
+      </div>
+     </td>
+     <td class="left"><input name="image[{{ image_row }}][sort_order]" type="text" value="{{ value['sort_order'] }}" /></td>
+    </tr>
+   </tbody>
+   {% set image_row = image_row + 1 %}
+   {% endfor %}
+   {% else %}
+   <tbody class="no_results">
+    <tr>
+     <td class="left" colspan="3"><div align="center" class="alert alert-warning">{{ text_no_results }}</div></td>
+    </tr>
+   </tbody>
+   {% endif %}
+  </table>
+ </div>
+ <div class="be-scrollfoot">
+  <table class="be-list">
+   <col width="50" /><col />
+   <tfoot>
+    <tr>
+     <td class="center"><a id="addProductImage" class="btn btn-success btn-xs" title="{{ button_insert }}"><i class="fa fa-plus"></i></a></td>
+     <td class="center" colspan="2">
+     {% if product_id > -1 %}
+     <input id="product-copy-data-product_name-{{ product_id }}" type="text" />
+     <input id="product-copy-data-product_id-{{ product_id }}" type="hidden" />
+     <a class="btn btn-primary btn-sm" onclick="copyProductData('{{ product_id }}', '{{ link }}');" title="{{ button_copy }}" style="margin-right:50px;"><i class="fa fa-copy"></i></a>
+     {% endif %}
+     {% if product_id == -1 %}
+     <a class="btn btn-primary" onclick="setLinkFilter('{{ link }}');">{{ button_add_to_filter }}</a>
+     <a class="btn btn-danger" onclick="delLinkFilter('{{ link }}');">{{ button_remove_from_filter }}</a>
+     {% endif %}
+     {% if product_id == 0 %}
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'add', {{ product_id }});">{{ button_insert_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'del', {{ product_id }});">{{ button_delete_sel }}</a>
+     <a class="btn btn-primary" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ text_edit }}</a>
+     {% endif %}
+     {% if product_id > 0 %}
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'prev');" title="{{ button_prev }}"><i class="fa fa-chevron-left"></i></a>
+     <a class="btn btn-primary" onclick="listProductLink('{{ product_id }}', '{{ link }}', 'next');" title="{{ button_next }}" style="margin-right:50px;"><i class="fa fa-chevron-right"></i></a>
+     <a class="btn btn-success" onclick="editLink('{{ link }}', 'upd', {{ product_id }});">{{ button_save }}</a>
+     <a class="btn btn-danger" onclick="$('#dialogLink').modal('hide');" title="{{ button_close }}">&times;</a>
+     {% endif %}
+     </td>
+    </tr>
+   </tfoot>
+  </table>
+ </div>
+</form>
+<script type="text/javascript"><!--
+if (typeof image_row == 'undefined') {
+	var image_row = [];
+}
+
+image_row[{{ product_id }}] = {{ image_row }};
+
+$('#form-image{{ product_id }} #addProductImage').click(function() {
+	var html = '';
+	
+	html += '<tbody>';
+	html += ' <tr>';
+	html += '  <td class="center"><a onclick="removeTableRow(this);" class="btn btn-danger btn-xs" title="{{ button_remove }}"><i class="fa fa-minus"></i></a></td>';
+	html += '  <td class="center">';
+	html += '   <div class="image">';
+	html += '    <img src="' + no_image + '" alt="" title="" />';
+	html += '    <input data-table="product_image" data-field="image" data-product_id="{{ product_id }}" type="hidden" name="image[' + image_row[{{ product_id }}] + '][image]" value="" />';
+	<!--{% if product_id > 0 %}-->
+	html += '    <a class="btn btn-primary btn-xs" onclick="setMainImage(this);" title="{{ text_main }}"><i class="fa fa-file-image-o"></i></a>';
+	<!--{% endif %}-->
+	html += '    <a class="btn btn-success btn-xs" onclick="getImageManager(this)" title="{{ text_path }}"><i class="fa fa-upload"></i></a>';
+	html += '    <a class="btn btn-danger btn-xs" onclick="$(this).parent().find(\'img, input\').prop({\'src\':\'' + no_image + '\', \'value\':\'\'});" title="{{ text_clear }}"><i class="fa fa-trash-o"></i></a>';
+	html += '   </div>';
+	html += '  </td>';
+	html += '  <td class="left"><input name="image[' + image_row[{{ product_id }}] + '][sort_order]" type="text" value="" /></td>';
+	html += ' </tr>';
+	html += '</tbody>';
+	
+	$('#form-image{{ product_id }} #table-image{{ product_id }} tbody.no_results').remove();
+	$('#form-image{{ product_id }} #table-image{{ product_id }}').append(html);
+	$('#form-image{{ product_id }} .be-scrollcontent').scrollTop(99999);
+	
+	image_row[{{ product_id }}]++;
+});
+//--></script>
+
+{% if product_id == -1 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialog-{{ link }}').find('.modal-header').append('{{ title }}');
+});
+//--></script>
+{% endif %}
+
+{% if product_id > 0 %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#dialogLink').find('.modal-header').append('{{ title }}');
+});
+
+function setMainImage($this) {
+	var image = $($this).parent().find('input').val();
+	var thumb = $($this).parent().find('img').attr('src');
+	
+	creatOverlayLoad(true);
+	
+	xhr = $.ajax({type:'POST', dataType:'json', url:'index.php?route=batch_editor/index/editProduct&user_token=' + user_token, data:'selected[]={{ product_id }}&product_image=' + image + '&field=image',
+		success: function(json) {
+			$('#product input[data-table=\'product\'][data-field=\'image\'][data-product_id=\'{{ product_id }}\']').val(image).trigger('change').parent().find('img').attr('src', thumb);
+			
+			$('#form-image{{ product_id }} .be-form').find('img').attr('src', thumb);
+			
+			creatMessage(json);
+			creatOverlayLoad(false);
+		}
+	})
+}
+//--></script>
+{% endif %}
+
+{% if product_id > -1 %}
+<script type="text/javascript"><!--
+autocompleteProductCopyData('{{ product_id }}');
+//--></script>
+{% endif %}
