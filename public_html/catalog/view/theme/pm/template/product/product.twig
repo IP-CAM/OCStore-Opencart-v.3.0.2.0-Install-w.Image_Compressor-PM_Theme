@@ -30,11 +30,13 @@
             </div>
           </div>
           <span class="stars__elem stars__average-rating">{{ rating }}</span>
-          <a class="stars__elem stars__review-link link" href="#">
+          <a class="stars__elem stars__review-link link" href="{{ uri }}#reviews-title">
             <span class="visually-hidden">Количество отзывов:</span>
             <span>{{ review_count_with_posttext }}</span>
           </a>
         </div>
+      {% else %}
+        <a class="link" href="{{ uri }}#write-review-title" onclick="window.yulms.accordion.open('.review-write .accordion__button')">Написать отзыв</a>
       {% endif %}
 
       <div>
@@ -406,7 +408,7 @@
                 </div>
               </div>
             </div>
-            <button class="link reviews__write-button" onclick="window.yulms.accordion.open('.review-write .accordion__button');document.querySelector('.review-write').scrollIntoView({behavior: 'smooth'});">Написать свой отзыв</button>
+            <a class="link reviews__write-button" href="{{ uri }}#write-review-title" onclick="window.yulms.accordion.open('.review-write .accordion__button')">Написать свой отзыв</a>
           </div>
           {% include 'pm/template/product/review.twig' %}
         </section>

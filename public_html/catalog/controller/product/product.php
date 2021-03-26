@@ -217,6 +217,8 @@ class ControllerProductProduct extends Controller {
 				'href' => $this->url->link('product/product', $url . '&product_id=' . $this->request->get['product_id'])
 			);
 
+      $data['uri'] = $this->url->link('product/product', $url . '&product_id=' . $this->request->get['product_id']);
+
 			if ($product_info['meta_title']) {
 				$this->document->setTitle($product_info['meta_title']);
 			} else {
