@@ -258,7 +258,12 @@ class ControllerProductProduct extends Controller {
 			$data['model'] = $product_info['model'];
 			$data['guarantee'] = $product_info['upc'];
 			$data['refund'] = $product_info['ean'];
-			$data['model'] = $product_info['model'];
+      if (is_numeric($product_info['mpn'])) {
+			  $data['registration_discount'] = $product_info['mpn'] . "%";
+      }
+      $data['logged'] = $this->customer->isLogged();
+      $data['register'] = $this->url->link('account/register', '', true);
+		  $data['login'] = $this->url->link('account/login', '', true);
 
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];

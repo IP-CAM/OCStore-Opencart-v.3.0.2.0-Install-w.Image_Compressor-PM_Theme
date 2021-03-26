@@ -111,6 +111,7 @@
     {% endif %}
 
 
+    {# * Информация о предложении и покупка #}
     <section class="offer page-product__offer">
       <h2 class="visually-hidden">Информация о предложении и покупка</h2>
 
@@ -142,15 +143,18 @@
       </div>
 
 
-      {# * рекламный блок #}
-      <section class="alert alert--info offer__alert">
-        <h3 class="visually-hidden">Специальное предложение</h3>
-        Этот товар можно купить с дополнительной скидкой 10% после регистрации.
-        <br>
-        <a class="link" href="#">Зарегистрироваться</a>
-        или
-        <a class="link" href="#">Войти</a>
-      </section>
+      {# * скидка после регистрации #}
+      {% if registration_discount and not logged %}
+        <section class="alert alert--info offer__alert">
+          <h3 class="visually-hidden">Специальное предложение</h3>
+          Этот товар можно купить с дополнительной скидкой {{ registration_discount }} после регистрации.
+          <br>
+          <a class="link" href="{{ register }}">Зарегистрироваться</a>
+          или
+          <a class="link" href="{{ login }}">Войти</a>
+        </section>
+      {% endif %}
+
 
 
       {# * инфо о доставке #}
@@ -353,6 +357,7 @@
     </section>
 
 
+    {# * Сведения о товаре #}
     <section class="page-product__details details">
       <h2 class="title title--2 details__title">Сведения о товаре</h2>
 
@@ -501,6 +506,8 @@
 
     </section>
 
+
+    {# * Быстрая покупка #}
     {% if images[0] and price %}
       <section class="page-product__buy-card buy-card">
         <h2 class="visually-hidden">Быстрая покупка</h2>
