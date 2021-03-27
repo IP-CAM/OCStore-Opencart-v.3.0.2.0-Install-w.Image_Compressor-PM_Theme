@@ -110,6 +110,9 @@
   width: $space*44;
 }
 
+.modal--width-auto .modal__inner {
+  width: auto;
+}
 
 .modal--animation-on-close .modal__inner {
   animation: hideModal 75ms linear both;

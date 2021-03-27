@@ -51,7 +51,7 @@ modal.open({...params})
 params = {
   content - может быть DOM элементом текстовым содержимым. Если текст - модуль конвертирует его в DOM элемент.
   modalPosition - 'center' - default, 'left'
-  modalSize - 'small', 'big'
+  modalSize - 'small', 'big', 'auto'
   callbackOnClose
   triggerElement (используется только для установки фокуса после закрытия окна)
   focusOnOpen (true - default, false) - поместить фокус на элемент модального окна при открытии
