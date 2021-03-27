@@ -104,7 +104,7 @@ class Modal {
   }
 
 
-  open({content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement, focusOnOpen = true}) {
+  open({header, content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement, focusOnOpen = true}) {
 
     const _cloneModalTemplate = () => {
       return document.querySelector(this.modalTemplateSelector)
@@ -112,11 +112,22 @@ class Modal {
         .cloneNode(true);
     };
 
-    const _transformContent = (content) => {
-      let element = document.createElement('div');
-      element.classList.add(this.contentModalClass);
-      element.innerHTML = content;
-      return element;
+    const _insertContent = (headerText, content) => {
+      const parentElement = document.createElement('div');
+      parentElement.classList.add(this.contentModalClass);
+
+      if (headerText) {
+        const headerHtml = `<h2 class="modal__header">${headerText}</h2>`;
+        parentElement.insertAdjacentHTML('afterbegin', headerHtml);
+      }
+
+      if (typeof content === 'object') {
+        parentElement.append(content);
+      } else {
+        parentElement.insertAdjacentHTML('beforeend', content);
+      }
+
+      return parentElement;
     };
 
     const _addPositionClass = (currentModal) => {
@@ -180,8 +191,8 @@ class Modal {
 
     currentModal._modalElement = _cloneModalTemplate();
 
-    currentModal._modalContentElement = (typeof content === 'object') ? content : _transformContent(content);
-    // currentModal._modalContentElement = _transformContent(content);
+    // currentModal._modalContentElement = (typeof content === 'object') ? content : _insertContent(content);
+    currentModal._modalContentElement = _insertContent(header, content);
 
     currentModal._triggerElement = triggerElement;
     currentModal._callbackOnClose = callbackOnClose;

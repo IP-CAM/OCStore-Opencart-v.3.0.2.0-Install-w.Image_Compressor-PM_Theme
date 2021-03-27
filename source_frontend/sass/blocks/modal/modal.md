@@ -49,6 +49,7 @@
 *Вызов*
 modal.open({...params})
 params = {
+  header - заголовок, string
   content - может быть DOM элементом текстовым содержимым. Если текст - модуль конвертирует его в DOM элемент.
   modalPosition - 'center' - default, 'left'
   modalSize - 'small', 'big', 'auto'

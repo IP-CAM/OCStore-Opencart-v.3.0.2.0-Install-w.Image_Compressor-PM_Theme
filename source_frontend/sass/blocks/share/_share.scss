@@ -1,0 +1,52 @@
+.share {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  fill: $color__additional-4;
+  background: 0;
+  border: 1px solid $color__additional-2;
+  border-radius: 50%;
+  cursor: pointer;
+  transition-property: color, border-color, box-shadow, opacity, background-color;
+  transition-duration: 120ms;
+  transition-timing-function: linear;
+
+  &:hover {
+    fill: $color__primary;
+    border: 2px solid $color__primary;
+  }
+
+  &:focus {
+    outline: 2px dashed $color__primary;
+    outline-offset: 2px;
+  }
+}
+
+.share__icon {
+  position: relative;
+  left: -2px;
+}
+
+
+/* stylelint-disable */
+.ya-share2__container,
+.ya-share2__item {
+  font: inherit !important;
+}
+
+.ya-share2__title {
+  color: $color-font__base !important;
+}
+
+.ya-share2__item {
+  margin: 8px 0 !important;
+}
+/* stylelint-enable */
