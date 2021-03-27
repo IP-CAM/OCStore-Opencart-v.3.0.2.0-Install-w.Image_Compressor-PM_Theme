@@ -110,33 +110,3 @@
 .offer__refund-dd {
   font-weight: 700;
 }
-
-
-.offer__share {
-  display: flex;
-  align-items: center;
-}
-
-
-.offer__share-caption {
-  margin: 0 $space 0 0;
-  font: inherit;
-}
-
-.offer__share-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin: $space*-0.5;
-  padding: 0;
-  list-style: none;
-}
-
-.offer__share-link {
-  display: block;
-  padding: $space*0.5;
-}
-
-.offer__share-svg {
-  display: block;
-  border-radius: $controls__border-radius;
-}

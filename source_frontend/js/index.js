@@ -26,6 +26,7 @@ import initReviewPagination from './common-next-modules/review-pagination.js';
 import initRegistration from './common-next-modules/registration.js';
 import initLogin from './common-next-modules/login.js';
 import initSubscribe from './common-next-modules/subscribe.js';
+import initShare from './common-next-modules/share.js';
 
 
 const projectObjects = {
@@ -55,7 +56,8 @@ const projectObjects = {
   reviewPagination: initReviewPagination(),
   registration: initRegistration(),
   login: initLogin(),
-  subscribe: initSubscribe()
+  subscribe: initSubscribe(),
+  share: initShare()
 };
 
 window.yulms = projectObjects;
