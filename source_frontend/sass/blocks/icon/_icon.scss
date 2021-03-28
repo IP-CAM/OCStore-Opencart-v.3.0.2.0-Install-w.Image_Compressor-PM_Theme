@@ -11,16 +11,17 @@
 .icon--stroked {
   fill: none;
   stroke: currentColor;
+  stroke-width: 1px;
 
-  @media (max-resolution: $retina-dpi),
-    (max-resolution: $retina-dppx) {
-    stroke-width: 2px;
-  }
+  // @media (max-resolution: $retina-dpi),
+  //   (max-resolution: $retina-dppx) {
+  //   stroke-width: 2px;
+  // }
 
-  @media (min-resolution: $retina-dpi),
-    (min-resolution: $retina-dppx) {
-    stroke-width: 1px;
-  }
+  // @media (min-resolution: $retina-dpi),
+  //   (min-resolution: $retina-dppx) {
+  //   stroke-width: 1px;
+  // }
 }
 
 .icon--filled {

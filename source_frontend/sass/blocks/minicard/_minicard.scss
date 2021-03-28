@@ -164,10 +164,10 @@
 .minicard__love-button {
   position: absolute;
   padding: $space*0.5;
-  color: $color__secondary-bright;
+  color: $color__additional-4;
+  border: 1px solid $color__additional-2;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 3px 6px 0 $color__shadows;
 
   &:hover,
   &:focus {
@@ -175,6 +175,19 @@
       inset 0 0 0 2px $color__secondary,
       0 3px 6px 0 $color__shadows;
   }
+  // position: absolute;
+  // padding: $space*0.5;
+  // color: $color__secondary-bright;
+  // border-radius: 50%;
+  // background-color: rgba(255, 255, 255, 0.8);
+  // box-shadow: 0 3px 6px 0 $color__shadows;
+
+  // &:hover,
+  // &:focus {
+  //   box-shadow:
+  //     inset 0 0 0 2px $color__secondary,
+  //     0 3px 6px 0 $color__shadows;
+  // }
 }
 
 .minicard--grid .minicard__love-button {
