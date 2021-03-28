@@ -1,7 +1,6 @@
 .share {
   position: absolute;
-  right: 0;
-  top: 0;
+  top: $space*0.5;
   z-index: 1;
   width: 48px;
   height: 48px;
@@ -11,13 +10,21 @@
   margin: 0;
   padding: 0;
   fill: $color__additional-4;
-  background: 0;
   border: 1px solid $color__additional-2;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
   cursor: pointer;
   transition-property: color, border-color, box-shadow, opacity, background-color;
   transition-duration: 120ms;
   transition-timing-function: linear;
+
+  @include media-tablet-portrait-down {
+    right: 0;
+  }
+
+  @include media-tablet-landscape-up {
+    right: $space*0.5;
+  }
 
   &:hover {
     fill: $color__primary;

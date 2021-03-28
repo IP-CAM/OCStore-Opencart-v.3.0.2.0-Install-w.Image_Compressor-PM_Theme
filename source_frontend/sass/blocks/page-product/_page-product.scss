@@ -10,18 +10,17 @@
     // этот код:
     // grid-template-rows: repeat(6, auto) 1fr; такой возможности не дает
     grid-template:
-      "breadcrumbs breadcrumbs"
-      "header offer"
-      "gallery offer"
-      "details offer"
-      "details buy-card" 1fr
-      "similar similar"
-      "viewed viewed"
+      "content-top    content-top"
+      "header         offer"
+      "gallery        offer" 1fr
+      "column-left    column-right" minmax(0%, auto)
+      "details        column-right" minmax(0%, auto)
+      "details        buy-card"
+      "content-bottom content-bottom"
       / minmax(0%, 2fr) minmax(0%, 1fr);
 
     column-gap: $space*3;
     align-items: start;
-
 
     // ! только свойства, относящиеся к grid
     // для новых появляющихся блоков, что бы блок не
@@ -30,8 +29,20 @@
     //   grid-column: 1/-1;
     // }
 
-    &__breadcrumbs {
-      grid-area: breadcrumbs;
+    &__content-top {
+      grid-area: content-top;
+    }
+
+    &__column-left {
+      grid-area: column-left;
+    }
+
+    &__column-right {
+      grid-area: column-right;
+    }
+
+    &__content-bottom {
+      grid-area: content-bottom;
     }
 
     &__header {
@@ -53,19 +64,23 @@
     &__buy-card {
       grid-area: buy-card;
     }
-
-    &__similar {
-      grid-area: similar;
-    }
-
-    &__viewed {
-      grid-area: viewed;
-    }
   }
 }
 
 .page-product__breadcrumbs {
   margin-bottom: $space;
+}
+
+.page-product__content-top {
+  margin-bottom: $space*2;
+}
+
+.page-product__column-left {
+  margin-bottom: $space*3;
+}
+
+.page-product__column-right {
+  margin-bottom: $space*3;
 }
 
 
@@ -86,7 +101,7 @@
 
 
 .page-product__title {
-  margin: 0 0 $space;
+  margin: 0 0 $space*1.5;
   width: 100%;
 }
 

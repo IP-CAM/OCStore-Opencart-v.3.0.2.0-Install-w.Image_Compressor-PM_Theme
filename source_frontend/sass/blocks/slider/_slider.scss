@@ -248,7 +248,6 @@
     color: $color__additional-4;
     border-radius: 50%;
     border: 1px solid $color__additional-2;
-    box-shadow: 0 3px 6px 0 $color__shadows;
     background-color: rgba(255, 255, 255, 0.8);
     transition: opacity 150ms linear;
 
@@ -278,11 +277,11 @@
   }
 
   .slider__list-container .slider__toggle--left {
-    left: $space;
+    left: $space*0.5;
   }
 
   .slider__list-container .slider__toggle--right {
-    right: $space;
+    right: $space*0.5;
   }
 
   .slider--first-slide .slider__toggle--left {

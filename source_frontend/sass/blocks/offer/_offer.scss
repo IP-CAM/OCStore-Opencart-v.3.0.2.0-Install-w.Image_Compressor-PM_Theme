@@ -1,13 +1,17 @@
 .offer__price {
   margin: 0;
 
-  @include media-tablet-landscape-up {
+  @include media-tablet-portrait-down {
     margin-bottom: $space*0.5;
+  }
+
+  @include media-tablet-landscape-up {
+    margin-bottom: $space;
   }
 }
 
 .offer__short-info {
-  margin-bottom: $space;
+  margin-bottom: $space*2;
 }
 
 .offer__short-info-term {
@@ -23,7 +27,7 @@
 }
 
 .offer__alert {
-  margin-bottom: $space;
+  margin-bottom: $space*2;
 
   @include media-tablet-portrait-down {
     @include full-width;
@@ -31,15 +35,15 @@
 }
 
 .offer__delivery-info {
-  margin-bottom: $space;
+  margin-bottom: $space*2;
 }
 
 .offer__options {
   margin-bottom: $space*1.5;
 }
 
-.offer__chip-set {
-  margin-bottom: $space;
+.offer__buy-form {
+  margin-bottom: $space*2;
 }
 
 .offer__buy {
@@ -47,7 +51,7 @@
 
   display: flex;
   flex-wrap: wrap;
-  margin: calc(var(--gap) * -1) 0 $space calc(var(--gap) * -1);
+  margin: calc(var(--gap) * -1) 0 0 calc(var(--gap) * -1);
 
   &-elem {
     margin-top: var(--gap);
@@ -91,11 +95,13 @@
   }
 }
 
-
-.offer__refund {
-  margin: 0 0 $space 0;
+.offer__price-notification {
+  margin-bottom: $space;
 }
 
+.offer__refund {
+  margin: 0;
+}
 
 .offer__refund-dt {
   float: left;

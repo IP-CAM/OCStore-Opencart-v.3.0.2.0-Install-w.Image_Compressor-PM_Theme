@@ -18,9 +18,14 @@
 
   <main class="main page-product">
 
+    {% if content_top %}
+      <div class="page-product__content-top">
+        {{ content_top }}
+      </div>
+    {% endif %}
+
     <header class="page-product__header" data-scroll-on-load data-scroll-maxvw="607">
       <h1 class="title title--2 page-product__title">{{ heading_title }}</h1>
-
       {% if rating %}
         <div class="stars stars--product-header">
           <span class="stars__elem stars__average-rating-caption">Средняя оценка:</span>
@@ -44,11 +49,7 @@
         <span class="page-product__code-caption page-product__code-caption--full">{{ text_model_full }}</span>
         <span class="page-product__code">{{ model }}</span>
       </div>
-
-
-
     </header>
-
 
     {% if images %}
       <section class="page-product__gallery">
@@ -122,6 +123,11 @@
       </section>
     {% endif %}
 
+    {% if column_left %}
+      <div class="page-product__column-left">
+        {{ column_left }}
+      </div>
+    {% endif %}
 
     {# * Информация о предложении и покупка #}
     <section class="offer page-product__offer">
@@ -154,7 +160,6 @@
         </div>
       </div>
 
-
       {# * скидка после регистрации #}
       {% if registration_discount and not logged %}
         <section class="alert alert--info offer__alert">
@@ -166,7 +171,6 @@
           <a class="link" href="{{ login }}">Войти</a>
         </section>
       {% endif %}
-
 
       {# * инфо о доставке #}
       <section class="delivery-info offer__delivery-info">
@@ -220,16 +224,15 @@
         </div>
       </section>
 
-
       {# * Форма покупки (добавить опции при необходимости позже) #}
-      <form action="index.php?route=checkout/cart/add" method="POST" data-cart-event="submit" data-cart-action="add" data-cart-loading-selector="[data-offer-buy-button]" data-cart-loading-color="#fff" data-product-id="{{ product_id }}">
+      <form class="offer__buy-form" action="index.php?route=checkout/cart/add" method="POST" data-cart-event="submit" data-cart-action="add" data-cart-loading-selector="[data-offer-buy-button]" data-cart-loading-color="#fff" data-product-id="{{ product_id }}">
 
         {% if options %}
           <section class="offer__options">
             <h3 class="visually-hidden">{{ text_option }}</h3>
             {% for option in options %}
               {% if option.type == 'radio' %}
-                <fieldset class="chip-set chip-set--wrap offer__chip-set" aria-labelledby="input-option{{ option.product_option_id }}">
+                <fieldset class="chip-set chip-set--wrap" aria-labelledby="input-option{{ option.product_option_id }}">
                   <span class="chip-set__element chip-set__label" id="input-option{{ option.product_option_id }}">{{ option.name }}:</span>
                   {% for option_value in option.product_option_value %}
                     <label class="chip-set__element chip-set__chip">
@@ -315,6 +318,11 @@
 
     </section>
 
+    {% if column_right %}
+      <div class="page-product__column-right">
+        {{ column_right }}
+      </div>
+    {% endif %}
 
     {# * Сведения о товаре #}
     <section class="page-product__details details">
@@ -465,7 +473,6 @@
 
     </section>
 
-
     {# * Быстрая покупка #}
     {% if images[0] and price %}
       <section class="page-product__buy-card buy-card">
@@ -511,10 +518,13 @@
       </section>
     {% endif %}
 
+    {% if content_bottom %}
+      <div class="page-product__content-bottom">
+        {{ content_bottom }}
+      </div>
+    {% endif %}
 
   </main>
 </div>
-
-
 
 {{ footer }}
