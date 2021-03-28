@@ -1,0 +1,91 @@
+{% if products|length > 2 %}
+<div class="page__section full-width">
+  <section class="page__slider">
+    <header class="page__slider-header">
+      <h2 class="title title--2 page__section-title page__slider-title">{{ heading_title }}</h2>
+    </header>
+    <div class="slider slider--minicards">
+      <div class="slider__list-container">
+        <ul class="slider__list">
+          {% for product in products %}
+            <li class="slider__item">
+
+              <div class="minicard minicard--carousel minicard--grid">
+
+                <a class="minicard__link" href="{{ product.href }}">
+                  <h3 class="minicard__title">{{ product.name }}</h3>
+                  <p class="image-container minicard__image-container minicard__image-container--full-width">
+                    {% if product.thumb236w %}
+                      <img class="image-container__image"
+                           sizes="200px"
+                           srcset="/catalog/view/theme/pm/img/svg/lazy-dummy.svg 1w"
+                           data-srcset="{{ product.thumb236w }} 236w, {{ product.thumb344w }} 344w, {{ product.thumb444w }} 444w"
+                           src="{{ product.thumb }}" loading="lazy" width="236" height="236" alt="Открыть страницу покупки {{ product.name }}">
+                    {% else %}
+                      <img class="image-container__image"
+                           src="{{ product.thumb }}" loading="lazy" width="236" height="236" alt="Открыть страницу покупки {{ product.name }}">
+                    {% endif %}
+                  </p>
+                </a>
+
+                {% if product.product_xdstickers is not empty %}
+                  <div class="product-stickers">
+                    {% for xdsticker in product.product_xdstickers %}
+                      <strong class="product-stickers__sticker {{xdsticker.id}}">{{xdsticker.text}}</strong>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <p class="minicard__brand">
+                  <span>Бренд:</span>
+                  <span>{{ product.manufacturer }}</span>
+                </p>
+
+                {% if product.price %}
+                  <p class="price minicard__price">
+                    {% if not product.special %}
+                      {# без акции #}
+                      <span class="visually-hidden">{{ product.price }}</span>
+                      <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
+                    {% else %}
+                      {# акция #}
+                      <span class="visually-hidden">{{ product.special }}</span>
+                      <span class="price__current price__current--discount" aria-hidden="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
+                      <del class="price__old">{{ product.price }}</del>
+                    {% endif %}
+                  </p>
+                {% endif %}
+
+                {% if product.rating %}
+                  <div class="stars stars--short minicard__stars">
+                    <span class="stars__elem stars__average-rating-caption">Средняя оценка:</span>
+                    <div class="stars__group stars__elem">
+                      <div class="stars__rating" style="width: {{product.rating_percent}}">
+                        <div class="stars__scale"></div>
+                      </div>
+                    </div>
+                    <span class="stars__elem stars__average-rating">{{product.rating}}</span>
+                    <a class="stars__elem stars__review-link link" href="product.html#reviews-title">
+                      <span class="visually-hidden">Количество отзывов:</span>
+                      <span>{{product.reviews}}</span>
+                      <span class="stars__quantity-caption">отзывов</span>
+                    </a>
+                  </div>
+                {% endif %}
+
+                <button class="button minicard__love-button" type="button" data-wishlist="add" data-product-id="{{ product.product_id }}">
+                  <span class="visually-hidden">Добавить в избранные товары</span>
+                  <svg class="minicard__love-icon icon icon--stroked" width="24" height="24">
+                    <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+                  </svg>
+                </button>
+              </div>
+
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+{% endif %}
