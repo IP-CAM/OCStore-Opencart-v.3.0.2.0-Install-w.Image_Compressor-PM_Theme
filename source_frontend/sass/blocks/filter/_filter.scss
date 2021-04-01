@@ -10,6 +10,7 @@
 
 .filter {
   @include media-tablet-landscape-down {
+    margin: $space*-2;
     padding: 0 var(--page-paddings);
     background-color: #ffffff;
   }
@@ -18,7 +19,7 @@
     // передача бэкграунда в textfield (костыль)
     --textfield-bg: #{$color__additional-1-1};
 
-    padding: 2rem; // ! ?
+    padding: 2rem;
     border-radius: $controls__border-radius;
     background-color: $color__additional-1-1;
   }

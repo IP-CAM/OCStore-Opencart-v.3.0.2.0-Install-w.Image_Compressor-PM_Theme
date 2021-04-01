@@ -1,6 +1,9 @@
 import { isEscapePressEvent, scrollLock, executeAfterAnimationEnd } from '../../../js/util.js';
 
 
+
+
+
 const ModalPosition = {
   CENTER: 'center',
   LEFT: 'left'
@@ -29,10 +32,7 @@ class Modal {
 
     const defaults = {
       triggerDataAttributeName: 'data-modal',
-      closeModalClass : 'modal__content--closed',
-      contentModalClass: 'modal__content',
-      modalTemplateSelector: '#modal',
-      modalBodySelector: '.modal',
+      modalClass: 'modal',
       modalTypeDataAttribute: 'modalPosition',
       defaultPosition: ModalPosition.CENTER,
       modalSizeDataAttribute: 'modalSize',
@@ -87,7 +87,7 @@ class Modal {
       const homelandPosition = _getHomelandPosition(modalContentElement); // сохранение позиции в DOM, из которой будет выдернут HTML внутренностей окна
 
       const modalParams = {
-        content: modalContentElement,
+        contentElement: modalContentElement,
         modalPosition: triggerElement.dataset[this.modalTypeDataAttribute],
         modalSize: triggerElement.dataset[this.modalSizeDataAttribute],
         callbackOnClose: () => {
@@ -104,48 +104,7 @@ class Modal {
   }
 
 
-  open({header, content, modalPosition = this.defaultPosition, modalSize, callbackOnClose, triggerElement, focusOnOpen = true}) {
-
-    const _cloneModalTemplate = () => {
-      return document.querySelector(this.modalTemplateSelector)
-        .content.querySelector(this.modalBodySelector)
-        .cloneNode(true);
-    };
-
-    const _insertContent = (headerText, content) => {
-      const parentElement = document.createElement('div');
-      parentElement.classList.add(this.contentModalClass);
-
-      if (headerText) {
-        const headerHtml = `<h2 class="modal__header">${headerText}</h2>`;
-        parentElement.insertAdjacentHTML('afterbegin', headerHtml);
-      }
-
-      if (typeof content === 'object') {
-        parentElement.append(content);
-      } else {
-        parentElement.insertAdjacentHTML('beforeend', content);
-      }
-
-      return parentElement;
-    };
-
-    const _addPositionClass = (currentModal) => {
-      currentModal._modalElement.classList.add(ModalPositionClasses[modalPosition]);
-    };
-
-    const _addSizeClass = (currentModal) => {
-      if (modalSize) {
-        currentModal._modalElement.classList.add(ModalSizeClasses[modalSize]);
-      }
-    };
-
-    const _changeAriaAttrIfNeeded = (currentModal) => {
-      if (currentModal._modalContentElement.getAttribute('aria-hidden')) {
-        currentModal._modalContentElement.setAttribute('aria-hidden', false);
-        currentModal._ariaAttrWasRemoved = true;
-      }
-    };
+  open({header, content, contentElement, modalPosition, modalSize, callbackOnClose, triggerElement, focusOnOpen = true}) {
 
     const addOverlay = (currentModal) => {
       currentModal._overlayElement = document.createElement('div');
@@ -154,15 +113,18 @@ class Modal {
       currentModal._modalElement.append(currentModal._overlayElement);
     };
 
-    const _show = (currentModal) => {
-      if (currentModal._modalContentElement.classList.contains(this.closeModalClass)) {
-        currentModal._modalContentElement.classList.remove(this.closeModalClass);
-        currentModal._closedClassWasRemoved = true;
-      } else {
+    const _showIfNeeded = (contentElement) => {
+      if (contentElement.hidden) {
+        contentElement.hidden = false;
+        currentModal._hiddenWasRemoved = true;
+      }
+
+      if (getComputedStyle(contentElement).display === 'none') {
         // у него нет класса закрытия (модальное расположено в контенте)
         // могут быть проблемы, если надо flex или grid.
         // При необходимости добавить значение по умолчанию и указание необходимого стиля в data атрибуте
-        currentModal._modalContentElement.style.display = 'block';
+        contentElement.style.display = 'block';
+        currentModal._blockStyleWasAdded = true;
       }
     };
 
@@ -188,22 +150,17 @@ class Modal {
 
     this._modals.push({});
     let currentModal = this._modals[this._getLastModalIndex()];
-
-    currentModal._modalElement = _cloneModalTemplate();
-
-    // currentModal._modalContentElement = (typeof content === 'object') ? content : _insertContent(content);
-    currentModal._modalContentElement = _insertContent(header, content);
-
+    currentModal._modalElement = this._createModalElement(header, content, contentElement, modalPosition, modalSize);
+    currentModal._contentElement = contentElement;
     currentModal._triggerElement = triggerElement;
     currentModal._callbackOnClose = callbackOnClose;
-    _addPositionClass(currentModal);
-    _addSizeClass(currentModal);
-    _changeAriaAttrIfNeeded(currentModal);
-
-    currentModal._modalElement.children[0].prepend(currentModal._modalContentElement);
     addOverlay(currentModal);
     document.body.append(currentModal._modalElement);
-    _show(currentModal);
+
+    if (contentElement) {
+      _showIfNeeded(contentElement);
+    }
+
     _addHandlers(currentModal);
 
     // блокируем только на первом окне
@@ -213,6 +170,35 @@ class Modal {
 
     if (focusOnOpen) this._focus(currentModal, {shouldBeInside: true});
     this._stateIsClosing = false;
+  }
+
+
+  _createModalElement(headerText, content, contentElement, modalPosition = this.defaultPosition, modalSize) {
+    const modalElement = document.createElement('div');
+    modalElement.setAttribute('class', `${this.modalClass} ${ModalPositionClasses[modalPosition]} ${ModalSizeClasses[modalSize] || ''}`);
+    modalElement.innerHTML = `<div class="modal__inner" role="dialog" aria-modal="true">
+                                <button class="button button--modal-close modal__close-button" data-modal-close type="button">
+                                  <span class="visually-hidden">Закрыть</span>
+                                  <svg class="button__close-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke-linecap="round" aria-hidden="true">
+                                    <path vector-effect="non-scaling-stroke" d="M7 7l10 10M7 17L17 7"></path>
+                                  </svg>
+                                </button>
+                                ${this._getHtmlContent(headerText, content)}
+                              </div>`;
+
+    if (contentElement) {
+      modalElement.querySelector('.modal__inner').append(contentElement);
+    }
+
+    return modalElement;
+  }
+
+
+  _getHtmlContent(headerText, content) {
+    const headerHtml = (headerText) ? `<h2 class="modal__header">${headerText}</h2>` : '';
+    const contentHtml = (content) ? content : '';
+
+    return headerHtml + contentHtml;
   }
 
 
@@ -242,14 +228,13 @@ class Modal {
 
 
     let currentModal = this._modals[this._getLastModalIndex()];
-    currentModal._modalContentElement.style.display = '';
 
-    if (currentModal._closedClassWasRemoved) {
-      currentModal._modalContentElement.classList.add(this.closeModalClass);
+    if (currentModal._hiddenWasRemoved) {
+      currentModal._contentElement.hidden = true;
     }
 
-    if (currentModal._ariaAttrWasRemoved) {
-      currentModal._modalContentElement.setAttribute('aria-hidden', true);
+    if (currentModal._blockStyleWasAdded) {
+      currentModal._contentElement.style.display = '';
     }
 
     if (currentModal._callbackOnClose) currentModal._callbackOnClose();

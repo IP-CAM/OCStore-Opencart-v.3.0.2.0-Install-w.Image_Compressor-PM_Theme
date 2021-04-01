@@ -80,6 +80,7 @@
   z-index: 2;
   width: 500px;
   margin-right: auto;
+  padding: var(--vertical-paddings) var(--horizontal-paddings);
   background-color: $color__background;
   border-radius: $controls__border-radius;
   box-shadow: 0 3px 6px 0 $color__shadows;
@@ -123,13 +124,13 @@
 }
 
 
-.modal__content {
-  padding: var(--vertical-paddings) var(--horizontal-paddings);
-}
+// .modal__content {
+//   padding: var(--vertical-paddings) var(--horizontal-paddings);
+// }
 
-.modal__content--closed {
-  display: none;
-}
+// .modal__content--closed {
+//   display: none;
+// }
 
 
 .modal__close-button {
