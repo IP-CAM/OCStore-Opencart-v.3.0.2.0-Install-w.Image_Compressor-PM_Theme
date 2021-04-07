@@ -126,7 +126,7 @@ export function ajaxRequest({url, method = 'GET', responseType, sendingData, bef
     if (typeof onError === 'function') {
       onError('Произошла ошибка соединения');
     } else {
-      console.log('Произошла ошибка соединения');
+      console.error('Произошла ошибка соединения');
     }
   });
 
@@ -134,7 +134,7 @@ export function ajaxRequest({url, method = 'GET', responseType, sendingData, bef
     if (typeof onError === 'function') {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     } else {
-      console.log('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      console.error('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     }
 
   });

@@ -295,12 +295,14 @@
   }
 
   .slider__nav .slider__toggle--left {
+    margin-left: $space*0.5;
     margin-right: $space;
   }
 
   .slider__nav .slider__toggle--right {
     order: 1;
     margin-left: $space;
+    margin-right: $space*0.5;
   }
 }
 

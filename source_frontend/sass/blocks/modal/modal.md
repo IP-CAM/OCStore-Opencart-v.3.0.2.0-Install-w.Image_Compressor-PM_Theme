@@ -23,7 +23,7 @@
 
 Содержимое модальдого окна:
 ```html
-<secton id="modalCity" hidden>
+<secton id="modal-city" hidden>
   здесь содержимое окна
 </secton>
 ```
@@ -31,7 +31,7 @@
 *Триггер*
 должен иметь ссылку на id модального окна
 ```html
-<button data-modal="#modalCity">Показать окно</button>
+<button data-modal="#modal-city">Показать окно</button>
 ```
 
 *Параметры окна*

@@ -305,7 +305,7 @@ class FilterControlUpdater {
               false // Boolean 'fireSetEvent'
             );
           } catch(err) {
-            console.log('slider error', err);
+            console.error('slider error', err);
           }
         }
 
@@ -574,7 +574,7 @@ class Filter {
             window.location = serverData.href;
           }
         })
-        .catch(err => console.log('Ошибка скрипта фильтра', err));
+        .catch(err => console.error('Ошибка скрипта фильтра', err));
     });
   }
 
