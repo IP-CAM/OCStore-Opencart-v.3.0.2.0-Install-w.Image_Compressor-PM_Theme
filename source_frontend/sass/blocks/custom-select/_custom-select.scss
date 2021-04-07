@@ -28,6 +28,8 @@
   position: absolute;
   z-index: 2;
   top: $space*3;
+  max-height: 400px;
+  overflow: auto;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -40,10 +42,6 @@
   animation:
     custom-select-list-in 120ms cubic-bezier(0, 0, 0.2, 1) both,
     custom-select-list-opacity-in 30ms linear both;
-
-  &--closed {
-    display: none;
-  }
 }
 
 .custom-select__item {
@@ -53,4 +51,17 @@
   &:focus {
     background-color: $color__primary-light;
   }
+}
+
+.custom-select__item-description {
+  display: block;
+}
+
+
+.custom-select__dropdown-icon {
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-select[aria-expanded="true"] .custom-select__dropdown-icon {
+  transform: rotate(180deg);
 }

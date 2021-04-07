@@ -1,254 +1,398 @@
 import appendCustomFocusEvents from '../../../js/custom-focus-events.js';
-import { generateId } from '../../../js/util.js';
+
+
+const MAIN_SELECTOR = '.custom-select';
+const LIST_SELECTOR = '.custom-select__list';
+const ITEM_SELECTOR = '.custom-select__item';
+const INPUT_SELECTOR = 'input';
+const ITEM_TITLE_SELECTOR = '.custom-select__item-title';
+const ITEM_DESCRIPTION_SELECTOR = '.custom-select__item-description';
+const STATUS_HTML = '<div class="visually-hidden" aria-live="polite"></div>';
+const STATUS_SELECTOR = '[aria-live="polite"]';
+const FILTERED_STATUS_PREFIX = 'Доступно вариантов: ';
+const FilterEntryType = {
+  ANY: 'any',
+  START: 'start'
+};
+const FILTER_ENTRY_TYPE = FilterEntryType.ANY;
+
+
+class DataManager {
+  constructor() {
+    this.data = [];
+    this.sourceUrl = undefined;
+    this.sourceFieldName = {
+      title: 'title', // !!! разобраться с перезаписью
+      description: 'description',
+      dataId: 'dataId',
+    };
+  }
+
+  updateDataFromItemElements(itemElements) {
+    itemElements.forEach(item => {
+      this.data.push({
+        title: (item.querySelector(ITEM_TITLE_SELECTOR)) ? item.querySelector(ITEM_TITLE_SELECTOR).textContent : '',
+        description: (item.querySelector(ITEM_DESCRIPTION_SELECTOR)) ? item.querySelector(ITEM_DESCRIPTION_SELECTOR).textContent : '',
+        dataId: item.dataset.id || ''
+      });
+    });
+    return this.data;
+  }
+
+  setExternalSource(url, {titleFieldName, descriptionFieldName, dataIdFieldName} = {}) {
+    this.sourceUrl = url;
+    this._setSourceFieldNames(titleFieldName, descriptionFieldName, dataIdFieldName);
+  }
+
+  setSource(data, {titleFieldName, descriptionFieldName, dataIdFieldName} = {}) {
+    this._setSourceFieldNames(titleFieldName, descriptionFieldName, dataIdFieldName);
+    this.setData(data);
+  }
+
+  _setSourceFieldNames(titleFieldName, descriptionFieldName, dataIdFieldName) {
+    if (titleFieldName) this.sourceFieldName.title = titleFieldName;
+    if (descriptionFieldName) this.sourceFieldName.description = descriptionFieldName;
+    if (dataIdFieldName) this.sourceFieldName.dataId = dataIdFieldName;
+  }
+
+  updateDataFromExternalSource(term = '') {
+    return fetch(this.sourceUrl + encodeURIComponent(term))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(json => {
+        this.setData(json);
+      })
+      .catch(console.error);
+  }
+
+  setData(itemsData) {
+    // itemsData - массив объектов [{},{},...]
+    const {title, description, dataId} = this.sourceFieldName;
+    this.data = itemsData.map(item => {
+      return {
+        title: item[title] || '',
+        description: item[description] || '',
+        dataId: item[dataId] || ''
+      };
+    });
+  }
+
+  getData(terms) {
+    if (terms) {
+      switch (FILTER_ENTRY_TYPE) {
+        case FilterEntryType.ANY:
+          return this.data.filter(dataItem =>
+            dataItem.title.trim().toUpperCase().includes(terms.toUpperCase()));
+        case FilterEntryType.START:
+          return this.data.filter(dataItem =>
+            dataItem.title.trim().toUpperCase().startsWith(terms.toUpperCase()));
+      }
+    } else {
+      return this.data;
+    }
+  }
+
+  clearData() {
+    this.data = [];
+  }
+}
+
+
+class Input {
+  constructor(mainElement) {
+    this.element = mainElement.querySelector(INPUT_SELECTOR);
+
+    this._createCustomSelectInputEvent(mainElement); // * adding user custom events
+  }
+
+  _createCustomSelectInputEvent(mainElement) {
+    this.element.addEventListener('input', (evt) => {
+      mainElement.dispatchEvent(new CustomEvent('customSelectInput', {
+        detail: {
+          value: evt.target.value
+        }
+      }));
+    });
+  }
+}
+
+
+class List {
+  constructor(mainElement) {
+    this.listElement = mainElement.querySelector(LIST_SELECTOR);
+    this.itemElements = undefined;
+    this.itemElementsIsUpdated = undefined;
+    this.itemsCount = this.listElement.children.length;
+  }
+
+  getCurrentItems() {
+    if (!this.itemElementsIsUpdated) {
+      this.itemElements = this.listElement.querySelectorAll(ITEM_SELECTOR);
+      this.itemElementsIsUpdated = true;
+    }
+    return this.itemElements;
+  }
+
+  render(itemsData) {
+    const itemElements = itemsData.map(item =>
+      `<li class="custom-select__item" ${(item.dataId) ? `data-id="${item.dataId}"` : ''} role="option" tabindex="-1">
+        <strong class="custom-select__item-title">${item.title}</strong>
+        ${(item.description) ? `<span class="custom-select__item-description">${item.description}</span>` : ''}
+      </li>`);
+    this.listElement.innerHTML =  itemElements.join('');
+    this.itemsCount = itemsData.length;
+    this.itemElementsIsUpdated = false;
+  }
+
+  open() {
+    if (this.itemsCount) {
+      this.listElement.hidden = false;
+      return true;
+    }
+  }
+
+  close() {
+    this.listElement.hidden = true;
+  }
+
+  clear() {
+    while(this.listElement.firstChild) {
+      this.listElement.removeChild(this.listElement.firstChild);
+    }
+  }
+
+  focus(direction) {
+    const itemElements = Array.from(this.getCurrentItems());
+    if (itemElements.length === 0) return;
+
+    let currentIndex;
+
+    switch (direction) {
+      case 'first':
+        itemElements[0].focus();
+        break;
+      case 'last':
+        itemElements[itemElements.length - 1].focus();
+        break;
+      case 'next':
+        currentIndex = this.getCurrentFocusItemIndex();
+        if (currentIndex !== itemElements.length - 1) {
+          itemElements[currentIndex + 1].focus();
+        } else {
+          itemElements[0].focus();
+        }
+        break;
+      case 'previous':
+        currentIndex = this.getCurrentFocusItemIndex();
+        itemElements[currentIndex - 1].focus();
+        break;
+    }
+  }
+
+  getCurrentFocusItemIndex() {
+    const itemElements = Array.from(this.getCurrentItems());
+    return itemElements.indexOf(document.activeElement);
+  }
+
+}
+
+
+class Status {
+  constructor(mainElement) {
+    mainElement.insertAdjacentHTML('afterbegin', STATUS_HTML);
+    this.element = mainElement.querySelector(STATUS_SELECTOR);
+  }
+
+  update(itemsQuantity) {
+    this.element.textContent = (Number.isInteger(itemsQuantity)) ? FILTERED_STATUS_PREFIX + itemsQuantity : '';
+  }
+}
 
 
 class CustomSelect {
-  constructor(element, overrides) {
-
-    const defaults = {
-      mainSelector : '.custom-select',
-      inputSelector : 'input',
-      listSelector : '.custom-select__list',
-      listCloseClass : 'custom-select__list--closed',
-      itemSelector : '.custom-select__item',
-      statusSelector : '[aria-live="polite"]',
-      itemTitleSelector : '.custom-select__item-title',
-      filteredStatusPrefix : 'Доступно вариантов : '
-    };
-
-    Object.assign(this, defaults, overrides);
-
-
+  constructor(element) {
     this.element = element;
-    this.inputElement = this.element.querySelector(this.inputSelector);
+    this.dataManager = new DataManager();
+    this.input = new Input(element);
+    this.list = new List(element);
+    this.status = new Status(element);
     this.state = {
-      isOpened: false
+      isOpened: false,
+      useExternalData: false,
+      requestInputValueLength: undefined,
+      requestWasSend: false
     };
-    this.listElement = this.element.querySelector(this.listSelector);
-    this.itemElements = this.element.querySelectorAll(this.itemSelector);
-    this.items = Array.from(this.itemElements);
-    this.statusElement = this.element.querySelector(this.statusSelector);
 
-    // generate ID for list
-    let listId = generateId();
-    this.listElement.id = listId;
 
-    // * setting Aria attributes
+    this._setAreaAttributes();
+    this.dataManager.updateDataFromItemElements(this.list.getCurrentItems());
+
+    this.element.addEventListener('customSelectInput', this._onInput.bind(this));
+    this.element.addEventListener('click', this._onClick.bind(this));
+    this.element.addEventListener('keydown', this._onKeyDown.bind(this));
+    appendCustomFocusEvents(this.element);
+    this.element.addEventListener('focusLeave', this._closeList.bind(this));
+
+    element.setExternalSource = this.setExternalSource.bind(this);
+    element.setSource = this.setSource.bind(this);
+  }
+
+  _setAreaAttributes() {
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-haspopup', 'listbox');
-    this.element.setAttribute('aria-owns', this.listElement.id);
     this.element.setAttribute('aria-expanded', 'false');
-    this.inputElement.setAttribute('aria-controls', this.listElement.id);
-    this.inputElement.setAttribute('aria-autocomplete', 'both');
-    this.listElement.setAttribute('role', 'listbox');
-    this.itemElements.forEach(function(item) {
-      item.setAttribute('role', 'option');
-      item.setAttribute('tabindex', '-1');
-    });
-
-
-    // * Adding handlers
-    this.inputElement.addEventListener('click', () => {
-      this._toggleList();
-    });
-
-
-    this.listElement.addEventListener('click', () => {
-      const focusedElement = document.activeElement;
-      if (focusedElement.tagName === 'LI') {
-        this._makeChoice(focusedElement);
-        this._toggleList();
-      }
-    });
-
-
-    this.element.addEventListener('keyup', (evt) => {
-      this._doKeyAction(evt.key);
-    });
-
-
-    appendCustomFocusEvents(this.element);
-    this.element.addEventListener('focusLeave', () => {
-      if (this.state.isOpened) {
-        this._toggleList('shut');
-      }
-    });
-
-
-    document.addEventListener('click', (evt) => {
-      if (!evt.target.closest(this.mainSelector) && this.state.isOpened) {
-        this._toggleList('shut');
-      }
-    });
+    this.input.element.setAttribute('aria-autocomplete', 'both');
+    this.list.listElement.setAttribute('role', 'listbox');
   }
 
+  _onInput(evt) {
+    const needNewRequest = Boolean(this.state.useExternalData
+      && evt.detail.value.length >= this.state.requestInputValueLength
+      && !this.state.requestWasSend);
+    const needToClearOldRequest = Boolean(this.state.useExternalData
+      && evt.detail.value.length < this.state.requestInputValueLength
+      && this.state.requestWasSend);
 
-  _toggleList(action = 'toggle') {
+    if (needNewRequest) {
+      this.dataManager.updateDataFromExternalSource(evt.detail.value)
+        .then(() => {
+          const currentData = this.dataManager.getData();
+          this.list.render(currentData);
+          this.status.update(currentData.length);
+          this._openList();
+          this.state.requestWasSend = true;
+        });
 
-    let _openList  = () => {
-      this.listElement.classList.remove(this.listCloseClass);
-      this.element.setAttribute('aria-expanded', 'true');
-      this.state.isOpened = true;
-    };
+    } else if (needToClearOldRequest) {
+      this.dataManager.clearData();
+      this.list.clear();
+      this.status.update();
+      this._closeList();
+      this.state.requestWasSend = false;
 
-    let _closeList  = () => {
-      this.listElement.classList.add(this.listCloseClass);
-      this.element.setAttribute('aria-expanded', 'false');
-      this.state.isOpened = false;
-    };
-
-
-    switch (action) {
-      case 'toggle':
-        if (this.state.isOpened) {
-          _closeList();
-        } else {
-          _openList();
-        }
-        break;
-
-      case 'open':
-        _openList();
-        break;
-
-      case 'shut':
-        _closeList();
-        break;
-    }
-  }
-
-
-  _makeChoice(focusedItem) {
-    const itemTitle = focusedItem.querySelector(this.itemTitleSelector);
-    this.inputElement.value = itemTitle.textContent;
-    this.inputElement.focus();
-  }
-
-
-  _moveFocus({moveDirection}) {
-
-    const visibleItems = this.items.filter((item) => (item.style.display === ''));
-    const currentFocus = document.activeElement;
-    let currentIndex;
-
-    let _moveFocusUp = () => {
-      switch (true) {
-
-        case (currentFocus === this.inputElement):
-          visibleItems[visibleItems.length - 1].focus();
-          break;
-
-        case (currentFocus.tagName === 'LI'):
-          currentIndex = visibleItems.indexOf(currentFocus);
-          if (currentIndex === 0) {
-            this.inputElement.focus();
-          } else {
-            visibleItems[currentIndex - 1].focus();
-          }
-          break;
-      }
-    };
-
-    let _moveFocusDown = () => {
-      switch (true) {
-
-        case (currentFocus === this.inputElement):
-          visibleItems[0].focus();
-          break;
-
-        case (currentFocus.tagName === 'LI'):
-          currentIndex = visibleItems.indexOf(currentFocus);
-          if (currentIndex !== visibleItems.length - 1) {
-            visibleItems[currentIndex + 1].focus();
-          } else {
-            visibleItems[0].focus();
-          }
-          break;
-      }
-    };
-
-
-    if (visibleItems.length === 0) return;
-    if (moveDirection === 'up') {
-      _moveFocusUp();
     } else {
-      _moveFocusDown();
+      const filteredItems = this.dataManager.getData(evt.detail.value);
+      this.list.render(filteredItems);
+      (filteredItems.length > 0) ? this._openList() : this._closeList();
+      this.status.update(filteredItems.length);
     }
   }
 
+  _onClick() {
+    const focusedElement = document.activeElement;
+    if (focusedElement.tagName === 'LI') {
+      this._makeChoice(focusedElement);
+    } else if (focusedElement === this.input.element) {
+      (this.state.isOpened) ? this._closeList() : this._openList();
+    }
+  }
 
-  _doKeyAction(key) {
+  _onKeyDown(evt) {
     const currentFocus = document.activeElement;
 
-    switch(key) {
-
+    switch(evt.key) {
       case 'Enter':
-        if (this.state.isOpened && currentFocus.tagName === 'LI') {
-          this._makeChoice(currentFocus);
-        }
-        this._toggleList();
+        (this.state.isOpened && currentFocus.tagName === 'LI') ? this._makeChoice(currentFocus) : this._openList();
         break;
-
       case 'Escape':
         if (this.state.isOpened) {
-          this._toggleList();
+          this._closeList();
+          evt.stopPropagation();
         }
         break;
-
       case 'ArrowDown':
-        if (!this.state.isOpened) {
-          this._toggleList();
-        }
+        this._openList();
         this._moveFocus({moveDirection: 'down'});
         break;
-
       case 'ArrowUp':
-        if (!this.state.isOpened) {
-          this._toggleList();
-        }
+        this._openList();
         this._moveFocus({moveDirection: 'up'});
         break;
-
-      default:
-        if (!this.state.isOpened) {
-          this._toggleList();
-        }
-        this._doFilter();
-        break;
     }
-
   }
 
-
-  _doFilter() {
-    const terms = this.inputElement.value;
-
-    this.itemElements.forEach((item) => item.style.display = 'none');
-
-    const filteredItems = this.items.filter((item) =>
-      item.innerText.toUpperCase().startsWith(terms.toUpperCase()));
-
-    filteredItems.forEach((item) => item.style.display = '');
-
-    this._updateStatus(filteredItems.length);
+  setExternalSource({url, requestValueLength = 2, fieldMap}) {
+    this.dataManager.setExternalSource(url, fieldMap);
+    this.state.useExternalData = true;
+    this.state.requestInputValueLength = requestValueLength;
   }
 
+  setSource(data, fieldMap) {
+    this.dataManager.setSource(data, fieldMap);
+    this.state.useExternalData = false;
+  }
 
-  _updateStatus(itemsQuantity) {
-    this.statusElement.textContent = this.filteredStatusPrefix + itemsQuantity;
+  _openList() {
+    if (this.state.isOpened) return;
+
+    const result = this.list.open();
+    if (result) {
+      this.element.setAttribute('aria-expanded', 'true');
+      this.state.isOpened = true;
+    }
+  }
+
+  _closeList() {
+    if (!this.state.isOpened) return;
+
+    this.list.close();
+    this.element.setAttribute('aria-expanded', 'false');
+    this.state.isOpened = false;
+  }
+
+  _makeChoice(focusedItem) {
+    const itemTitle = focusedItem.querySelector(ITEM_TITLE_SELECTOR).textContent;
+    const itemId = focusedItem.dataset.id;
+
+    this.input.element.value = itemTitle;
+    this.input.element.focus();
+    this._closeList();
+
+    this.element.dispatchEvent(new CustomEvent('customSelectChoice', {
+      detail: {
+        choiceId: itemId,
+        choiceValue: itemTitle
+      }
+    }));
+  }
+
+  _moveFocus({moveDirection}) {
+    const currentFocus = document.activeElement;
+
+    const _moveFocusUp = () => {
+      switch (true) {
+        case (currentFocus === this.input.element):
+          this.list.focus('last');
+          break;
+        case (currentFocus.tagName === 'LI'):
+          (this.list.getCurrentFocusItemIndex() === 0) ? this.input.element.focus() : this.list.focus('previous');
+          break;
+      }
+    };
+
+    const _moveFocusDown = () => {
+      switch (true) {
+        case (currentFocus === this.input.element):
+          this.list.focus('first');
+          break;
+        case (currentFocus.tagName === 'LI'):
+          this.list.focus('next');
+          break;
+      }
+    };
+
+    (moveDirection === 'up') ? _moveFocusUp() : _moveFocusDown();
   }
 
 }
 
 
-
-
-const mainSelector = '.custom-select';
-
-function initCustomSelects() {
-  const customSelectElements = document.querySelectorAll(mainSelector);
-  const customSelects = [].map.call(customSelectElements, (elem) => new CustomSelect(elem));
-  return customSelects;
+export default function initCustomSelects() {
+  // добавить тип изменение типа вхождения при фильтрации (data-attr)
+  const customSelectElements = document.querySelectorAll(MAIN_SELECTOR);
+  return Array.from(customSelectElements).map(elem => new CustomSelect(elem));
 }
-
-export default initCustomSelects;
