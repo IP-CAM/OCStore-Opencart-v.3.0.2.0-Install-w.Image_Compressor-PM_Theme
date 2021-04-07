@@ -27,6 +27,7 @@ import initRegistration from './common-next-modules/registration.js';
 import initLogin from './common-next-modules/login.js';
 import initSubscribe from './common-next-modules/subscribe.js';
 import initShare from './common-next-modules/share.js';
+import initCityManager from './common-next-modules/citymanager';
 
 
 const projectObjects = {
@@ -57,7 +58,8 @@ const projectObjects = {
   registration: initRegistration(),
   login: initLogin(),
   subscribe: initSubscribe(),
-  share: initShare()
+  share: initShare(),
+  cityManager: initCityManager()
 };
 
 window.yulms = projectObjects;

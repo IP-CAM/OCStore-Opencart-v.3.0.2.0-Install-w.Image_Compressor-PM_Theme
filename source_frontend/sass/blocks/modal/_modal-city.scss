@@ -3,6 +3,17 @@
   margin-top: $space*1.5;
 }
 
-.modal-city__form {
+.modal-city__textfield {
   margin-top: $space;
+}
+
+.modal-city__cities-container {
+  margin-top: $space*2;
+  padding-top: $space;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  column-gap: $space;
+  row-gap: $space*0.5;
+  justify-items: left;
+  border-top: 1px solid $color__additional-2;
 }

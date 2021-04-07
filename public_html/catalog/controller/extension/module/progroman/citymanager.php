@@ -198,13 +198,13 @@ class ControllerExtensionModuleProgromanCityManager extends Controller {
                 $this->registry->set('document', $document);
             }
 
-            $version_script = CityManager::VERSION . '-0';
-            if (VERSION >= 2) {
-                $this->document->addScript('catalog/view/javascript/progroman/jquery.progroman.autocomplete.js?v=' . $version_script);
-            }
+            // $version_script = CityManager::VERSION . '-0';
+            // if (VERSION >= 2) {
+            //     $this->document->addScript('catalog/view/javascript/progroman/jquery.progroman.autocomplete.js?v=' . $version_script);
+            // }
 
-            $this->document->addScript('catalog/view/javascript/progroman/jquery.progroman.citymanager.js?v=' . $version_script);
-            $this->document->addStyle('catalog/view/javascript/progroman/progroman.citymanager.css?v=' . $version_script);
+            // $this->document->addScript('catalog/view/javascript/progroman/jquery.progroman.citymanager.js?v=' . $version_script);
+            // $this->document->addStyle('catalog/view/javascript/progroman/progroman.citymanager.css?v=' . $version_script);
         } else {
             $this->registry->set('prmn_cmngr', '');
         }

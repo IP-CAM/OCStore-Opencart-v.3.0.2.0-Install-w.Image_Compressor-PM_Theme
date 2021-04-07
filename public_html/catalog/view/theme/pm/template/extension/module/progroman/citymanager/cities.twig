@@ -1,0 +1,31 @@
+<section class="modal-city" id="modalCity" data-city-manager hidden>
+  <h2 class="modal__header">Выберите город</h2>
+  <p class="modal__p">Стоимость и срок доставки заказов зависят от вашего местоположения.</p>
+  <p class="modal__p">Укажите город (населенный пункт):</p>
+
+  {% set unique_list_id = 'custom-select-' ~ random() %}
+  {% set unique_describe_id = 'custom-select-' ~ random() %}
+  <div class="textfield custom-select modal-city__textfield" aria-owns="{{ unique_list_id }}" data-city-select>
+    <label class="textfield__input-container">
+      <input class="textfield__input" type="text" aria-describedby="{{ unique_describe_id }}" aria-controls="{{ unique_list_id }}" autocomplete="off" spellcheck="false">
+      <span class="textfield__trailing-icon textfield__trailing-icon--dropdown custom-select__dropdown-icon"></span>
+      <span class="textfield__label textfield__label--top">Ваш город</span>
+    </label>
+    <ul class="custom-select__list" id="{{unique_list_id}}" hidden></ul>
+    <div class="textfield__help" id="{{ unique_describe_id }}">Быстрый поиск населенного пункта</div>
+  </div>
+
+  <button class="button button--options-primary modal-city__apply-button" type="button" data-apply-button>Применить</button>
+
+  <div class="modal-city__cities-container">
+    {% for column in columns %}
+      {% for city in column %}
+        {% if city.url is empty %}
+          <button class="link link--nounderline" type="button" data-city-choose-button data-id="{{ city.fias_id }}" data-modal-close>{{ city.name }}</button>
+        {% else %}
+          <a class="link link--no-underline" data-id="{{ city.fias_id }}" href="{{city.url}}">{{ city.name }}</a>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+</section>
