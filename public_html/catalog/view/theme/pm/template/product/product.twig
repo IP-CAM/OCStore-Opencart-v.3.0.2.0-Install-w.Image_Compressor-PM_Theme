@@ -182,7 +182,7 @@
               <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-place"></use>
             </svg>
             <span class="visually-hidden">Текущий выбор: </span>
-            <span class="city-choose__current-city">г.&nbsp;Минск</span>
+            <span class="city-choose__current-city">{{ progroman_citymanager.getCityName() }}</span>
             <svg class="icon icon--stroked" width="24" height="24">
               <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-arrow"></use>
             </svg>
@@ -254,15 +254,15 @@
         <div class="offer__buy">
           <input type="hidden" name="product_id" value="{{ product_id }}">
           {# количество #}
-          <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select">
-            <div class="visually-hidden" aria-live="polite"></div>
+          {% set unique_list_id = 'custom-select-' ~ random() %}
+          <div class="offer__buy-elem offer__buy-elem--quantity textfield custom-select" aria-owns="{{ unique_list_id }}">
             <label class="textfield__input-container">
-              <span class="textfield__trailing-icon textfield__trailing-icon--dropdown"></span>
-              <input class="textfield__input" type="text" name="quantity" autocomplete="off" value="1" readonly>
+              <input class="textfield__input" type="text" name="quantity" aria-controls="{{ unique_list_id }}" autocomplete="off" value="1" readonly>
+              <span class="textfield__trailing-icon textfield__trailing-icon--dropdown custom-select__dropdown-icon"></span>
               <span class="textfield__label textfield__label--top">Количество</span>
             </label>
 
-            <ul class="custom-select__list custom-select__list--closed">
+            <ul class="custom-select__list" id="{{unique_list_id}}" hidden>
               <li class="custom-select__item">
                 <strong class="custom-select__item-title">1</strong>
               </li>
