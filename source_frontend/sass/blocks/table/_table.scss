@@ -3,6 +3,10 @@
   border-collapse: collapse;
 }
 
+.table--fixed {
+  table-layout: fixed;
+}
+
 // размещать над table
 .table__responsive-container {
   overflow-x: auto;
@@ -18,13 +22,26 @@
 .table__cell {
   padding: $space*0.5;
   border-bottom: 1px solid $color__additional-2;
+
+  &--big-paddings {
+    padding: $space;
+  }
 }
 
 .table__cell--th {
   position: sticky;
   top: 0;
-  font-weight: inherit;
+  padding: $space;
+  font-weight: 600;
   text-align: left;
   border-top: 1px solid $color__additional-2;
-  background-color: $color__primary-light;
+  background-color: $color__additional-1-1;
+}
+
+.table__cell--no-wrap {
+  white-space: nowrap;
+}
+
+.table__align-top {
+  vertical-align: top;
 }

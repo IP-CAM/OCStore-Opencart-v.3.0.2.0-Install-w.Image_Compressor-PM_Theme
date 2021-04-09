@@ -43,23 +43,18 @@
             {% endif %}
 
             <div class="quantity-input cart-list__quantity-input">
-              <span class="visually-hidden">Управление количеством</span>
-              <div class="quantity-input__container">
-                <button class="quantity-input__button quantity-input__button--less" type="button" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity - 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
-                  <span class="visually-hidden">Уменьшить</span>
-                  <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
-                    <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
-                  </svg>
-                </button>
-                <input class="quantity-input__input-field" type="number" name="quantity" value="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" data-cart-event="change" data-cart-action="set" data-cart-setting-count="value" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
-                <button class="quantity-input__button quantity-input__button--more" type="button" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity + 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
-                  <span class="visually-hidden">Увеличить</span>
-                  <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
-                    <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
-                    <line x1="12" y1="4" x2="12" y2="20" stroke-linecap="round"></line>
-                  </svg>
-                </button>
-              </div>
+              <button class="quantity-input__button quantity-input__button--less" type="button" aria-label="Уменьшить количество" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity - 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
+                <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                  <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                </svg>
+              </button>
+              <input class="quantity-input__input-field" type="text" name="quantity" value="{{ product.quantity }}" autocomplete="off" aria-label="количество товара" data-cart-event="change" data-cart-action="set" data-cart-setting-count="value" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
+              <button class="quantity-input__button quantity-input__button--more" type="button" aria-label="Увеличить количество" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity + 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
+                <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                  <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                  <line x1="12" y1="4" x2="12" y2="20" stroke-linecap="round"></line>
+                </svg>
+              </button>
             </div>
 
             <div class="price cart-list__price">

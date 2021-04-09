@@ -1,0 +1,107 @@
+{{ header }}
+<main class="page__wrapper main page-cart">
+  <h1 class="title title--1 page-cart__title">Корзина покупок {% if weight %}({{ weight }}){% endif %}</h1>
+  {% if attention %}
+    <p class="alert alert--info page-cart__alert-top" role="alert">{{ attention }}</p>
+  {% endif %}
+  {% if success %}
+    <p class="alert alert--info page-cart__alert-top" role="alert">{{ success }}</p>
+  {% endif %}
+  {% if error_warning %}
+    <p class="alert alert--simple-warning page-cart__alert-top" role="alert">{{ error_warning }}</p>
+  {% endif %}
+  <form action="{{ action }}" method="post">
+    <div class="table__responsive-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="table__cell table__cell--th page-cart__image-column">{{ column_image }}</th>
+            <th class="table__cell table__cell--th page-cart__name-column">{{ column_name }}</th>
+            <th class="table__cell table__cell--th page-cart__other-columns">{{ column_model }}</th>
+            <th class="table__cell table__cell--th page-cart__other-columns">{{ column_quantity }}</th>
+            <th class="table__cell table__cell--th page-cart__other-columns">{{ column_price }}</th>
+            <th class="table__cell table__cell--th page-cart__other-columns page-cart__total-column-header">{{ column_total }}</th>
+          </tr>
+        </thead>
+        <tbody class="table__align-top">
+          {% for product in products %}
+            <tr>
+              <td class="table__cell table__cell--big-paddings">
+                {% if product.thumb %}
+                  <div class="image-container">
+                    <img class="image-container__image" src="{{ product.thumb }}" width="236" height="236" alt="{{ product.name }}">
+                  </div>
+                {% endif %}
+              </td>
+              <td class="table__cell table__cell--big-paddings">
+                <a class="link link--nounderline" href="{{ product.href }}">{{ product.name }}</a>
+                {% if product.option %}
+                  <dl class="dl page-cart__product-options">
+                    {% for option in product.option %}
+                      <dt class="dl__dt">{{ option.name }}</dt>
+                      <dd class="dl__dd">{{ option.value }}</dd>
+                    {% endfor %}
+                  </dl>
+                {% endif %}
+                {% if product.reward %}
+                  <span class="page-cart__product-reward">{{ product.reward }}</span>
+                {% endif %}
+
+                {% if not product.stock %}
+                  <p class="alert alert--simple-warning page-cart__product-alert" role="alert">Товара нет в нужном количестве или он отсутствует на складе</p>
+                {% endif %}
+              </td>
+              <td class="table__cell table__cell--big-paddings table__cell--no-wrap">{{ product.model }}</td>
+              <td class="table__cell table__cell--big-paddings">
+                <div class="quantity-input">
+                  <button class="quantity-input__button quantity-input__button--less" type="button" aria-label="Уменьшить количество">
+                    <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                      <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                    </svg>
+                  </button>
+                  <input class="quantity-input__input-field" name="quantity[{{ product.cart_id }}]" value="{{ product.quantity }}" autocomplete="off" aria-label="количество товара">
+                  <button class="quantity-input__button quantity-input__button--more" type="button" aria-label="Увеличить количество">
+                    <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
+                      <line x1="4" y1="12" x2="20" y2="12" stroke-linecap="round"></line>
+                      <line x1="12" y1="4" x2="12" y2="20" stroke-linecap="round"></line>
+                    </svg>
+                  </button>
+                </div>
+                <div class="page-cart__product-button-container">
+                  <button class="link" type="submit">{{ button_update }}</button>
+                  <button class="link" type="button" data-cart-event="click" data-cart-action="remove" data-product-id="{{ product.cart_id }}">{{ button_remove }}</button>
+                </div>
+              </td>
+              <td class="table__cell table__cell--big-paddings table__cell--no-wrap">{{ product.price }}</td>
+              <td class="table__cell table__cell--big-paddings page-cart__total--column-cells">{{ product.total }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="table__cell table__cell--big-paddings"></td>
+            <td class="table__cell table__cell--big-paddings page-cart__total-caption" colspan="3">{{ totals[0].title }}:</td>
+            <td class="table__cell table__cell--big-paddings page-cart__total-cell" colspan="2">{{ totals[0].text }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </form>
+  <div class="page-cart__button-container">
+    <a class="button button--action-secondary" href="{{ continue }}">{{ button_shopping }}</a>
+    <a class="button button--action-primary page-cart__button-checkout" href="{{ checkout }}">{{ button_checkout }}</a>
+  </div>
+  {# * Купон для скидки, #}
+  {# * Варианты доставки, #}
+  {# * Подарочный сертификат #}
+  {# {% if modules %}
+    <h2 class="title title--2">{{ text_next }}</h2>
+    <p>{{ text_next_choice }}</p>
+    <div>
+      {% for module in modules %}
+        {{ module }}
+      {% endfor %}
+    </div>
+  {% endif %} #}
+</main>
+{{ footer }}

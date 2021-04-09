@@ -45,7 +45,7 @@
   border-bottom: 1px solid $color__additional-2;
 }
 
-.page-cart__price {
+.page-checkout__price {
   font-weight: 600;
 
   &--discount {
@@ -53,7 +53,7 @@
   }
 }
 
-.page-cart__total-price {
+.page-checkout__total-price {
   font-size: $space*2;
   line-height: 1;
 }

@@ -1,31 +1,37 @@
-.quantity-input__container {
-  position: relative;
-  z-index: 0;
+.quantity-input {
+  --control-height: #{$space*3};
+  --border: 2px solid #{$color__additional-2};
+
   display: flex;
   align-items: center;
-  max-width: $space * 8;
 }
 
 .quantity-input__button {
-  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: $space * 3;
-  height: $space * 3;
+  height: var(--control-height);
   margin: 0;
   padding: 0;
-  border-radius: 50%;
+  appearance: button;
   background: 0;
-  border: 0;
+  border: var(--border);
   cursor: pointer;
   outline: 0;
   transition: all 0.1s;
+  overflow: visible;
+  word-break: break-word;
 }
 
 .quantity-input__button--less {
-  left: 0;
+  border-right: 0;
+  border-radius: calc(var(--control-height) / 2) 0 0 calc(var(--control-height) / 2);
 }
 
 .quantity-input__button--more {
-  right: 0;
+  border-left: 0;
+  border-radius: 0 calc(var(--control-height) / 2) calc(var(--control-height) / 2) 0;
 }
 
 .quantity-input__icon {
@@ -41,25 +47,19 @@
   stroke: $color__primary;
 }
 
-// .quantity-input__button:active {
-// background-color: $color__additional-2;
-// }
-
 .quantity-input__input-field {
-  width: 100%;
-  height: $space * 2;
-  padding: 0 $space * 3;
+  width: $space*3;
+  height: var(--control-height);
+  padding: $space*0.25;
   font: inherit;
   font-size: 115%;
   text-align: center;
   color: $color-font__input;
-  border-radius: $controls__border-radius;
-  border: 1px solid $color__additional-2;
+  border: var(--border);
   background-color: #ffffff;
   outline: none;
 
   &:focus {
-    border: 0;
-    box-shadow: 0 0 0 2px $color__primary;
+    border: 2px solid $color__primary;
   }
 }
