@@ -16,18 +16,13 @@
 
       <ul class="cart-list">
         {% for product in products %}
-
           <li class="cart-list__item">
-            <p class="image-container cart-list__image-container">
-              {% if product.thumb %}
-                <a href="{{ product.href }}">
-                  <img class="image-container__image" src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="90">
-                </a>
-              {% endif %}
-            </p>
-
+            {% if product.thumb %}
+              <a class="image-container cart-list__image-container" href="{{ product.href }}">
+                <img class="image-container__image" src="{{ product.thumb }}" loading="lazy" width="97" height="97" alt="{{ product.name }}">
+              </a>
+            {% endif %}
             <a class="cart-list__title" href="{{ product.href }}">{{ product.name }}</a>
-
             {% if product.option %}
               <dl class="dl cart-list__options-list">
                 {% for option in product.option %}
@@ -36,12 +31,10 @@
                 {% endfor %}
               </dl>
             {% endif %}
-
             {% if product.recurring %}
               {{ text_recurring }}
               {{ product.recurring }}
             {% endif %}
-
             <div class="quantity-input cart-list__quantity-input">
               <button class="quantity-input__button quantity-input__button--less" type="button" aria-label="Уменьшить количество" data-cart-event="click" data-cart-action="set" data-cart-setting-count="{{ product.quantity - 1 }}" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">
                 <svg class="quantity-input__icon" width="24" height="24" viewbox="0 0 24 24">
@@ -56,38 +49,38 @@
                 </svg>
               </button>
             </div>
-
-            <div class="price cart-list__price">
+            <div class="cart-list__price">
               {% if product.common_price %}
-                <span class="price__current price__current--discount minicard__price" aria-label="Текущая цена по акции:">
-                  {{ product.price_before }}
-                  <sup>{{ product.price_after }}</sup>
-                </span>
-                <del class="price__old" aria-label="Цена без скидки: ">{{ product.common_price }}</del>
+                {# * скидка, common_price - старая цена при наличии скидки #}
+                <span class="cart-list__price-current cart-list__price-current--discount">{{ product.total }}</span>
+                <br><del class="cart-list__price-old">{{ product.common_price * product.quantity }} р.</del>
               {% else %}
-                <span class="price__current minicard__price" aria-label="Цена:">{{ product.price_before }}<sup>{{ product.price_after }}</sup>
-                  р.
-                </span>
+                {# * нет скидки #}
+                <span class="cart-list__price-current">{{ product.total }}</span>
+              {% endif %}
+              {% if product.quantity > 1 %}
+                <br><span class="cart-list__price-each">{{ product.price }} за 1 шт.</span>
               {% endif %}
             </div>
-
-            <div class="cart-list__item-manage">
-              <button class="button cart-list__manage-item-button" type="button" data-cart-event="click" data-cart-action="remove" data-product-id="{{ product.cart_id }}" data-cart-loading-selector=".header__cart-footer" data-cart-loading-color="primary">Удалить</button>
-              <button class="button cart-list__manage-item-button" type="button" data-wishlist="add" data-product-id="{{ product.product_id }}">Сохранить</button>
-            </div>
+            <button class="link cart-list__love-button" type="button" data-wishlist="add" data-product-id="{{ product.product_id }}">
+              <svg class="icon icon--stroked cart-list__love-button-icon" width="24" height="24">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-love"></use>
+              </svg>
+              <span>cохранить в избранное</span>
+            </button>
           </li>
-
         {% endfor %}
       </ul>
 
       <div class="header__cart-footer">
         <p class="header__cart-summary">
-          <span>Всего ({{ cart_items_quantity }}):</span>
-          <span class="header__cart-summary-number">{{ cart_items_currency }}</span>
+          <span>Всего ({{ cart_items_quantity_full }}):</span>
+          <span class="visually-hidden">{{ cart_items_total }}</span>
+          <span class="header__cart-summary-number" aria-hidden="true">{{ cart_items_total_before }}<sup>{{ cart_items_total_after }}</sup> р.</span>
         </p>
 
         <div class="header__cart-buttons">
-          <button class="button button--action-secondary" type="button">Купить в 1 клик</button>
+          <button class="link">Купить в 1 клик</button>
           <a class="button button--action-primary header__cart-buy-button" href="{{ checkout }}">Оформить заказ</a>
         </div>
       </div>

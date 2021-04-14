@@ -28,9 +28,9 @@
             <tr>
               <td class="table__cell table__cell--big-paddings">
                 {% if product.thumb %}
-                  <div class="image-container">
+                  <a class="image-container" href="{{ product.href }}">
                     <img class="image-container__image" src="{{ product.thumb }}" width="236" height="236" alt="{{ product.name }}">
-                  </div>
+                  </a>
                 {% endif %}
               </td>
               <td class="table__cell table__cell--big-paddings">

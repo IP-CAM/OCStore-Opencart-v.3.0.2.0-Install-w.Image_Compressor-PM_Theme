@@ -31,7 +31,7 @@
 
 .header__cart-modal {
   right: 0;
-  width: $space * 28;
+  width: $space*35;
 
   @include media-mobile-only {
     --horizontal-paddings: #{$space};
@@ -66,14 +66,19 @@
 
 .header__cart-summary-number {
   font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: $color-font__title;
+  white-space: nowrap;
 }
 
 .header__cart-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: $space;
   align-items: center;
+  justify-items: start;
 }
 
 .header__cart-buy-button {
-  flex-grow: 1;
-  margin-left: $space;
+  width: 100%;
 }

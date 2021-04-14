@@ -6,33 +6,32 @@
 
 .cart-list__item {
   display: grid;
-  grid-template-columns: minmax(0%, 8rem) auto;
-  grid-template-areas:
-    "img name"
-    "img options"
-    "img quantity"
-    "img price"
-    "img buttons";
   column-gap: $space;
-  row-gap: $space * 0.5;
   padding-top: $space;
   padding-bottom: $space;
   line-height: 1.5rem;
 
-
   &:not(:last-child) {
     border-bottom: 1px dashed $color__additional-2;
   }
-}
 
-.cart-list--page .cart-list__item {
+  @include media-mobile-only {
+    grid-template:
+      "img name"
+      "img options"
+      "img price"
+      "img quantity"
+      "img buttons"
+      / minmax(0%, $space*8) minmax(63%, 1fr);
+  }
+
   @include media-tablet-portrait-up {
     grid-template:
-      "img name quantity"
-      "img options quantity"
+      "img name price"
+      "img options price"
+      "img quantity price"
       "img buttons price" 1fr
-      / minmax(0%, $space*8) auto $space*8;
-    row-gap: 0;
+      / 128px 1fr $space*8;
   }
 }
 
@@ -41,7 +40,9 @@
 }
 
 .cart-list__title {
+  grid-area: name;
   margin: 0;
+  font-size: 1rem;
   color: $color-font__subtitle2;
   text-decoration: none;
 
@@ -62,53 +63,57 @@
 
 .cart-list__quantity-input {
   grid-area: quantity;
-}
-
-.cart-list--page .cart-list__quantity-input {
-  @include media-tablet-portrait-up {
-    justify-self: end;
-  }
+  margin-top: $space;
 }
 
 .cart-list__price {
   grid-area: price;
-}
+  white-space: nowrap;
 
-.cart-list--page .cart-list__price {
+  @include media-mobile-only {
+    margin-top: $space*0.5;
+  }
+
   @include media-tablet-portrait-up {
-    align-self: end;
-    justify-self: end;
     text-align: right;
   }
 }
 
+.cart-list__price-current {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $color-font__title;
+  white-space: nowrap;
 
-.cart-list__item-manage {
+  &--discount {
+    color: $color-font__sale;
+  }
+}
+
+.cart-list__price-each {
+  color: $color-font__secondary;
+}
+
+.cart-list__price-old {
+  color: $color-font__secondary;
+}
+
+.cart-list__love-button {
   grid-area: buttons;
+  justify-self: start;
+  align-self: start;
+  margin-top: $space;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.cart-list--page .cart-list__item-manage {
-  @include media-tablet-portrait-up {
-    align-self: end;
-  }
-}
-
-.cart-list__manage-item-button {
   padding: 0;
   color: inherit;
-  text-decoration: underline;
-  text-underline-position: under;
-
-  &:not(:last-child) {
-    margin-right: $space;
-  }
 
   &:hover,
   &:focus {
     color: $color__primary;
   }
+}
+
+.cart-list__love-button-icon {
+  margin-right: $space*0.25;
 }
