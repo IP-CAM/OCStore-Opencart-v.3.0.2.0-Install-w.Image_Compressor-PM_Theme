@@ -140,10 +140,10 @@
         <p class="price offer__price">
           {% if not special %}
             <span class="visually-hidden">{{ price }}</span>
-            <span class="price__current price__current--big" aria-hidden="true">{{ price_before }}<sup>{{ price_after }}</sup> р.</span>
+            <span class="price__current price__current--big" aria-hidden="true">{{ price_integer }}<sup>{{ price_decimal }}</sup> {{price_currency_symbol}}</span>
           {% else %}
             <span class="visually-hidden">{{ special }}</span>
-            <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_before }}<sup>{{ special_after }}</sup> р.</span>
+            <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_integer }}<sup>{{ special_decimal }}</sup> {{price_currency_symbol}}</span>
             <del class="price__old">{{ price }}</del>
             <strong class="price__discount-info">{{ special_discount_text }}</strong>
           {% endif %}
@@ -511,10 +511,10 @@
           <div class="price buy-card__price">
             {% if not special %}
               <span class="visually-hidden">{{ price }}</span>
-              <span class="price__current price__current--big" aria-hidden="true">{{ price_before }}<sup>{{ price_after }}</sup> р.</span>
+              <span class="price__current price__current--big" aria-hidden="true">{{ price_integer }}<sup>{{ price_decimal }}</sup> {{price_currency_symbol}}</span>
             {% else %}
               <span class="visually-hidden">{{ special }}</span>
-              <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_before }}<sup>{{ special_after }}</sup> р.</span>
+              <span class="price__current price__current--discount price__current--big" aria-hidden="true">{{ special_integer }}<sup>{{ special_decimal }}</sup> {{price_currency_symbol}}</span>
               <del class="price__old">{{ price }}</del>
               <strong class="price__discount-info">{{ special_discount_text }}</strong>
             {% endif %}

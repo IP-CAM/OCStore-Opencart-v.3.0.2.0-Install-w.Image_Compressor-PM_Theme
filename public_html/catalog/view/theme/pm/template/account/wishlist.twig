@@ -56,11 +56,11 @@
                       {% if not product.special %}
                         {# без акции #}
                         <span class="visually-hidden">{{ product.price }}</span>
-                        <span class="price__current" aria-hidden="true">{{ product.price_before }}<sup>{{ product.price_after }}</sup> р.</span>
+                        <span class="price__current" aria-hidden="true">{{ product.price_integer }}<sup>{{ product.price_decimal }}</sup> {{ price_currency_symbol }}</span>
                       {% else %}
                         {# акция #}
                         <span class="visually-hidden">{{ product.special }}</span>
-                        <span class="price__current price__current--discount" aria-hiddel="true">{{ product.special_before }}<sup>{{ product.special_after }}</sup> р.</span>
+                        <span class="price__current price__current--discount" aria-hiddel="true">{{ product.special_integer }}<sup>{{ product.special_decimal }}</sup> {{ price_currency_symbol }}</span>
                         <del class="price__old" aria-label="Цена без скидки: ">{{ product.price }}</del>
                       {% endif %}
                     </p>

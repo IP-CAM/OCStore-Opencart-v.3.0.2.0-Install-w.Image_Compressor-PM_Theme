@@ -85,28 +85,26 @@ class ControllerAccountWishList extends Controller {
 					$stock = $this->language->get('text_instock');
 				}
 
+        $this->registry->set('custom_price', new CustomPrice($this->registry));
+
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-          $price_clean = $this->currency->format($product_info['price'], $this->session->data['currency'], '', true, true);
-          $price_before = floor($price_clean);
-          $price_after = explode('.', $price_clean)[1];
+          $price_integer = $this->custom_price->getPriceInteger($product_info['price']);
+          $price_decimal = $this->custom_price->getPriceDecimal($product_info['price']);
 				} else {
 					$price = false;
-          $price_clean = false;
-          $price_before = false;
-          $price_after = false;
+          $price_integer = false;
+          $price_decimal = false;
 				}
 
 				if ((float)$product_info['special']) {
 					$special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-          $special_clean = $this->currency->format($product_info['special'], $this->session->data['currency'], '', true, true);
-          $special_before = floor($special_clean);
-          $special_after = explode('.', $special_clean)[1];
+          $special_integer = $this->custom_price->getPriceInteger($product_info['special']);
+          $special_decimal = $this->custom_price->getPriceDecimal($product_info['special']);
 				} else {
 					$special = false;
-          $special_clean = false;
-          $special_before = false;
-          $special_after = false;
+          $special_integer = false;
+          $special_decimal = false;
 				}
 
 				$data['products'][] = array(
@@ -122,17 +120,17 @@ class ControllerAccountWishList extends Controller {
 					'special'        => $special,
 					'href'           => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
 					'remove'         => $this->url->link('account/wishlist', 'remove=' . $product_info['product_id']),
-					'price_clean'    => $price_clean,
-					'price_before'   => $price_before,
-					'price_after'    => $price_after,
-					'special_clean'  => $special_clean,
-					'special_before' => $special_before,
-					'special_after'  => $special_after
+					'price_integer'   => $price_integer,
+					'price_decimal'    => $price_decimal,
+					'special_integer' => $special_integer,
+					'special_decimal'  => $special_decimal
 				);
 			} else {
 				$this->model_account_wishlist->deleteWishlist($result['product_id']);
 			}
 		}
+
+    $data['price_currency_symbol'] = $this->currency->getSymbolRight($this->session->data['currency']);
 
 		$data['continue'] = $this->url->link('account/account', '', true);
 

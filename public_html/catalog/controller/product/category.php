@@ -226,28 +226,26 @@ class ControllerProductCategory extends Controller {
           $image     = PLACEHOLDER_IMAGE;
         }
 
+        $this->registry->set('custom_price', new CustomPrice($this->registry));
+
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
           $price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-          $price_clean = $this->currency->format($result['price'], $this->session->data['currency'], '', true, true);
-          $price_before = floor($price_clean);
-          $price_after = explode('.', $price_clean)[1];
+          $price_integer = $this->custom_price->getPriceInteger($result['price']);
+          $price_decimal = $this->custom_price->getPriceDecimal($result['price']);
 				} else {
           $price = false;
-          $price_clean = false;
-          $price_before = false;
-          $price_after = false;
+          $price_integer = false;
+          $price_decimal = false;
 				}
 
 				if ((float)$result['special']) {
           $special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-          $special_clean = $this->currency->format($result['special'], $this->session->data['currency'], '', true, true);
-          $special_before = floor($special_clean);
-          $special_after = explode('.', $special_clean)[1];
+          $special_integer = $this->custom_price->getPriceInteger($result['special']);
+          $special_decimal = $this->custom_price->getPriceDecimal($result['special']);
 				} else {
           $special = false;
-          $special_clean = false;
-          $special_before = false;
-          $special_after = false;
+          $special_integer = false;
+          $special_decimal = false;
 				}
 
 				if ($this->config->get('config_tax')) {
@@ -280,14 +278,14 @@ class ControllerProductCategory extends Controller {
 					'minimum'          => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'href'             => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
 					'manufacturer'     => $result['manufacturer'],
-					'price_clean'      => $price_clean,
-					'price_before'     => $price_before,
-					'price_after'      => $price_after,
-					'special_clean'    => $special_clean,
-					'special_before'   => $special_before,
-					'special_after'    => $special_after
+					'price_integer'     => $price_integer,
+					'price_decimal'      => $price_decimal,
+					'special_integer'   => $special_integer,
+					'special_decimal'    => $special_decimal
 				);
 			}
+
+      $data['price_currency_symbol'] = $this->currency->getSymbolRight($this->session->data['currency']);
 
 			$url = '';
 
