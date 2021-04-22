@@ -62,7 +62,7 @@ class ControllerCheckoutCart extends Controller {
 			$products = $this->cart->getProducts();
 
 			foreach ($products as $product) {
-				$product_total = 0;
+        $product_total = 0;
 
 				foreach ($products as $product_2) {
 					if ($product_2['product_id'] == $product['product_id']) {
@@ -512,4 +512,89 @@ class ControllerCheckoutCart extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
+  // ! my add
+  public function getCartList() {
+    $this->load->language('checkout/cart');
+
+    $this->load->model('tool/image');
+		$this->load->model('tool/upload');
+
+		$data['products'] = array();
+
+		foreach ($this->cart->getProducts() as $product) {
+      if ($product['image']) {
+        $image = $this->model_tool_image->resize($product['image'], 236, 236);
+			} else {
+				$image = '';
+			}
+
+			$option_data = array();
+
+			foreach ($product['option'] as $option) {
+				if ($option['type'] != 'file') {
+					$value = $option['value'];
+				} else {
+					$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+					if ($upload_info) {
+						$value = $upload_info['name'];
+					} else {
+						$value = '';
+					}
+				}
+
+				$option_data[] = array(
+					'name'  => $option['name'],
+					'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value),
+					'type'  => $option['type']
+				);
+			}
+
+			// Display prices
+			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+				$unit_price = $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'));
+
+        $price = $this->currency->format($unit_price, $this->session->data['currency']);
+				$total = $this->currency->format($unit_price * $product['quantity'], $this->session->data['currency']);
+			} else {
+				$price = false;
+				$total = false;
+      }
+
+      if ($product['quantity'] < $product['minimum']) {
+        $error_minimum = sprintf($this->language->get('error_minimum'), $product['minimum']);
+      } else {
+        $error_minimum = '';
+      }
+
+      if (!$product['stock']) {
+        $error_stock = $this->language->get('error_stock');
+      } else {
+        $error_stock = '';
+      }
+
+			$data['products'][] = array(
+        'cart_id'      => $product['cart_id'],
+        'product_id'   => $product['product_id'],
+        'thumb'        => $image,
+        'name'         => $product['name'],
+        'model'        => $product['model'],
+        'option'       => $option_data,
+        'quantity'     => $product['quantity'],
+        'price'        => $price,
+        'common_price' => $product['common_price'],
+        'total'        => $total,
+        'href'         => $this->url->link('product/product', 'product_id=' . $product['product_id']),
+        'reward'       => ($product['reward'] ? sprintf($this->language->get('text_points'), $product['reward']) : ''),
+        'error_stock'  => $error_stock,
+        'error_minimum'=> $error_minimum
+			);
+		}
+
+    if ($this->cart->hasProducts()) {
+      return $this->load->view('checkout/cart_list', $data);
+    }
+  }
+  // ! EOF my add
 }
