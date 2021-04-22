@@ -1,0 +1,116 @@
+<div id="tab-geozones">
+  <table id="quotes-geo-zones" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <td class="text-left required">{{ entry_geo_zone }}</td>
+      <td class="text-left required">{{ entry_rate }} </td>
+      <td class="text-left">{{ entry_discount }}</td>
+      <td class="text-left">{{ entry_description }}</td>
+      <td class="text-left">{{ entry_min_price }}</td>
+      <td class="text-left">{{ entry_max_price }}</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody v-for="(quote, index) in quotes" :key="quote.quote_geozone_id">
+      <tr>
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.zone_name }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][geo_zone_id]'" :value="quote.geo_zone_id">
+          <div v-if="errors_zone[index]" class="text-danger">{% raw %} {{ errors_zone[index] }} {% endraw %}</div>
+        </td>
+
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.rate }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][rate]'" :value="quote.rate"/>
+          <div v-if="errors_rate[index]" class="text-danger">{% raw %} {{ errors_rate[index] }} {% endraw %}</div>
+        </td>
+
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.discount }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][discount]'" :value="quote.discount"/>
+        </td>
+
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.description }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][description]'" :value="quote.description"/>
+        </td>
+
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.min_price }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][min_price]'" :value="quote.min_price"/>
+        </td>
+
+        <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <span>{% raw %} {{ quote.max_price }} {% endraw %}</span>
+          <input type="hidden" :name="'quotes_geo_zones[' + index + '][max_price]'" :value="quote.max_price"/>
+        </td>
+
+        <td class="text-right">
+          <a class="btn btn-primary" title="{{ text_click_to_edit }}" @click="edit(index)">
+            <i class="fa fa-pencil"></i>
+          </a>
+          <a class="btn btn-warning" @click="quotes.splice(index, 1)" title="{{ button_remove }}">
+            <i class="fa fa-trash-o"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="9">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-geozone" @click="add">
+            {{ button_add }}
+        </button>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+
+  <div class="col-lg-6">
+    <div class="alert alert-info">
+      <p>{{ text_priority }}</p>
+      <p><b>{{ entry_rate }}</b><br>{{ entry_rate_help }}</p>
+      <p><b>{{ entry_discount }}</b><br>{{ entry_discount_help }}</p>
+      <p><b>{{ entry_description }}</b><br>{{ entry_description_help }}</p>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    var quoteGeoZonesApp = new Vue({
+        el: '#quotes-geo-zones',
+        data: {
+            quotes: {{ quotes_geo_zones|json_encode }},
+            errors_zone: {{ error_geo_zone|json_encode }},
+            errors_rate: {{ error_geo_zone_rate|json_encode }}
+        },
+        methods: {
+            edit: function(index) {
+                modalGeoZoneApp.fill(this.quotes[index]).show();
+            },
+            add: function() {
+                modalGeoZoneApp.reset();
+            },
+            addQuoteZone: function(data) {
+                data.quote_geozone_id = Math.random();
+                this.quotes.push(data);
+            },
+            editQuoteZone: function(id, data) {
+                var index = this.getIndexOfQuoteZone(id);
+                if (index >= 0) {
+                    this.quotes.splice(index, 1, data);
+                }
+            },
+            getIndexOfQuoteZone: function(id) {
+                var i;
+                for (i in this.quotes) {
+                    if (this.quotes[i].quote_geozone_id === id) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+        }
+    });
+</script>

@@ -1,0 +1,242 @@
+<div class="modal fade" id="modal-add-zone" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{ tab_zones }}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <input type="hidden" name="quote_zone_id" v-model="quote_zone_id">
+
+          <div class="form-group required">
+            <label class="control-label col-sm-4">{{ entry_country }}</label>
+            <div class="col-sm-8">
+              <select name="country_id" class="form-control" v-model="country_id">
+                <option v-for="country in countries" :value="country.country_id">{% raw %}{{ country.name }}{% endraw %}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="control-label col-sm-4">{{ entry_zone }}</label>
+            <div class="col-sm-8">
+              <select name="zone_id" class="form-control" v-model="zone_id">
+                <option v-for="zone in zones" :value="zone.zone_id">{% raw %}{{ zone.name }}{% endraw %}</option>
+              </select>
+
+              <div v-if="error_zone" class="text-danger">{{ text_error_zone }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_enabled_cities }}
+              <span data-toggle="tooltip" title="{{ entry_enabled_cities_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <textarea cols="30" rows="3" name="enabled_cities" class="form-control" v-model="enabled_cities"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_disabled_cities }}
+              <span data-toggle="tooltip" title="{{ entry_disabled_cities_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <textarea cols="30" rows="3" name="disabled_cities" class="form-control" v-model="disabled_cities"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="control-label col-sm-4">
+              {{ entry_rate }}<span data-toggle="tooltip" title="{{ entry_rate_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <textarea cols="30" rows="3" name="rate" class="form-control" v-model="rate"
+                        placeholder="{{ entry_rate_placeholder }}"></textarea>
+
+              <div v-if="error_rate" class="text-danger">{{ text_error_rate }}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_discount }}<span data-toggle="tooltip" title="{{ entry_discount_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <textarea cols="30" rows="3" name="discount" class="form-control" v-model="discount"
+                        placeholder="{{ entry_discount_placeholder }}"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_description }}<span data-toggle="tooltip" title="{{ entry_description_help|escape }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <textarea cols="30" rows="3" name="description" class="form-control" v-model="description"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_min_price }}<span data-toggle="tooltip" title="{{ entry_price_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <input type="text" name="min_price" class="form-control" v-model="min_price">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              {{ entry_max_price }}<span data-toggle="tooltip" title="{{ entry_price_help }}"></span>
+            </label>
+            <div class="col-sm-8">
+              <input name="max_price" class="form-control" v-model="max_price">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_cancel }}</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submit">{{ button_save }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    var countries = {{ countries|json_encode }};
+    var modalZoneApp = new Vue({
+        el: '#modal-add-zone',
+        data: {
+            countries: countries,
+            zones: [],
+            country_id: 176,
+            zone_id: 0,
+            rate: '',
+            discount: '',
+            description: '',
+            enabled_cities: '',
+            disabled_cities: '',
+            min_price: '',
+            max_price: '',
+            quote_id: 0,
+            quote_zone_id: 0,
+            error_zone: '',
+            error_rate: ''
+        },
+        watch: {
+            country_id: function(val, oldVal) {
+                if (val != oldVal) {
+                    this.loadZones();
+                }
+            }
+        },
+        methods: {
+            submit: function(e) {
+                this.error_zone = !this.zone_id;
+                this.error_rate = !this.rate;
+
+                if (this.error_zone || this.error_rate) {
+                    e.stopPropagation();
+                    return false;
+                }
+
+                var data = {
+                    country_id: this.country_id,
+                    zone_id: this.zone_id,
+                    country_name: this.country_name,
+                    zone_name: this.zone_name,
+                    rate: this.rate,
+                    discount: this.discount,
+                    description: this.description,
+                    enabled_cities: this.enabled_cities,
+                    disabled_cities: this.disabled_cities,
+                    min_price: this.min_price,
+                    max_price: this.max_price,
+                    quote_zone_id: this.quote_zone_id
+                };
+
+                if (this.quote_zone_id) {
+                    quoteZonesApp.editQuoteZone(this.quote_zone_id, data);
+                } else {
+                    quoteZonesApp.addQuoteZone(data);
+                }
+            },
+            fill: function(quote) {
+                this.country_id = quote.country_id;
+                this.zone_id = quote.zone_id;
+                this.rate = quote.rate;
+                this.discount = quote.discount;
+                this.description = quote.description;
+                this.enabled_cities = quote.enabled_cities;
+                this.disabled_cities = quote.disabled_cities;
+                this.min_price = quote.min_price;
+                this.max_price = quote.max_price;
+                this.quote_id = quote.quote_id;
+                this.quote_zone_id = quote.quote_zone_id;
+                this.error_zone = this.error_rate = false;
+
+                return this;
+            },
+            reset: function() {
+                this.country_id = 176;
+                if (this.zones.length) {
+                    this.zone_id = this.zones[0].zone_id;
+                }
+                this.rate = this.discount = this.description = this.enabled_cities
+                    = this.disabled_cities = this.min_price = this.max_price = '';
+                this.quote_zone_id = 0;
+
+                this.error_zone = this.error_rate = false;
+            },
+            loadZones: function() {
+                var self = this;
+                $.get(
+                    '{{ url_module }}/country&country_id=' + this.country_id + '&user_token={{ user_token }}',
+                    function(json) {
+                        self.zones = json.zones;
+                        self.zones.sort();
+
+                        if (self.zones.length) {
+                            self.zone_id = self.zones[0].zone_id;
+                        }
+                    },
+                    'json'
+                )
+            },
+            show: function() {
+                $(this.$el).modal('show');
+            }
+        },
+        computed: {
+            country_name: function() {
+                var i;
+                for (i in this.countries) {
+                    if (this.countries[i].country_id == this.country_id) {
+                        return this.countries[i].name;
+                    }
+                }
+
+                return '';
+            },
+            zone_name: function() {
+                var i;
+                for (i in this.zones) {
+                    if (this.zones[i].zone_id == this.zone_id) {
+                        return this.zones[i].name;
+                    }
+                }
+
+                return '';
+            }
+        },
+        created: function() {
+            this.loadZones();
+        }
+    });
+</script>

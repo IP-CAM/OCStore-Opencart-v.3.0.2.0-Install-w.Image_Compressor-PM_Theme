@@ -1,0 +1,58 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-shipgen-quote" data-toggle="tooltip" title="{{ button_save }}"
+                class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}"
+           class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li>
+              <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+            </li>
+          {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <i class="fa fa-exclamation-circle"></i> {{ success }}
+      </div>
+    {% endif %}
+    <ul id="tabs" class="nav nav-tabs">
+      <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+      <li><a href="#tab-geozones" data-toggle="tab">{{ tab_geozones }}</a></li>
+      <li><a href="#tab-zones" data-toggle="tab">{{ tab_zones }}</a></li>
+    </ul>
+
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-shipgen-quote" class="form-horizontal">
+      <div class="tab-content">
+        <input type="hidden" name="shipping_id" value="{{ shipping_id }}">
+        <div class="tab-pane active in" id="tab-general">
+            {{ content_tab_general }}
+        </div>
+        <div class="tab-pane" id="tab-zones">
+            {{ content_tab_zones }}
+        </div>
+        <div class="tab-pane" id="tab-geozones">
+            {{ content_tab_geozones }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{{ popup_zone }}
+{{ popup_geozone }}
+{{ footer }}

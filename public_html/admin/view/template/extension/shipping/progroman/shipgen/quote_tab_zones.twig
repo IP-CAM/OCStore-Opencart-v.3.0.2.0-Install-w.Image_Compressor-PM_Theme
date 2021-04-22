@@ -1,0 +1,128 @@
+<div class="table-responsive">
+  <table id="quotes-zones" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <td class="text-left required">{{ entry_country }} / {{ entry_zone }}</td>
+      <td class="text-left required">{{ entry_rate }}</td>
+      <td class="text-left">{{ entry_discount }}</td>
+      <td class="text-left">{{ entry_description }}</td>
+      <td class="text-left">{{ entry_enabled_cities }}</td>
+      <td class="text-left">{{ entry_disabled_cities }}</td>
+      <td class="text-left">{{ entry_min_price }}</td>
+      <td class="text-left">{{ entry_max_price }}</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody v-for="(quote, index) in quotes" :key="quote.quote_zone_id" :data-key="quote.quote_zone_id">
+    <tr>
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.country_name +  ', ' + quote.zone_name }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][country_id]'" :value="quote.country_id">
+        <input type="hidden" :name="'quotes_zones[' + index + '][zone_id]'" :value="quote.zone_id">
+        <div v-if="errors_zone[index]" class="text-danger">{% raw %} {{ errors_zone[index] }} {% endraw %}</div>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.rate }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][rate]'" :value="quote.rate"/>
+        <div v-if="errors_rate[index]" class="text-danger">{% raw %} {{ errors_rate[index] }} {% endraw %}</div>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.discount }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][discount]'" :value="quote.discount"/>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.description }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][description]'" :value="quote.description"/>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.enabled_cities }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][enabled_cities]'" :value="quote.enabled_cities"/>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.disabled_cities }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][disabled_cities]'" :value="quote.disabled_cities"/>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.min_price }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][min_price]'" :value="quote.min_price"/>
+      </td>
+
+      <td class="text-left" title="{{ text_click_to_edit }}" @click="edit(index)">
+        <span>{% raw %} {{ quote.max_price }} {% endraw %}</span>
+        <input type="hidden" :name="'quotes_zones[' + index + '][max_price]'" :value="quote.max_price"/>
+      </td>
+
+      <td class="text-right">
+        <a class="btn btn-primary" title="{{ text_click_to_edit }}" @click="edit(index)">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <a class="btn btn-warning" @click="quotes.splice(index, 1)" title="{{ button_remove }}">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="9">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-zone" @click="add">
+            {{ button_add }}
+        </button>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+
+  <div class="col-lg-6">
+    <div class="alert alert-info">
+      <p>{{ text_priority }}</p>
+      <p><b>{{ entry_rate }}</b><br>{{ entry_rate_help }}</p>
+      <p><b>{{ entry_discount }}</b><br>{{ entry_discount_help }}</p>
+      <p><b>{{ entry_description }}</b><br>{{ entry_description_help }}</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var quoteZonesApp = new Vue({
+        el: '#quotes-zones',
+        data: {
+            quotes: {{ quotes_zones|json_encode }},
+            errors_zone: {{ error_zone|json_encode }},
+            errors_rate: {{ error_zone_rate|json_encode }}
+        },
+        methods: {
+            edit: function(index) {
+                modalZoneApp.fill(this.quotes[index]).show();
+            },
+            add: function() {
+                modalZoneApp.reset();
+            },
+            addQuoteZone: function(data) {
+                data.quote_zone_id = Math.random();
+                this.quotes.push(data);
+            },
+            editQuoteZone: function(id, data) {
+                var index = this.getIndexOfQuoteZone(id);
+                if (index >= 0) {
+                    this.quotes.splice(index, 1, data);
+                }
+            },
+            getIndexOfQuoteZone: function(id) {
+                var i;
+                for (i in this.quotes) {
+                    if (this.quotes[i].quote_zone_id === id) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+        }
+    });
+</script>

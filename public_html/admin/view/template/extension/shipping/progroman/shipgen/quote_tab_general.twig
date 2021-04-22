@@ -1,0 +1,42 @@
+<div class="form-group required">
+    <label class="col-sm-2 control-label">{{ entry_title }}</label>
+    <div class="col-sm-10">
+        <input type="text" name="title" value="{{ title }}" placeholder="{{ entry_title }}" class="form-control"/>
+        {% if error_title %}
+            <div class="text-danger">{{ error_title }}</div>
+        {% endif %}
+    </div>
+</div>
+<div class="form-group required">
+    <label class="col-sm-2 control-label">{{ entry_description }}</label>
+    <div class="col-sm-10">
+        <textarea name="description" cols="30" rows="3" placeholder="{{ entry_description }}" class="form-control">{{ description }}</textarea>
+        {% if error_description %}
+            <div class="text-danger">{{ error_description }}</div>
+        {% endif %}
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+    <div class="col-sm-10">
+        <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail">
+            <img src="{{ thumb }}" data-placeholder="{{ placeholder }}"/>
+        </a>
+        <input type="hidden" name="image" value="{{ image }}" id="input-image"/>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">{{ entry_status }}</label>
+    <div class="col-sm-10">
+        <select name="status" class="form-control">
+            <option value="1" {{ status is not empty ? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+            <option value="0" {{ status is empty ? 'selected="selected"' : '' }}>{{ text_disabled }}</option>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">{{ entry_sort_order }}</label>
+    <div class="col-sm-10">
+        <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control"/>
+    </div>
+</div>
