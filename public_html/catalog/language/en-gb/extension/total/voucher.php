@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title'] = 'Use Gift Certificate';
+// $_['heading_title'] = 'Use Gift Certificate';
 
 // Text
 $_['text_voucher']  = 'Gift Certificate (%s)';

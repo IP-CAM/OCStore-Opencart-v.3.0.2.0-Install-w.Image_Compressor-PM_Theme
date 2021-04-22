@@ -25,6 +25,7 @@
 
 import CircularProgress from '../../sass/blocks/circular-progress/_circular-progress';
 import { getURLVar } from './util.js';
+import Alert from '../../sass/blocks/alert/_alert.js';
 
 
 // * CART-MODEL
@@ -34,12 +35,14 @@ class ModelCart {
       add: 'index.php?route=checkout/cart/add',
       set: 'index.php?route=checkout/cart/set',
       remove: 'index.php?route=checkout/cart/remove',
-      info: 'index.php?route=common/cart/info'
+      headerHtml: 'index.php?route=common/cart/info',
+      checkoutCartHtml: 'index.php?route=checkout/checkout__cart/getCart',
+      applyCoupon: 'index.php?route=extension/total/coupon/coupon'
     };
   }
 
 
-  sendRequest(requestUrl, data) {
+  _sendChangeCartRequest(requestUrl, data) {
     return fetch(requestUrl, {
       method: 'POST',
       body: data
@@ -59,14 +62,50 @@ class ModelCart {
       .catch(console.error);
   }
 
+  add(data) {
+    return this._sendChangeCartRequest(this.requestUrl.add, data);
+  }
 
-  getCartProductList() {
-    return fetch(this.requestUrl.info)
+  set(data) {
+    return this._sendChangeCartRequest(this.requestUrl.set, data);
+  }
+
+  remove(data) {
+    return this._sendChangeCartRequest(this.requestUrl.remove, data);
+  }
+
+  getHeaderCart() {
+    return fetch(this.requestUrl.headerHtml)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
         }
         return response.text();
+      })
+      .catch(console.error);
+  }
+
+  getCheckoutCart() {
+    return fetch(this.requestUrl.checkoutCartHtml)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
+        }
+        return response.text();
+      })
+      .catch(console.error);
+  }
+
+  applyCoupon(data) {
+    return fetch(this.requestUrl.applyCoupon, {
+      method: 'POST',
+      body: data
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Код ответа: ${response.status}, сообщение: ${response.statusText}`);
+        }
+        return response.json();
       })
       .catch(console.error);
   }
@@ -90,6 +129,7 @@ class ControllerCart {
     this.settingCountDataAttr = 'cartSettingCount';
     this.countSelector = '[data-cart-count]';
     this.headerCartSelector = '.header__cart-modal';
+    this.checkoutCartSelector = '[data-checkout-cart]';
 
     this.headerCartElement = undefined;
     this.headerCartCountElement = undefined;
@@ -116,7 +156,7 @@ class ControllerCart {
     const loadingIndicator = this._createLoadingIndicator(formElement);
     loadingIndicator.on();
 
-    this.modelCart.sendRequest(this.modelCart.requestUrl.add, new FormData(formElement))
+    this.modelCart.add(new FormData(formElement))
       .then(response => {
         if (response['redirect']) {
           location = response['redirect'];
@@ -140,10 +180,14 @@ class ControllerCart {
     const loadingIndicator = this._createLoadingIndicator(element);
 
     loadingIndicator.on();
-    this.modelCart.sendRequest(this.modelCart.requestUrl.set, formData)
+    this.modelCart.set(formData)
       .then(response => this._updateHeaderCartCount(response.item_count))
-      .then(() => this._changeLocationIfNeedeed())
-      .then(() => this._updateHeaderCart())
+      .then(() => {
+        return Promise.all([
+          this._updateCheckoutPageCart(),
+          this._updateHeaderCart()
+        ]);
+      })
       .finally(() => loadingIndicator.off())
       .catch(console.error);
   }
@@ -156,14 +200,44 @@ class ControllerCart {
     const loadingIndicator = this._createLoadingIndicator(element);
 
     loadingIndicator.on();
-    this.modelCart.sendRequest(this.modelCart.requestUrl.remove, formData)
+    this.modelCart.remove(formData)
       .then(response => this._updateHeaderCartCount(response.item_count))
-      .then(() => this._changeLocationIfNeedeed())
       .then(() => this._updateHeaderCart())
       .finally(() => loadingIndicator.off())
       .catch(console.error);
   }
 
+  applyCoupon(formElement) {
+    const loadingIndicator = this._createLoadingIndicator(formElement);
+    const _showAlert = (json) => {
+      const alertOptions = {
+        targetSelector: '.preview__footer',
+        position: 'prepend',
+        extraCssClass: 'preview__footer-alert'
+      };
+
+      if (json.success) {
+        alertOptions.html = json.success;
+        alertOptions.type = 'success';
+      } else {
+        alertOptions.html = json.error;
+        alertOptions.type = 'simpleWarning';
+      }
+
+      new Alert(alertOptions);
+    };
+
+    loadingIndicator.on();
+    this.modelCart.applyCoupon(new FormData(formElement))
+      .then(json => {
+        if (json.error) {
+          _showAlert(json);
+        } else {
+          return this._updateCheckoutPageCart();
+        }
+      })
+      .finally(() => loadingIndicator.off());
+  }
 
   _updateHeaderCartCount (countValue) {
     if (!this.headerCartCountElement) {
@@ -172,23 +246,65 @@ class ControllerCart {
     this.headerCartCountElement.textContent = countValue;
   }
 
+  async _updateCheckoutPageCart() {
+    if (getURLVar('route') !== 'checkout/checkout') return;
 
-  _updateHeaderCart () {
-    return new Promise((resolve, reject) => {
-      this.modelCart.getCartProductList()
-        .then(html => {
-          const responseElement = document.createElement('div');
-          responseElement.innerHTML = html;
-          const responseContentElement = responseElement.querySelector(this.headerCartSelector);
-          if (!this.headerCartElement) {
-            this.headerCartElement = document.querySelector(this.headerCartSelector);
-          }
-          this.headerCartElement.innerHTML = responseContentElement.innerHTML;
-          resolve();
-        })
-        .catch(() => reject(new Error('Ошибка получения разметки корзины с сервера')));
-    });
+    const checkoutCartElement = document.querySelector(this.checkoutCartSelector);
+    return this.modelCart.getCheckoutCart()
+      .then(html => {
+        if (html) {
+          checkoutCartElement.innerHTML = html;
+        } else {
+          window.location = '/';
+        }
+      });
   }
+  // _updateCheckoutPageCart() {
+  //   if (getURLVar('route') !== 'checkout/checkout') return;
+
+  //   return new Promise(resolve => {
+  //     const checkoutCartElement = document.querySelector(this.checkoutCartSelector);
+  //     this.modelCart.getCheckoutCart()
+  //       .then(html => {
+  //         if (html) {
+  //           checkoutCartElement.innerHTML = html;
+  //           resolve();
+  //         } else {
+  //           window.location = '/';
+  //         }
+  //       });
+  //   });
+  // }
+
+  async _updateHeaderCart () {
+    return this.modelCart.getHeaderCart()
+      .then(html => {
+        const responseElement = document.createElement('div');
+        responseElement.innerHTML = html;
+        const responseContentElement = responseElement.querySelector(this.headerCartSelector);
+        if (!this.headerCartElement) {
+          this.headerCartElement = document.querySelector(this.headerCartSelector);
+        }
+        this.headerCartElement.innerHTML = responseContentElement.innerHTML;
+      })
+      .catch(() => new Error('Ошибка получения разметки корзины с сервера'));
+  }
+  // _updateHeaderCart () {
+  //   return new Promise((resolve, reject) => {
+  //     this.modelCart.getHeaderCart()
+  //       .then(html => {
+  //         const responseElement = document.createElement('div');
+  //         responseElement.innerHTML = html;
+  //         const responseContentElement = responseElement.querySelector(this.headerCartSelector);
+  //         if (!this.headerCartElement) {
+  //           this.headerCartElement = document.querySelector(this.headerCartSelector);
+  //         }
+  //         this.headerCartElement.innerHTML = responseContentElement.innerHTML;
+  //         resolve();
+  //       })
+  //       .catch(() => reject(new Error('Ошибка получения разметки корзины с сервера')));
+  //   });
+  // }
 
 
   _showAddCartModal(message, totalMessage, checkoutLink) {
@@ -214,11 +330,11 @@ class ControllerCart {
   }
 
 
-  _changeLocationIfNeedeed() {
-    if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
-      location = 'index.php?route=checkout/cart';
-    }
-  }
+  // _changeLocationIfNeedeed() {
+  //   if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
+  //     location = 'index.php?route=checkout/cart';
+  //   }
+  // }
 
 }
 

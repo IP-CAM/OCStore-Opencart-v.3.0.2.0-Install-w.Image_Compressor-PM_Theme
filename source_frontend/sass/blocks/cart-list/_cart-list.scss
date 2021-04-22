@@ -27,10 +27,12 @@
 
   @include media-tablet-portrait-up {
     grid-template:
-      "img name price"
-      "img options price"
+      "img name     price"
+      "img options  price"
+      "img reward   price"
       "img quantity price"
-      "img buttons price" 1fr
+      "img alert    alert"
+      "img buttons  buttons" 1fr
       / 128px 1fr $space*8;
   }
 }
@@ -60,6 +62,15 @@
   color: $color-font__secondary;
 }
 
+.cart-list__reward {
+  grid-area: reward;
+  color: $color-font__secondary;
+}
+
+.cart-list__alerts {
+  grid-area: alert;
+  margin-top: $space;
+}
 
 .cart-list__quantity-input {
   grid-area: quantity;

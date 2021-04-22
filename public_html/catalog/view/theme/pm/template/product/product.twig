@@ -241,9 +241,8 @@
         </div>
       </section>
 
-      {# * Форма покупки (добавить опции при необходимости позже) #}
+      {# * Форма покупки #}
       <form class="offer__buy-form" action="index.php?route=checkout/cart/add" method="POST" data-cart-event="submit" data-cart-action="add" data-cart-loading-selector="[data-offer-buy-button]" data-cart-loading-color="#fff" data-product-id="{{ product_id }}">
-
         {% if options %}
           <section class="offer__options">
             <h3 class="visually-hidden">{{ text_option }}</h3>

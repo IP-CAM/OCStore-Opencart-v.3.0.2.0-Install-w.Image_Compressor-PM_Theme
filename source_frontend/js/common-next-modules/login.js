@@ -114,10 +114,8 @@ class Login {
       .then(response => {
         if (response) window.location.reload();
       })
-      .catch((err) => {
-        loadingIndicator.off();
-        console.error(err);
-      });
+      .finally(() => loadingIndicator.off())
+      .catch(console.error);
   }
 
 
