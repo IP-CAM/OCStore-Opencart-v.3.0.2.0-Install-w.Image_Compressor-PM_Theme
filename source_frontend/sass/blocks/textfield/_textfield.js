@@ -28,9 +28,16 @@ class TextfieldOutlined extends Textfield {
     this.lastFocusedElement = undefined;
 
 
-    this.setLabelPositions();
+    this._setLabelPositions();
     document.addEventListener('focusin', this._focusInHandler.bind(this));
     document.addEventListener('focusout', this._focusOutHandler.bind(this));
+
+    document.addEventListener('change', (evt) => {
+      const targetElement = evt.target.closest(this.textfieldSelector);
+      if (!targetElement) return;
+
+      this._setLabelPosition(targetElement);
+    });
   }
 
 
@@ -56,16 +63,21 @@ class TextfieldOutlined extends Textfield {
   }
 
 
-  setLabelPositions() {
+  _setLabelPositions() {
     const textfields = document.querySelectorAll(this.textfieldSelector);
-    textfields.forEach(textfield => {
-      const inputElement = textfield.querySelector(this.inputSelector);
+    textfields.forEach(textfield => this._setLabelPosition(textfield));
+  }
 
-      if (inputElement.value === '') {
-        const labelElement = textfield.querySelector(this.labelSelector);
-        labelElement.classList.remove(this.labelOnTopClass);
-      }
-    });
+
+  _setLabelPosition(textfield) {
+    const inputElement = textfield.querySelector(this.inputSelector);
+    const labelElement = textfield.querySelector(this.labelSelector);
+
+    if (inputElement.value === '') {
+      labelElement.classList.remove(this.labelOnTopClass);
+    } else {
+      labelElement.classList.add(this.labelOnTopClass);
+    }
   }
 
 
