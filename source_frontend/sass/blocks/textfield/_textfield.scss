@@ -52,7 +52,7 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: var(--vertical-padding) $space calc(var(--vertical-padding) - 2px);
+  padding: var(--vertical-padding) $space*3 calc(var(--vertical-padding) - 2px) $space;
   font: inherit;
   color: $color-font__input;
   // background-color: transparent;

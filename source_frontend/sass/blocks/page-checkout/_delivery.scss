@@ -1,17 +1,102 @@
-.delivery__price {
-  font-weight: 600;
-
-  &--free {
-    color: $color__stock;
-  }
+.delivery__alert {
+  margin-bottom: $space;
 }
 
+.delivery__city-choose {
+  margin-bottom: $space*0.5;
+}
 
-.delivery__term {
+.delivery__price {
   font-weight: 700;
 }
 
+.delivery__delivery-term {
+  font-weight: 700;
+}
 
 .delivery__adress-field {
   margin-top: $space;
+}
+
+.delivery__list {
+  margin: $space*0.5 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: $space;
+}
+
+.delivery__item {
+  padding: $space;
+  border: 1px solid $color__additional-2;
+  border-radius: $controls__border-radius;
+}
+
+.delivery__radiocheck {
+  font-weight: 600;
+}
+
+.delivery__radio-description {
+  margin-top: 0.5rem;
+  margin-left: 28px;
+  padding-top: 0.5rem;
+  border-top: 1px solid $color__additional-2;
+}
+
+.delivery__description {
+  margin-top: $space*1.5;
+}
+
+.delivery__description-term {
+  color: $color-font__secondary;
+}
+
+.delivery__delivery-type-fieldset {
+  margin: $space*2 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.delivery__delivery-type-legend {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+
+.delivery__pickup {
+  display: flex;
+  justify-content: center;
+  padding: $space*3;
+  border: 1px solid $color__additional-2;
+  border-radius: $controls__border-radius;
+}
+
+.delivery__pickup-inner {
+  position: relative;
+}
+
+
+.delivery__pickup-icon {
+  @include media-mobile-only {
+    display: none;
+  }
+
+  @include media-tablet-portrait-up {
+    position: absolute;
+    top: 0;
+    right: calc(100% + #{$space*1.5});
+    width: $space*3;
+    height: $space*3;
+    fill: $color__additional-3;
+  }
+}
+
+.delivery__pickup-entry {
+  font-size: 1rem;
+}
+
+.delivery__pickup-open-button {
+  margin-top: $space*1.5;
+  width: 100%;
 }

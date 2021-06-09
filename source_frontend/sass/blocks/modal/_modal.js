@@ -17,12 +17,14 @@ const ModalPositionClasses = {
 const ModalSize = {
   SMALL: 'small',
   BIG: 'big',
+  EXTRABIG: 'extrabig',
   AUTO: 'auto'
 };
 
 const ModalSizeClasses = {
   [ModalSize.SMALL]: 'modal--small',
   [ModalSize.BIG]: 'modal--big',
+  [ModalSize.EXTRABIG]: 'modal--extrabig',
   [ModalSize.AUTO]: 'modal--width-auto'
 };
 

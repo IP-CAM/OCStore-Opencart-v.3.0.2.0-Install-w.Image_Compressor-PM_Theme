@@ -14,7 +14,6 @@ import initSliders from '../sass/blocks/slider/_slider.js';
 import initShowmores from '../sass/blocks/showmore/_showmore.js';
 import initStars from '../sass/blocks/stars/_stars.js';
 import initRadios from '../sass/blocks/radiocheck/_radio.js';
-import initPickup from '../sass/blocks/pickup/_pickup.js';
 
 import initSearch from './common-next-modules/search-field.js';
 import initFilter from './common-next-modules/yulms-ocfilter.js';
@@ -28,6 +27,8 @@ import initLogin from './common-next-modules/login.js';
 import initSubscribe from './common-next-modules/subscribe.js';
 import initShare from './common-next-modules/share.js';
 import initCityManager from './common-next-modules/citymanager';
+import initPickup from './common-next-modules/pickup';
+import initCheckout from './common-next-modules/checkout';
 
 
 const projectObjects = {
@@ -47,7 +48,6 @@ const projectObjects = {
   showMores: initShowmores(),
   stars: initStars(),
   radios: initRadios(),
-  pickup: initPickup(),
   search: initSearch(),
   ocFilter: initFilter(),
   cart: initCart(),
@@ -59,7 +59,9 @@ const projectObjects = {
   login: initLogin(),
   subscribe: initSubscribe(),
   share: initShare(),
-  cityManager: initCityManager()
+  cityManager: initCityManager(),
+  pickup: initPickup(),
+  checkout: initCheckout()
 };
 
 window.yulms = projectObjects;

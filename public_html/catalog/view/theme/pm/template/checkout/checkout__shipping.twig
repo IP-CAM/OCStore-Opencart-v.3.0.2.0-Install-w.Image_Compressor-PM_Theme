@@ -1,0 +1,139 @@
+<h2 class="title title--2 page-checkout__section-header">{{ shipping__title }}</h2>
+
+{% if shipping_methods %}
+
+	{% if error_warning %}
+		<p class="alert alert--simple-warning delivery__alert" role="alert">{{ error_warning }}</p>
+	{% endif %}
+
+	<div class="radio-tabs">
+		<h3 class="visually-hidden">{{ text_shipping_method }}</h3>
+		{# * Способы доставки - табы #}
+		{% for shipping_method in shipping_methods %}
+			{% set unique_tab_id = 'delivery-type-tab-' ~ random() %}
+			<input class="radio-tabs__input visually-hidden" id="{{ unique_tab_id }}" type="radio" name="radio-delivery-type" value="{{ loop.index }}" {{ loop.index == 1 ? 'checked' }}>
+			<label class="radio-tabs__label" for="{{ unique_tab_id }}">{{ shipping_method.title }}
+			</label>
+		{% endfor %}
+
+		{# * Способы доставки (доставка и самовывоз) - контентная часть #}
+		{% for shipping_method in shipping_methods %}
+			<div class="radio-tabs__content">
+
+				{% if shipping_method.title == 'Доставка' %}
+					{# * город #}
+					{% set unique_list_id = 'custom-select-' ~ random() %}
+					{% set unique_describe_id = 'custom-select-' ~ random() %}
+					<div class="textfield custom-select" aria-owns="{{ unique_list_id }}" data-city-select>
+						<label class="textfield__input-container">
+							<input class="textfield__input" type="text" name="city" value="{{ city }}" aria-describedby="{{ unique_describe_id }}" aria-controls="{{ unique_list_id }}" autocomplete="off" spellcheck="false">
+							<span class="textfield__trailing-icon textfield__trailing-icon--dropdown custom-select__dropdown-icon"></span>
+							<span class="textfield__label textfield__label--top">Ваш город</span>
+						</label>
+						<ul class="custom-select__list" id="{{unique_list_id}}" hidden></ul>
+						<div class="textfield__help" id="{{ unique_describe_id }}">Быстрый поиск населенного пункта</div>
+					</div>
+
+					{# * адрес #}
+					<div class="textfield delivery__adress-field">
+						<label class="textfield__input-container">
+							<input class="textfield__input" type="text" name="address" required autocomplete="off">
+							<span class="textfield__label">Улица, дом, квартира, подъезд, этаж</span>
+						</label>
+					</div>
+
+					{# * Виды доставки #}
+					{% if shipping_method.quote|length == 1 %}
+						{# * Один вид доставки #}
+						{% for quote in shipping_method.quote %}
+							{# <div>quotes.title: {{ quotes.title }}</div>
+                  <div>quote.description: {{ quote.description }}</div>
+                  <div>quote.description_1: {{ quote.description_1 }}</div>
+                  <div>quote.description_2: {{ quote.description_2 }}</div>
+                  <div>quote.text: {{ quote.text }}</div>
+    <div>quote.cost: {{ quote.cost }}</div> #}
+
+							<dl class="dl delivery__description">
+								<dt class="dl__dt delivery__description-term">Стоимость доставки</dt>
+								<dd class="dl__dd delivery__price">{{ quote.cost == 0 ? 'бесплатно' : quote.text }}</dd>
+								{% if quote.description_2 %}
+									<dt class="dl__dt delivery__description-term">Срок доставки</dt>
+									<dd class="dl__dd delivery__delivery-term">{{ quote.description_2 }}</dd>
+								{% endif %}
+							</dl>
+						{% endfor %}
+
+						{# * Несколько видов доставки #}
+					{% else %}
+						<fieldset class="delivery__delivery-type-fieldset">
+							<legend class="delivery__delivery-type-legend">Выберите вид доставки</legend>
+							<ul class="delivery__list">
+								{% for quote in shipping_method.quote %}
+									<li class="delivery__item">
+										<label class="radiocheck delivery__radiocheck">
+											<input class="radiocheck__input visually-hidden" type="radio" name="{{ shipping_method.code }}" value="{{ quote.code }}" autocomplete="off" {{ loop.index == 1 ? 'checked' }}>
+											<span class="radiocheck__box radiocheck__box--radio"></span>
+											<span class="radiocheck__caption">{{ quote.title }}</span>
+										</label>
+										<div class="delivery__radio-description">
+											{% if quote.description_1 %}
+												<div class="delivery__description-term">{{ quote.description_1 }}</div>
+											{% endif %}
+
+											<dl class="dl">
+												<dt class="dl__dt delivery__description-term">Стоимость доставки</dt>
+												<dd class="dl__dd delivery__price">{{ quote.cost == 0 ? 'бесплатно' : quote.text }}</dd>
+												{% if quote.description_2 %}
+													<dt class="dl__dt delivery__description-term">Срок доставки</dt>
+													<dd class="dl__dd delivery__delivery-term">{{ quote.description_2 }}</dd>
+												{% endif %}
+											</dl>
+										</div>
+									</li>
+								{% endfor %}
+							</ul>
+						</fieldset>
+					{% endif %}
+
+				{% elseif shipping_method.title == 'Самовывоз' %}
+					<div class="delivery__pickup">
+            <div class="delivery__pickup-inner">
+              <svg class="delivery__pickup-icon" width="48" height="48" aria-hidden="true">
+                <use href="catalog/view/theme/pm/img/svg/_sprite.svg#icon-post-office"></use>
+              </svg>
+              <div class="delivery__pickup-entry"><b>Пожалуйста, выберите пункт самовывоза</b></div>
+              <button class="button button--options-secondary delivery__pickup-open-button" type="button" data-pickup-open-button>Выбрать пункт самовывоза</button>
+            </div>
+					</div>
+
+          {# <div class="pickup">
+            <div class="textfield custom-select pickup__custom-select" aria-owns="pickup-list" data-pickup-select>
+              <label class="textfield__input-container">
+                <input class="textfield__input" type="text" name="pickup" value="" aria-describedby="pickup-describe" aria-controls="{{ unique_list_id }}" autocomplete="off" spellcheck="false">
+                <span class="textfield__trailing-icon textfield__trailing-icon--dropdown custom-select__dropdown-icon"></span>
+                <span class="textfield__label textfield__label--top">Пункт самовывоза</span>
+              </label>
+              <ul class="custom-select__list" id="pickup-list" hidden></ul>
+              <div class="textfield__help" id="pickup-describe">Быстрый поиск пункта самовывоза</div>
+            </div>
+            <p class="pickup__info">
+              Время работы: с 20-00 до 19-00 без выходных
+            </p>
+            <div class="pickup__map"></div>
+            <button class="button button--action-primary pickup__choose-button" type="button">Выбрать</button>
+          </div> #}
+
+
+
+
+				{% endif %}
+
+
+			</div>
+		{% endfor %}
+
+	</div>
+
+{% else %}
+	{{ error_no_shipping }}
+{% endif %}

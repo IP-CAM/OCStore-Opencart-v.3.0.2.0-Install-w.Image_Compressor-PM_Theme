@@ -97,8 +97,8 @@ class Pickup {
 function initPickup() {
   let pickupElement = document.querySelector(MAIN_SELECTOR);
   if (pickupElement) {
-    return new Pickup(pickupElement);
+    // return new Pickup(pickupElement);
   }
 }
 
-export default initPickup;
+// export default initPickup;

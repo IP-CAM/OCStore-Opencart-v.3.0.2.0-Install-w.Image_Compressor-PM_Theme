@@ -26,7 +26,6 @@ class CityManager {
 
     const applyButtonElement = evt.target.closest(this.applyButtonSelector);
     if (applyButtonElement) {
-      // debugger;
       if (this.selectedCityId) {
         this._setFias(this.selectedCityId);
       }
@@ -50,21 +49,23 @@ class CityManager {
   }
 
   _initAutocomplete() {
-    const selectElement = document.querySelector(this.citySelectElementSelector);
+    const selectElements = document.querySelectorAll(this.citySelectElementSelector);
+    if (!selectElements) return;
 
-    selectElement.setExternalSource({
-      url: this.urlSearch + '&term=',
-      fieldMap: {
-        titleFieldName: 'name',
-        descriptionFieldName: 'label',
-        dataIdFieldName: 'value',
-      }
+    selectElements.forEach(selectElement => {
+      selectElement.setExternalSource({
+        url: this.urlSearch + '&term=',
+        fieldMap: {
+          titleFieldName: 'name',
+          descriptionFieldName: 'label',
+          dataIdFieldName: 'value',
+        }
+      });
+
+      selectElement.addEventListener('customSelectChoice', (evt) => {
+        this.selectedCityId = evt.detail.choiceId;
+      });
     });
-
-    selectElement.addEventListener('customSelectChoice', (evt) => {
-      this.selectedCityId = evt.detail.choiceId;
-    });
-
   }
 
 }

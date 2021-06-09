@@ -1,0 +1,35 @@
+<header class="customer-info__header page-checkout__section-header">
+  <h2 class="title title--2 customer-info__title">{{ customer__title }}</h2>
+  {% if not logged %}
+    <a class="link" href="{{ login }}">Войти</a>
+  {% endif %}
+</header>
+
+<div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="text" name="firstname" value="{{ firstname }}" required spellcheck="false" autocomplete="off">
+    <span class="textfield__label {{ firstname ? 'textfield__label--top'}}">{{ entry_firstname }}</span>
+  </label>
+</div>
+
+<div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="text" name="lastname" value="{{ lastname }}" required spellcheck="false" autocomplete="off">
+    <span class="textfield__label {{ lastname ? 'textfield__label--top'}}">{{ entry_lastname }}</span>
+  </label>
+</div>
+
+<div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="text" name="telephone" value="{{ telephone }}" required spellcheck="false" autocomplete="off">
+    <span class="textfield__label {{ telephone ? 'textfield__label--top'}}">{{ entry_telephone }}</span>
+  </label>
+</div>
+
+<div class="textfield">
+  <label class="textfield__input-container">
+    <input class="textfield__input" type="email" name="email" value="{{ email }}" autocomplete="off">
+    <span class="textfield__label">{{ entry_email }}</span>
+  </label>
+  <div class="textfield__help">На этот адрес будет отправлено подтверждение заказа</div>
+</div>

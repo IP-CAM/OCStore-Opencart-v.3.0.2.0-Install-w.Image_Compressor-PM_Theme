@@ -5,28 +5,33 @@
 @import "total";
 
 
-.page-checkout__title {
-  margin: $space 0 $space*2;
-}
-
-.page-checkout__form {
-  @include media-tablet-landscape-up {
+.page-checkout {
+  @include media-desktop-up {
     display: grid;
     grid-template-columns: minmax(0%, 2fr) minmax(0%, 3fr);
     column-gap: $space*6;
   }
 }
 
+.page-checkout__title {
+  grid-column: 1/-1;
+  margin: $space 0 $space*2;
+}
+
+.page-checkout__alert-top {
+  grid-column: 1/-1;
+  margin: $space 0 $space*2;
+}
+
 .page-checkout__preview {
   grid-row: span 5;
 
-  @include media-tablet-portrait-down {
+  @include media-tablet-landscape-down {
     margin-bottom: $space*3;
   }
 }
 
-
-.page-checkout__section-title {
+.page-checkout__section-header {
   margin: 0 0 $space;
 }
 

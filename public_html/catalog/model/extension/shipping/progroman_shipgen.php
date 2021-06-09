@@ -44,7 +44,9 @@ class ModelExtensionShippingProgromanShipgen extends Model {
                         'tax_class_id' => 0,
                         'text' => $zone_data['text'],
                         'description' => ($quote['description'] ? nl2br($quote['description']) : '')
-                            . ($zone_data['description'] ? ' ' . nl2br($zone_data['description']) : '')
+                            . ($zone_data['description'] ? ' ' . nl2br($zone_data['description']) : ''),
+                        'description_1' => $quote['description'] ? nl2br($quote['description']) : '',
+                        'description_2' => $zone_data['description'] ? ' ' . nl2br($zone_data['description']) : ''
                     ];
                 }
             }
@@ -75,9 +77,9 @@ class ModelExtensionShippingProgromanShipgen extends Model {
     public function getQuotesByShippingIds($shipping_ids) {
         return !empty($shipping_ids)
             ? $this->db->query("
-                  SELECT * FROM prmn_sg_quote 
-                    WHERE shipping_id IN (" . implode(',', $shipping_ids) . ") 
-                        AND status != 0 
+                  SELECT * FROM prmn_sg_quote
+                    WHERE shipping_id IN (" . implode(',', $shipping_ids) . ")
+                        AND status != 0
                     ORDER BY sort_order")->rows
             : [];
     }
@@ -85,7 +87,7 @@ class ModelExtensionShippingProgromanShipgen extends Model {
     public function getZonesByQuotesIds($quotes_ids, $country_id, $zone_id) {
         return !empty($quotes_ids)
             ? $this->db->query("
-                  SELECT * FROM prmn_sg_quote_zone 
+                  SELECT * FROM prmn_sg_quote_zone
                     WHERE quote_id IN (" . implode(',', $quotes_ids) . ")
                         AND country_id = '" . (int)$country_id . "'
                         AND zone_id = '" . (int)$zone_id . "'")->rows

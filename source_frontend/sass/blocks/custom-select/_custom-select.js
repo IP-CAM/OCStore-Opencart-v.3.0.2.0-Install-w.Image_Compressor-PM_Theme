@@ -360,6 +360,12 @@ class CustomSelect {
     }));
   }
 
+  setValue(value) {
+    this.input.element.value = value;
+    // кривое решение, если будем менять velue у textfield будет двойной вызов
+    this.input.element.dispatchEvent(new Event('change', {bubbles: true}));
+  }
+
   _moveFocus({moveDirection}) {
     const currentFocus = document.activeElement;
 
@@ -395,4 +401,8 @@ export default function initCustomSelects() {
   // добавить тип изменение типа вхождения при фильтрации (data-attr)
   const customSelectElements = document.querySelectorAll(MAIN_SELECTOR);
   return Array.from(customSelectElements).map(elem => new CustomSelect(elem));
+}
+
+export function initCustomSelect(customSelectElement) {
+  return new CustomSelect(customSelectElement);
 }

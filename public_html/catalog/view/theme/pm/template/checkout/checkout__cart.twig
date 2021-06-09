@@ -1,0 +1,47 @@
+<div class="preview__inner">
+  <h2 class="visually-hidden">{{ cart__title }}</h2>
+
+  {{ cart_list }}
+
+  <div class="preview__footer">
+    {# * промокод #}
+    <form class="preview__footer-promocode" action="{{ coupon_action }}" method="post" data-cart-event="submit" data-cart-action="applyCoupon" data-cart-loading-selector="[data-promocode-button]">
+      <div class="textfield preview__promocode-field">
+        <label class="textfield__input-container">
+          <input class="textfield__input" type="text" name="coupon" value="{{ coupon }}" autocomplete="off" spellcheck="false">
+          <span class="textfield__label {{ coupon ? 'textfield__label--top'}}">{{ entry_coupon }}</span>
+        </label>
+      </div>
+      <button class="button button--options-primary preview__promocode-button" type="submit" data-promocode-button>{{ button_coupon }}</button>
+    </form>
+
+    {% if total_without_sales != total %}
+      <div class="preview__table-row">
+        <span>Сумма без скидки:</span>
+        <span class="page-checkout__price">{{ total_without_sales }}</span>
+      </div>
+    {% endif %}
+
+    {% if total_sales_discount %}
+      <div class="preview__table-row">
+        <span>Скидка по акции:</span>
+        <span class="page-checkout__price page-checkout__price--discount">{{ total_sales_discount }}</span>
+      </div>
+    {% endif %}
+
+    {% for total in totals %}
+      <div class="preview__table-row">
+        <span>{{ total.title }}:</span>
+        <span class="page-checkout__price page-checkout__price--discount">{{ total.text }}</span>
+      </div>
+    {% endfor %}
+
+    <div class="preview__table-footer">
+      <div class="preview__table-row">
+        <span>Общая стоимость товаров:</span>
+        <span class="page-checkout__total-price">{{ total }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

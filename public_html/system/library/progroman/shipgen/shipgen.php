@@ -183,26 +183,47 @@ class ShipGen {
                 $currency = $this->registry->get('currency');
                 $session = $this->registry->get('session');
 
+                // ! my add
                 if ($result_discount > 0) {
                     if ($result_discount > 100) {
                         $result_discount = 100;
                     }
 
                     $discount_cost = $cost * $result_discount / 100;
-                    $text = '<span style="text-decoration: line-through; color: red;">'
-                        . $currency->format($cost, $session->data['currency']) . '</span> '
-                        . $currency->format($cost - $discount_cost, $session->data['currency'])
-                        . ' (' . ' -' . $result_discount . '%)';
+                    $text = $cost - $discount_cost . ' ' . $currency->getSymbolRight($session->data['currency']);
 
                     $cost -= $discount_cost;
                 } else {
                     if (is_numeric($cost)) {
-                        $text = $currency->format($cost, $session->data['currency']);
+                        // $text = $currency->format($cost, $session->data['currency']);
+                        $text = $cost . ' ' . $currency->getSymbolRight($session->data['currency']);
                     } else {
                         $text = $cost;
                         $cost = 0;
                     }
                 }
+                // ! EOF my add
+                // * original
+                // if ($result_discount > 0) {
+                //     if ($result_discount > 100) {
+                //         $result_discount = 100;
+                //     }
+
+                //     $discount_cost = $cost * $result_discount / 100;
+                //     $text = '<span style="text-decoration: line-through; color: red;">'
+                //         . $currency->format($cost, $session->data['currency']) . '</span> '
+                //         . $currency->format($cost - $discount_cost, $session->data['currency'])
+                //         . ' (' . ' -' . $result_discount . '%)';
+
+                //     $cost -= $discount_cost;
+                // } else {
+                //     if (is_numeric($cost)) {
+                //         $text = $currency->format($cost, $session->data['currency']);
+                //     } else {
+                //         $text = $cost;
+                //         $cost = 0;
+                //     }
+                // }
 
                 $result = ['cost' => $cost, 'text' => $text, 'description' => $zone['description']];
 

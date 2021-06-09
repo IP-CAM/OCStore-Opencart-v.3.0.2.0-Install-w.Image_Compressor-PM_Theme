@@ -53,7 +53,7 @@ params = {
   *или*
   contentElement - DOM элемент
   modalPosition - 'center' - default, 'left'
-  modalSize - 'small', 'big', 'auto'
+  modalSize - 'small', 'big', 'extrabig', 'auto'
   callbackOnClose
   triggerElement (используется только для установки фокуса после закрытия окна)
   focusOnOpen (true - default, false) - поместить фокус на элемент модального окна при открытии

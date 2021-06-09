@@ -1,5 +1,5 @@
 class Textfield {
-  constructor(elements) {
+  constructor() {
 
     const defaults = {
       textfieldSelector: '.textfield',
@@ -8,23 +8,21 @@ class Textfield {
 
     Object.assign(this, defaults);
 
-    this.elements = elements;
+    // this.elements = elements;
   }
 }
 
 
 class TextfieldOutlined extends Textfield {
-  constructor(elements, overrides) {
-
-    super(elements);
-
+  constructor() {
+    super();
     const defaults = {
       labelSelector : '.textfield__label',
       textfieldActiveClass : 'textfield--active',
       labelOnTopClass : 'textfield__label--top'
     };
 
-    Object.assign(this, defaults, overrides);
+    Object.assign(this, defaults);
     this.lastFocusedElement = undefined;
 
 

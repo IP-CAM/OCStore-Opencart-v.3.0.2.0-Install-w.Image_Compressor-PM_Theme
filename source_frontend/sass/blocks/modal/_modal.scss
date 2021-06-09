@@ -111,6 +111,10 @@
   width: $space*44;
 }
 
+.modal--extrabig .modal__inner {
+  width: $max-width;
+}
+
 .modal--width-auto .modal__inner {
   width: auto;
 }
@@ -168,6 +172,11 @@
   }
 }
 
+
+.modal--extrabig .modal__close-button {
+  top: $space * -4.25;
+  right: 0;
+}
 
 .modal__header {
   margin: 0 0 $space*1.5 0;

@@ -1,50 +1,124 @@
+// .pickup {
+//   // для нормального ресайза карты, если тип элемента fieldset
+//   min-width: 0;
+//   margin: 0;
+//   padding: $space 0 0;
+//   border: none;
+// }
+
+
+// .pickup__list {
+//   margin: 0;
+//   padding: 0;
+//   list-style: none;
+// }
+
+
+// .pickup__item {
+//   &:not(:last-child) {
+//     margin-bottom: $space*0.5;
+//   }
+// }
+
+
+// .pickup__term {
+//   color: $color-font__secondary;
+// }
+
+// .pickup__description {
+//   font-weight: 600;
+// }
+
+// .pickup__info {
+//   margin-top: $space*0.25;
+// }
+
+
+// .pickup__radio[data-checked="false"] + .pickup__info {
+//   display: none;
+// }
+
+
+// .pickup__map {
+//   height: 320px;
+//   margin-top: $space*2;
+//   overflow: hidden;
+
+//   @include media-tablet-portrait-down {
+//     @include full-width;
+//   }
+// }
+
+
 .pickup {
-  // для нормального ресайза карты, если тип элемента fieldset
-  min-width: 0;
-  margin: 0;
-  padding: $space 0 0;
-  border: none;
-}
-
-
-.pickup__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-
-.pickup__item {
-  &:not(:last-child) {
-    margin-bottom: $space*0.5;
+  @include media-tablet-landscape-up {
+    display: grid;
+    grid-template-columns: minmax(0%, 1fr) minmax(0%, 2fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "select map"
+      "info   map"
+      "button map";
+    column-gap: $space*2;
   }
 }
 
+.pickup__custom-select {
+  margin-bottom: $space*2;
 
-.pickup__term {
-  color: $color-font__secondary;
-}
-
-.pickup__description {
-  font-weight: 600;
+  @include media-tablet-landscape-up {
+    grid-area: select;
+  }
 }
 
 .pickup__info {
-  margin-top: $space*0.25;
+  margin: 0 0 $space*1;
+
+  @include media-tablet-landscape-up {
+    grid-area: info;
+  }
 }
 
-
-.pickup__radio[data-checked="false"] + .pickup__info {
-  display: none;
-}
-
-
-.pickup__map {
-  height: 320px;
-  margin-top: $space*2;
-  overflow: hidden;
+.pickup__choose-button {
+  width: 100%;
+  max-width: $space*30;
 
   @include media-tablet-portrait-down {
-    @include full-width;
+    margin-bottom: $space*2;
   }
+
+  @include media-tablet-landscape-up {
+    grid-area: button;
+  }
+}
+
+.pickup__map {
+  // temp
+  background-color: $color__additional-1-1;
+  min-height: 320px;
+
+  @include media-tablet-landscape-up {
+    grid-area: map;
+    min-height: 460px;
+  }
+}
+
+.pickup__map-content {
+  font-family: "Raleway", "Arial", sans-serif;
+  line-height: $space*1.5;
+  font-weight: 500;
+}
+
+.pickup__map-hint {
+  padding: $space*0.5;
+  font-size: 13px;
+}
+
+.pickup__map-baloon {
+  padding: $space;
+  font-size: 0.875rem;
+}
+
+.pickup__map-baloon-button {
+  padding: $space*0.5 $space*2;
 }

@@ -19,7 +19,7 @@
 
     <div class="address-form page-account__address-form">
       <h1 class="title title--1 page-account__title">Адрес</h1>
-      <form class="address-form__form" action="{{ action }}" method="post">
+      <form class="address-form__form" action="{{ action }}" method="post" autocomplete="off">
 
         {# * имя #}
         <div class="textfield">
@@ -44,14 +44,16 @@
         </div>
 
         {# * город #}
-        <div class="textfield">
+        {% set unique_list_id = 'custom-select-' ~ random() %}
+        {% set unique_describe_id = 'custom-select-' ~ random() %}
+        <div class="textfield custom-select" aria-owns="{{ unique_list_id }}" data-city-select>
           <label class="textfield__input-container">
-            <input class="textfield__input" type="text" name="city" value="{{ city }}" autocomplete="off" required>
-            <span class="textfield__label textfield__label--top">{{ entry_city }}</span>
+            <input class="textfield__input" type="text" name="city" value="{{ city }}" aria-describedby="{{ unique_describe_id }}" aria-controls="{{ unique_list_id }}" autocomplete="off" spellcheck="false">
+            <span class="textfield__trailing-icon textfield__trailing-icon--dropdown custom-select__dropdown-icon"></span>
+            <span class="textfield__label textfield__label--top">Ваш город</span>
           </label>
-          {% if error_city %}
-            <div class="textfield__help textfield__help--error">{{ error_city }}</div>
-          {% endif %}
+          <ul class="custom-select__list" id="{{unique_list_id}}" hidden></ul>
+          <div class="textfield__help" id="{{ unique_describe_id }}">Быстрый поиск населенного пункта</div>
         </div>
 
         {# * адрес #}
@@ -84,9 +86,8 @@
 
         <input class="textfield__input" type="hidden" name="address_2">
         <input class="textfield__input" type="hidden" name="postcode">
-        <input class="textfield__input" type="hidden" name="country_id" value="20">
-        <input class="textfield__input" type="hidden" name="zone_id" value="4232">
-
+        <input class="textfield__input" type="hidden" name="country_id" value="{{ progroman_citymanager.getCountryId() }}">
+        <input class="textfield__input" type="hidden" name="zone_id" value="{{ progroman_citymanager.getZoneId() }}">
 
         {% if error_country or error_zone or error_postcode or error_address_2 %}
           <p class="alert alert--simple-warning" role="alert">
@@ -118,29 +119,3 @@
   </main>
 </div>
 {{ footer }}
-
-
-
-
-          {# <div class="form-group">
-            <label class="col-sm-2 control-label">{{ entry_default }}</label>
-            <div class="col-sm-10">
-
-            {% if default %}
-              <label class="radio-inline">
-                <input type="radio" name="default" value="1" checked="checked" />
-                {{ text_yes }}
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="default" value="0" />
-                {{ text_no }}</label>
-            {% else %}
-
-              <label class="radio-inline">
-                <input type="radio" name="default" value="1" />
-                {{ text_yes }}</label>
-              <label class="radio-inline">
-                <input type="radio" name="default" value="0" checked="checked" />
-                {{ text_no }}</label>
-              {% endif %} </div>
-          </div> #}
